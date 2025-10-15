@@ -1,3 +1,3 @@
-# contenthandler-template
+# core-contenthandler_bcv
 
-contenthandler-template
+core-contenthandler_bcv

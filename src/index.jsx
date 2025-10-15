@@ -2,8 +2,7 @@ import {createRoot} from "react-dom/client";
 import {SpaContainer} from "pithekos-lib";
 import {createHashRouter, RouterProvider} from "react-router-dom";
 import './index.css';
-import CreatePage from "./pages/create";
-import UpdatePage from "./pages/update"
+import NewBcvContent from "./pages/NewBcvContent";
 import App from "./App";
 
 const router = createHashRouter([
@@ -12,13 +11,9 @@ const router = createHashRouter([
         element:<App/>
     },
     {
-        path: "createPage",
-        element: <CreatePage/>
+        path: "bookChapterVerse",
+        element: <NewBcvContent/>
     },
-    {
-        path: "updatePage",
-        element: <UpdatePage/>,
-    }
 ]);
 
 createRoot(document.getElementById("root"))
