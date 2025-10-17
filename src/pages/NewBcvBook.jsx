@@ -110,7 +110,7 @@ export default function NewBcvBook() {
             add_cv: addCV,
         };
         const response = await postJson(
-            `/git/new-scripture-book/${repoPath}`,
+            `/git/new-bcv-book/${repoPath}`,
             JSON.stringify(payload),
             debugRef.current
         );
