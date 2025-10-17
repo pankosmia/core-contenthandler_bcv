@@ -60,7 +60,7 @@ export default function NewBcvContent() {
     setOpenModal(false);
     setTimeout(() => {
       window.location.href = "/clients/content";
-    }, 200);
+    }, 500);
   };
   useEffect(() => {
     if (openModal === true) {

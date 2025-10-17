@@ -3,6 +3,7 @@ import {SpaContainer} from "pithekos-lib";
 import {createHashRouter, RouterProvider} from "react-router-dom";
 import './index.css';
 import NewBcvContent from "./pages/NewBcvContent";
+import NewBcvBook from "./pages/NewBcvBook";
 import App from "./App";
 
 const router = createHashRouter([
@@ -14,6 +15,10 @@ const router = createHashRouter([
         path: "bookChapterVerse",
         element: <NewBcvContent/>
     },
+    {
+        path:"NewBcvBook",
+        element:<NewBcvBook/>
+    }
 ]);
 
 createRoot(document.getElementById("root"))
