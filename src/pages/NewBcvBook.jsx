@@ -17,6 +17,7 @@ import {
     Grid2,
     DialogActions,
     Box,
+    DialogContent,
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import {
@@ -41,9 +42,11 @@ export default function NewBcvBook() {
     const { debugRef } = useContext(debugContext);
     const [bookCodes, setBookCodes] = useState([]);
     const [protestantOnly, setProtestantOnly] = useState(true);
-    const [bookName,setBookName] = useState([]);
+    const [bookName, setBookName] = useState([]);
+    const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
-     const getProjectSummaries = async () => {
+    const getProjectSummaries = async () => {
         const hash = window.location.hash;
         const query = hash.includes('?') ? hash.split('?')[1] : '';
         const params = new URLSearchParams(query);
@@ -99,7 +102,7 @@ export default function NewBcvBook() {
         setOpen(false);
         setTimeout(() => {
             window.location.href = '/clients/content';
-        }, 500);
+        });
     };
 
     const handleCreate = async () => {
@@ -125,8 +128,14 @@ export default function NewBcvBook() {
                 }`,
                 { variant: "error" }
             );
+            setErrorMessage(`${doI18n("pages:content:book_creation_error", i18nRef.current)}: ${response.status
+                }`);
+            setErrorDialogOpen(true);
         }
-        handleCloseCreate();
+    };
+    const handleCloseErrorDialog = () => {
+        setErrorDialogOpen(false);
+        handleClose();
     };
 
     return (
@@ -315,6 +324,17 @@ export default function NewBcvBook() {
                         onClick={handleCreate}
                     >
                         {doI18n("pages:content:create", i18nRef.current)}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            {/* Error Dialog */}
+            <Dialog open={errorDialogOpen} onClose={handleCloseErrorDialog}>
+                <DialogContent>
+                    <Typography color="error">{errorMessage}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseErrorDialog} variant="contained" color="primary">
+                        {doI18n("pages:content:close", i18nRef.current)}
                     </Button>
                 </DialogActions>
             </Dialog>
