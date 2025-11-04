@@ -32,7 +32,7 @@ import sx from "./Selection.styles";
 import ListMenuItem from "./ListMenuItem";
 
 export default function NewBcvBook() {
-    const [addCV, setAddCV] = useState(true);
+
     const [bookCode, setBookCode] = useState("");
     const [bookTitle, setBookTitle] = useState("");
     const [bookAbbr, setBookAbbr] = useState("");
@@ -110,7 +110,6 @@ export default function NewBcvBook() {
             book_code: bookCode,
             book_title: bookTitle,
             book_abbr: bookAbbr,
-            add_cv: addCV,
         };
         const response = await postJson(
             `/git/new-bcv-book/${repoPath}`,
@@ -286,21 +285,6 @@ export default function NewBcvBook() {
                             }
                             label={doI18n(
                                 "pages:content:protestant_books_only",
-                                i18nRef.current
-                            )}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    color="secondary"
-                                    checked={addCV}
-                                    onChange={() => setAddCV(!addCV)}
-                                />
-                            }
-                            label={doI18n(
-                                "pages:content:add_versification_checkbox",
                                 i18nRef.current
                             )}
                         />
