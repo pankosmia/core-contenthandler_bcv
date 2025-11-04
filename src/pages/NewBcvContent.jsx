@@ -460,6 +460,8 @@ export default function NewBcvContent() {
                     bookTitle.trim().length > 0 &&
                     bookAbbr.trim().length > 0))
               )
+              ||
+              repoExists
             }
             onClick={handleCreate}
           >
