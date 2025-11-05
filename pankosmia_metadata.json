@@ -33,7 +33,10 @@
       "fr": "Questions d'étude",
       "es": "Preguntas de estudio",
       "id": "Pertanyaan-pertanyaan Studi"
+    },
+    "name_is_taken": {
+      "en": "The name is already taken",
+      "es": "El nombre ya está en uso"
     }
-    
   }
 }
