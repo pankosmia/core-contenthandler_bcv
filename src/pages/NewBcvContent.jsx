@@ -18,6 +18,7 @@ import {
   DialogActions,
   Box,
   DialogContent,
+  Tooltip
 } from "@mui/material";
 
 import { enqueueSnackbar } from "notistack";
@@ -58,6 +59,20 @@ export default function NewBcvContent() {
   const resourceFormat = params.get("resourceType");
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [localRepos, setLocalRepos] = useState([]);
+  const [repoExists, setRepoExists] = useState(false);
+
+  useEffect(
+    () => {
+        if (openModal){
+            getAndSetJson({
+                url: "/git/list-local-repos",
+                setter: setLocalRepos
+            }).then()  
+        }  
+    },
+    [openModal]
+  );
   
   const handleClose = () => {
     const url = window.location.search;
@@ -229,15 +244,26 @@ export default function NewBcvContent() {
               setContentName(event.target.value);
             }}
           />
-          <TextField
-            id="abbr"
-            required
-            label={doI18n("pages:content:abbreviation", i18nRef.current)}
-            value={contentAbbr}
-            onChange={(event) => {
-              setContentAbbr(event.target.value);
-            }}
-          />
+          <Tooltip 
+            open={repoExists} 
+            slotProps={{popper: {modifiers: [{name: 'offset', options: {offset: [0, -7]}}]}}}
+            title={doI18n("pages:core-contenthandler_bcv:name_is_taken", i18nRef.current)} placement="top-start"
+          >
+            <TextField
+              id="abbr"
+              required
+              label={doI18n("pages:content:abbreviation", i18nRef.current)}
+              value={contentAbbr}
+              onChange={(event) => {
+                if (localRepos.map(l => l.split("/")[2]).includes(event.target.value)){
+                  setRepoExists(true);
+                } else {
+                    setRepoExists(false);
+                }
+                setContentAbbr(event.target.value);
+              }}
+            />
+          </Tooltip>
           <TextField
             id="type"
             required
@@ -434,6 +460,8 @@ export default function NewBcvContent() {
                     bookTitle.trim().length > 0 &&
                     bookAbbr.trim().length > 0))
               )
+              ||
+              repoExists
             }
             onClick={handleCreate}
           >
