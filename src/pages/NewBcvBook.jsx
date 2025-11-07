@@ -27,6 +27,7 @@ import {
     doI18n,
     getJson,
     Header,
+    getAndSetJson,
 } from "pithekos-lib";
 import sx from "./Selection.styles";
 import ListMenuItem from "./ListMenuItem";
@@ -45,6 +46,9 @@ export default function NewBcvBook() {
     const [bookName, setBookName] = useState([]);
     const [errorDialogOpen, setErrorDialogOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [versification, setVersification] = useState("eng");
+    const [versificationCodes, setVersificationCodes] = useState([]);
+    const [fileVrs, setFileVrs] = useState(false);
 
     const getProjectSummaries = async () => {
         const hash = window.location.hash;
@@ -61,13 +65,41 @@ export default function NewBcvBook() {
             console.error(" Erreur lors de la récupération des données.");
         }
     };
+
+    const getProjectFiles = async () => {
+        const hash = window.location.hash;
+        const query = hash.includes('?') ? hash.split('?')[1] : '';
+        const params = new URLSearchParams(query);
+        const path = params.get('repoPath');
+        const filesResponse = await getJson(`/burrito/paths/${path}`, debugContext.current);
+        if (filesResponse.ok) {
+            const data = await filesResponse.json;
+            if (data.includes("vrs.json")) {
+                setFileVrs(true);
+            }
+        } else {
+            console.error(`${doI18n("pages:core-contenthandler_text_translation:error_data", i18nRef.current)}`);
+        }
+
+    };
+
     useEffect(
         () => {
             getProjectSummaries();
+            getProjectFiles();
         },
         []
     );
-
+    useEffect(() => {
+        if (open) {
+            getAndSetJson({
+                url: "/content-utils/versifications",
+                setter: setVersificationCodes
+            }).then()
+        }
+    },
+        [open]
+    );
     useEffect(() => {
         const doFetch = async () => {
             const versificationResponse = await getJson(
@@ -81,6 +113,7 @@ export default function NewBcvBook() {
             setBookCode("");
             setBookTitle("");
             setBookAbbr("");
+            setVersification("eng");
         };
         if (open) {
             doFetch().then();
@@ -110,6 +143,7 @@ export default function NewBcvBook() {
             book_code: bookCode,
             book_title: bookTitle,
             book_abbr: bookAbbr,
+            ...(fileVrs === false ? { vrs_name: versification } : {}),
         };
         const response = await postJson(
             `/git/new-bcv-book/${repoPath}`,
@@ -185,6 +219,39 @@ export default function NewBcvBook() {
                     {doI18n(`pages:content:required_field`, i18nRef.current)}
                 </Typography>
                 <Stack spacing={2} sx={{ m: 2 }}>
+                    {fileVrs === false ? (
+                        <FormControl>
+                            <InputLabel id="booksVersification-label" required htmlFor="booksVersification"
+                                sx={sx.inputLabel}>
+                                {doI18n("pages:content:versification_scheme", i18nRef.current)}
+                            </InputLabel>
+                            <Select
+                                variant="outlined"
+                                required
+                                labelId="booksVersification-label"
+                                name="booksVersification"
+                                inputProps={{
+                                    id: "bookVersification",
+                                }}
+                                value={versification}
+                                label={doI18n("pages:content:versification_scheme", i18nRef.current)}
+                                onChange={(event) => {
+                                    setVersification(event.target.value);
+                                }}
+                                sx={sx.select}
+                            >
+                                {
+                                    versificationCodes.map((listItem, n) => <MenuItem key={n} value={listItem}
+                                        dense>
+                                        <ListMenuItem
+                                            listItem={`${listItem.toUpperCase()} - ${doI18n(`scripture:versifications:${listItem}`, i18nRef.current)}`}
+                                        />
+                                    </MenuItem>
+                                    )
+                                }
+                            </Select>
+                        </FormControl>
+                    ) : null}
                     <Grid2
                         container
                         spacing={2}
