@@ -109,11 +109,9 @@ export default function NewBcvBook() {
         const payload = {
             book_code: bookCode,
             book_title: bookTitle,
-            book_abbr: bookAbbr,
-            add_cv: addCV,
-        };
+            book_abbr: bookAbbr};
         const response = await postJson(
-            `/git/new-bcv-book/${repoPath}`,
+            `/git/new-bcv-resource-book/${repoPath}`,
             JSON.stringify(payload),
             debugRef.current
         );
