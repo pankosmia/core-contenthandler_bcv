@@ -146,7 +146,7 @@ export default function NewBcvBook() {
             ...(fileVrs === false ? { vrs_name: versification } : {}),
         };
         const response = await postJson(
-            `/git/new-bcv-book/${repoPath}`,
+            `/git/new-bcv-resource-book/${repoPath}`,
             JSON.stringify(payload),
             debugRef.current
         );
