@@ -1,7 +1,6 @@
 import { useContext, useState, useCallback, useEffect } from "react";
-import { Button, Chip, Grid2 } from "@mui/material";
+import { Grid2 } from "@mui/material";
 import { i18nContext, doI18n } from "pithekos-lib";
-import { useNavigate } from "react-router-dom";
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
     window.innerHeight - 64
@@ -10,7 +9,6 @@ function App() {
     setMaxWindowHeight(window.innerHeight - 64);
   }, []);
   const { i18nRef } = useContext(i18nContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     window.addEventListener("resize", handleWindowResize);
