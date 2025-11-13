@@ -47,8 +47,6 @@ export default function NewBcvContent() {
   const [bookAbbr, setBookAbbr] = useState("Ti");
   const [postCount, setPostCount] = useState(0);
   const [versification, setVersification] = useState("eng");
-  const [resourceFormatLabel, setResourceFormatLabel] = useState();
-  const [resourceFormatOption, setResourceFormatOption] = useState([]);
   const [versificationCodes, setVersificationCodes] = useState([]);
   const [bookCodes, setBookCodes] = useState([]);
   const [protestantOnly, setProtestantOnly] = useState(true);
@@ -98,24 +96,6 @@ export default function NewBcvContent() {
         url: "/content-utils/versifications",
         setter: setVersificationCodes,
       }).then();
-    }
-  }, [openModal]);
-
-  const fetchFormat = async () => {
-    try {
-      const resourceFormatresponse = await getJson(
-        "/app-resources/tsv/templates.json"
-      );
-      setResourceFormatOption(Object.keys(resourceFormatresponse.json));
-      setResourceFormatLabel(resourceFormatresponse.json);
-    } catch (error) {
-      console.error("Erreur lors de la récupération des ressources", error);
-    }
-  };
-
-  useEffect(() => {
-    if (openModal === true) {
-      fetchFormat();
     }
   }, [openModal]);
 
