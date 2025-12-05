@@ -22,7 +22,7 @@
         "url": "/clients/core-contenthandler_bcv#/newBook?repoPath=%%repoInfo.path%%"
       }
     ]
-  },
+  }},
   "i18n": {
     "title": {
       "en": "core-contenthandler_bcv"
