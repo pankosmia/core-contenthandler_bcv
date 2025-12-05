@@ -6,6 +6,23 @@
     "net": false,
     "debug":false
   },
+  "endpoints":{
+      "x-bcvnotes": {
+    "create_document": [
+      {
+        "doc":"Create document translationNotes for bcv",
+        "label": "pages:content:create_content_tn",
+        "url": "/clients/core-contenthandler_bcv#/createDocument/bookChapterVerse?resourceType=tn"
+      }
+    ],
+    "new_book": [
+      {
+        "doc":"Add a book to a translationNotes document",
+        "label": "pages:content:new_book",
+        "url": "/clients/core-contenthandler_bcv#/newBook?repoPath=%%repoInfo.path%%"
+      }
+    ]
+  },
   "i18n": {
     "title": {
       "en": "core-contenthandler_bcv"
