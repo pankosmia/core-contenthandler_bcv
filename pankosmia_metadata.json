@@ -19,7 +19,7 @@
         {
           "doc": "Add a book to a translationNotes document",
           "label": "pages:content:new_book",
-          "url": "/clients/core-contenthandler_bcv#/newBook?repoPath=%%repoInfo.path%%"
+          "url": "/clients/core-contenthandler_bcv#/newBook?repoPath=%%REPO_PATH%%"
         }
       ]
     },
@@ -37,7 +37,7 @@
       "new_book": [
         {
           "label": "pages:content:new_book",
-          "url": "/clients/core-contenthandler_bcv#/newBook?repoPath=%%repoInfo.path%%"
+          "url": "/clients/core-contenthandler_bcv#/newBook?repoPath=%%REPO_PATH%%"
         }
       ]
     }
