@@ -12,11 +12,11 @@ const router = createHashRouter([
         element:<App/>
     },
     {
-        path: "bookChapterVerse",
+        path: "/createDocument/bookChapterVerse",
         element: <NewBcvContent/>
     },
     {
-        path:"NewBcvBook",
+        path:"newBook",
         element:<NewBcvBook/>
     }
 ]);
