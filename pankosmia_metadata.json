@@ -53,25 +53,26 @@
       "en": "Content goes here"
     },
     "create_content_tn": {
-      "en": "New Translation Notes",
+      "en": "Translation Notes",
       "fr": "Notes de traduction",
       "es": "Notas de traducción",
       "id": "Catatan buat Terjemahan"
     },
     "create_content_tq": {
-      "en": "New Translation Questions",
+      "en": "Translation Questions",
       "fr": "Questions de traduction",
       "es": "Preguntas de traducción",
       "id": "Pertanyaan buat Terjemahan"
     },
     "create_content_sq": {
-      "en": "New Study Questions",
+      "en": "Study Questions",
       "fr": "Questions d'étude",
       "es": "Preguntas de estudio",
       "id": "Pertanyaan-pertanyaan Studi"
     },
     "name_is_taken": {
       "en": "The name is already taken",
+      "fr": "Ce nom est déjà pris",
       "es": "El nombre ya está en uso"
     }
   }
