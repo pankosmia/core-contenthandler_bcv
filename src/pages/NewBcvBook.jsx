@@ -18,6 +18,7 @@ import {
     DialogActions,
     Box,
     DialogContent,
+    DialogContentText,
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import {
@@ -31,6 +32,7 @@ import {
 } from "pithekos-lib";
 import sx from "./Selection.styles";
 import ListMenuItem from "./ListMenuItem";
+import { PanDialog, PanDialogActions } from "pankosmia-rcl";
 
 export default function NewBcvBook() {
 
@@ -49,6 +51,7 @@ export default function NewBcvBook() {
     const [versification, setVersification] = useState("eng");
     const [versificationCodes, setVersificationCodes] = useState([]);
     const [fileVrs, setFileVrs] = useState(false);
+    const [nameProject, setNameProject] = useState("");
 
     const getProjectSummaries = async () => {
         const hash = window.location.hash;
@@ -60,9 +63,10 @@ export default function NewBcvBook() {
         if (summariesResponse.ok) {
             const data = summariesResponse.json;
             const bookCode = data.book_codes;
+            setNameProject(data.name);
             setBookName(bookCode);
         } else {
-            console.error(" Erreur lors de la récupération des données.");
+            console.error(`${doI18n("pages:core-contenthandler_bcv:error_data", i18nRef.current)}`);
         }
     };
 
@@ -78,7 +82,7 @@ export default function NewBcvBook() {
                 setFileVrs(true);
             }
         } else {
-            console.error(`${doI18n("pages:core-contenthandler_text_translation:error_data", i18nRef.current)}`);
+            console.error(`${doI18n("pages:core-contenthandler_bcv:error_data", i18nRef.current)}`);
         }
 
     };
@@ -151,12 +155,12 @@ export default function NewBcvBook() {
             debugRef.current
         );
         if (response.ok) {
-            enqueueSnackbar(doI18n("pages:content:book_created", i18nRef.current), {
+            enqueueSnackbar(doI18n("pages:core-contenthandler_bcv:book_created", i18nRef.current), {
                 variant: "success",
             });
             handleCloseCreate();
         } else {
-            setErrorMessage(`${doI18n("pages:content:book_creation_error", i18nRef.current)}: ${response.status
+            setErrorMessage(`${doI18n("pages:core-contenthandler_bcv:book_creation_error", i18nRef.current)}: ${response.status
                 }`);
             setErrorDialogOpen(true);
         }
@@ -187,72 +191,55 @@ export default function NewBcvBook() {
                 currentId="content"
                 requireNet={false}
             />
-            <Dialog
-                fullWidth={true}
-                open={open}
-                onClose={handleClose}
-                sx={{
-                    backdropFilter: "blur(3px)",
-                }}
+            <PanDialog
+                titleLabel={`${doI18n("pages:core-contenthandler_bcv:new_book", i18nRef.current)} - ${nameProject}`}
+                isOpen={open}
+                closeFn={() => handleClose()}
             >
-                <AppBar
-                    color="secondary"
-                    sx={{
-                        position: "relative",
-                        borderTopLeftRadius: 4,
-                        borderTopRightRadius: 4,
-                    }}
-                >
-                    <Toolbar>
-                        <Typography variant="h6" component="div">
-                            {doI18n("pages:content:new_book", i18nRef.current)}
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Typography variant="subtitle2" sx={{ ml: 1, p: 1 }}>
-                    {" "}
-                    {doI18n(`pages:content:required_field`, i18nRef.current)}
-                </Typography>
+                <DialogContentText variant="subtitle2" sx={{ ml: 1, p: 1 }}>
+                    {doI18n(`pages:core-contenthandler_bcv:required_field`, i18nRef.current)}
+                </DialogContentText>
                 <Stack spacing={2} sx={{ m: 2 }}>
-                    {fileVrs === false ? (
-                        <FormControl>
-                            <InputLabel id="booksVersification-label" required htmlFor="booksVersification"
-                                sx={sx.inputLabel}>
-                                {doI18n("pages:content:versification_scheme", i18nRef.current)}
-                            </InputLabel>
-                            <Select
-                                variant="outlined"
-                                required
-                                labelId="booksVersification-label"
-                                name="booksVersification"
-                                inputProps={{
-                                    id: "bookVersification",
-                                }}
-                                value={versification}
-                                label={doI18n("pages:content:versification_scheme", i18nRef.current)}
-                                onChange={(event) => {
-                                    setVersification(event.target.value);
-                                }}
-                                sx={sx.select}
-                            >
-                                {
-                                    versificationCodes.map((listItem, n) => <MenuItem key={n} value={listItem}
-                                        dense>
-                                        <ListMenuItem
-                                            listItem={`${listItem.toUpperCase()} - ${doI18n(`scripture:versifications:${listItem}`, i18nRef.current)}`}
-                                        />
-                                    </MenuItem>
-                                    )
-                                }
-                            </Select>
-                        </FormControl>
-                    ) : null}
                     <Grid2
                         container
                         spacing={2}
                         justifyItems="flex-end"
                         alignItems="stretch"
                     >
+                        {fileVrs === false ? (
+                            <FormControl>
+                                <InputLabel id="booksVersification-label" required htmlFor="booksVersification"
+                                    sx={sx.inputLabel}>
+                                    {doI18n("pages:core-contenthandler_bcv:versification_scheme", i18nRef.current)}
+                                </InputLabel>
+                                <Select
+                                    variant="outlined"
+                                    required
+                                    labelId="booksVersification-label"
+                                    name="booksVersification"
+                                    inputProps={{
+                                        id: "bookVersification",
+                                    }}
+                                    value={versification}
+                                    label={doI18n("pages:core-contenthandler_bcv:versification_scheme", i18nRef.current)}
+                                    onChange={(event) => {
+                                        setVersification(event.target.value);
+                                    }}
+                                    sx={sx.select}
+                                >
+                                    {
+                                        versificationCodes.map((listItem, n) => <MenuItem key={n} value={listItem}
+                                            dense>
+                                            <ListMenuItem
+                                                listItem={`${listItem.toUpperCase()} - ${doI18n(`scripture:versifications:${listItem}`, i18nRef.current)}`}
+                                            />
+                                        </MenuItem>
+                                        )
+                                    }
+                                </Select>
+                            </FormControl>
+                        ) : null}
+
                         <Grid2 item size={4}>
                             <FormControl sx={{ width: "100%" }}>
                                 <InputLabel
@@ -261,7 +248,7 @@ export default function NewBcvBook() {
                                     htmlFor="bookCode"
                                     sx={sx.inputLabel}
                                 >
-                                    {doI18n("pages:content:book_code", i18nRef.current)}
+                                    {doI18n("pages:core-contenthandler_bcv:book_code", i18nRef.current)}
                                 </InputLabel>
                                 <Select
                                     variant="outlined"
@@ -272,7 +259,7 @@ export default function NewBcvBook() {
                                         id: "bookCode",
                                     }}
                                     value={bookCode}
-                                    label={doI18n("pages:content:book_code", i18nRef.current)}
+                                    label={doI18n("pages:core-contenthandler_bcv:book_code", i18nRef.current)}
                                     onChange={(event) => {
                                         setBookCode(event.target.value);
                                         setBookAbbr(
@@ -316,7 +303,7 @@ export default function NewBcvBook() {
                                 id="bookAbbr"
                                 required
                                 sx={{ width: "100%" }}
-                                label={doI18n("pages:content:book_abbr", i18nRef.current)}
+                                label={doI18n("pages:core-contenthandler_bcv:book_abbr", i18nRef.current)}
                                 value={bookAbbr}
                                 onChange={(event) => {
                                     setBookAbbr(event.target.value);
@@ -328,51 +315,45 @@ export default function NewBcvBook() {
                                 id="bookTitle"
                                 required
                                 sx={{ width: "100%" }}
-                                label={doI18n("pages:content:book_title", i18nRef.current)}
+                                label={doI18n("pages:core-contenthandler_bcv:book_title", i18nRef.current)}
                                 value={bookTitle}
                                 onChange={(event) => {
                                     setBookTitle(event.target.value);
                                 }}
                             />
                         </Grid2>
+                        <FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        color="secondary"
+                                        checked={protestantOnly}
+                                        onChange={() => setProtestantOnly(!protestantOnly)}
+                                    />
+                                }
+                                label={doI18n(
+                                    "pages:core-contenthandler_bcv:protestant_books_only",
+                                    i18nRef.current
+                                )}
+                            />
+                        </FormGroup>
                     </Grid2>
-                    <FormGroup>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    color="secondary"
-                                    checked={protestantOnly}
-                                    onChange={() => setProtestantOnly(!protestantOnly)}
-                                />
-                            }
-                            label={doI18n(
-                                "pages:content:protestant_books_only",
-                                i18nRef.current
-                            )}
-                        />
-                    </FormGroup>
                 </Stack>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        {doI18n("pages:content:close", i18nRef.current)}
-                    </Button>
-                    <Button
-                        autoFocus
-                        variant="contained"
-                        color="primary"
-                        disabled={
-                            !(
-                                bookCode.trim().length === 3 &&
-                                bookTitle.trim().length > 0 &&
-                                bookAbbr.trim().length > 0
-                            )
-                        }
-                        onClick={handleCreate}
-                    >
-                        {doI18n("pages:content:create", i18nRef.current)}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                <PanDialogActions
+                    closeFn={() => handleClose()}
+                    closeLabel={doI18n("pages:core-contenthandler_bcv:close", i18nRef.current)}
+                    actionFn={handleCreate}
+                    actionLabel={doI18n("pages:core-contenthandler_bcv:create", i18nRef.current)}
+                    isDisabled={
+                        !(
+                            bookCode.trim().length === 3 &&
+                            bookTitle.trim().length > 0 &&
+                            bookAbbr.trim().length > 0
+                        )
+                    }
+                />
+
+            </PanDialog>
             {/* Error Dialog */}
             <Dialog open={errorDialogOpen} onClose={handleCloseErrorDialog}>
                 <DialogContent>
@@ -380,7 +361,7 @@ export default function NewBcvBook() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseErrorDialog} variant="contained" color="primary">
-                        {doI18n("pages:content:close", i18nRef.current)}
+                        {doI18n("pages:core-contenthandler_bcv:close", i18nRef.current)}
                     </Button>
                 </DialogActions>
             </Dialog>

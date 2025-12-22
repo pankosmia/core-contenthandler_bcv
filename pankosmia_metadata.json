@@ -53,27 +53,114 @@
       "en": "Content goes here"
     },
     "create_content_tn": {
-      "en": "Translation Notes",
+      "en": "New Translation Notes",
       "fr": "Notes de traduction",
       "es": "Notas de traducción",
       "id": "Catatan buat Terjemahan"
     },
     "create_content_tq": {
-      "en": "Translation Questions",
+      "en": "New Translation Questions",
       "fr": "Questions de traduction",
       "es": "Preguntas de traducción",
       "id": "Pertanyaan buat Terjemahan"
     },
     "create_content_sq": {
-      "en": "Study Questions",
+      "en": "New Study Questions",
       "fr": "Questions d'étude",
       "es": "Preguntas de estudio",
       "id": "Pertanyaan-pertanyaan Studi"
     },
     "name_is_taken": {
       "en": "The name is already taken",
-      "fr": "Ce nom est déjà pris",
       "es": "El nombre ya está en uso"
+    },
+    "error_data":{
+      "en":"Error fetching data",
+      "fr":"Erreur lors de la récupération des données"
+    },
+    "new_book": {
+      "en": "New Book",
+      "fr": "Nouveau livre",
+      "id": "Buku Baru",
+      "es": "Nuevo libro"
+    },
+    "required_field": {
+      "en": "* Required fields",
+      "fr": "* Champs obligatoires",
+      "id": "* Data yg diperlukan",
+      "es": "* Campos requeridos"
+    },
+    "versification_scheme": {
+      "en": "Versification scheme",
+      "fr": "Schéma de versification",
+      "id": "Skema ayat",
+      "es": "Esquema de versificación"
+    },
+    "book_code": {
+      "en": "Book Code",
+      "fr": "Code du livre",
+      "es": "Código del libro",
+      "id": "Kode Buku"
+    },
+    "book_abbr": {
+      "en": "Book Abbreviation",
+      "fr": "Abréviation du livre",
+      "id": "Singkatan Buku",
+      "es": "Abreviación del libro"
+    },
+    "book_title": {
+      "en": "Book Title",
+      "fr": "Titre du livre",
+      "es": "Título del libro",
+      "id": "Judul Utama Buku"
+    },
+    "add_book_checkbox": {
+      "en": "Add a Bible book",
+      "fr": "Ajouter un livre biblique",
+      "es": "Agregar un libro bíblico",
+      "id": "Tambah Buku Kitab Suci"
+    },
+    "close": {
+      "en": "Close",
+      "es": "Cerrar",
+      "fr": "Fermer",
+      "id": "Tutup"
+    },
+    "protestant_books_only": {
+      "en": "List protestant books only",
+      "fr": "Lister uniquement les livres protestants",
+      "id": "Cantum hanya buku Protestan",
+      "es": "Listar únicamente los libros protestantes"
+    },
+    "create": {
+      "en": "Create",
+      "es": "Crear",
+      "fr": "Créer",
+      "id": "Buat"
+    },
+    "name": {
+      "en": "Document name",
+      "es": "@Nombre",
+      "fr": "Nom du document",
+      "id": "@Nama"
+    },
+    "abbreviation": {
+      "en": "Abbreviation",
+      "es": "Abreviación",
+      "fr": "Abréviation",
+      "id": "Singkatan"
+    },
+    "type": {
+      "en": "Type",
+      "es": "Tipo",
+      "fr": "Type",
+      "id": "Jenis"
+    },
+    "lang_code": {
+      "en": "Language Code ('und' for undetermined)",
+      "es": "Código del Idioma (si no está determinado, use 'und')",
+      "fr": "Code Langue (si non déterminé, utilisez 'und')",
+      "id": "Kode Bahasa ('und' buat yg tak dpt ditentukan)"
     }
   }
 }
