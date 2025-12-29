@@ -1,15 +1,12 @@
 import { useState, useContext, useEffect } from "react";
 import {
-  AppBar,
   Button,
   Checkbox,
   Dialog,
   FormControl,
   FormControlLabel,
   FormGroup,
-  Stack,
   TextField,
-  Toolbar,
   Typography,
   Select,
   MenuItem,
@@ -18,7 +15,8 @@ import {
   DialogActions,
   Box,
   DialogContent,
-  Tooltip
+  Tooltip,
+  DialogContentText
 } from "@mui/material";
 
 import { enqueueSnackbar } from "notistack";
@@ -33,6 +31,7 @@ import {
 } from "pithekos-lib";
 import sx from "./Selection.styles";
 import ListMenuItem from "./ListMenuItem";
+import { PanDialog, PanDialogActions } from "pankosmia-rcl";
 
 export default function NewBcvContent() {
   const { i18nRef } = useContext(i18nContext);
@@ -62,16 +61,16 @@ export default function NewBcvContent() {
 
   useEffect(
     () => {
-        if (openModal){
-            getAndSetJson({
-                url: "/git/list-local-repos",
-                setter: setLocalRepos
-            }).then()  
-        }  
+      if (openModal) {
+        getAndSetJson({
+          url: "/git/list-local-repos",
+          setter: setLocalRepos
+        }).then()
+      }
     },
     [openModal]
   );
-  
+
   const handleClose = () => {
     const url = window.location.search;
     const params = new URLSearchParams(url);
@@ -180,124 +179,112 @@ export default function NewBcvContent() {
         currentId="content"
         requireNet={false}
       />
-      <Dialog
-        fullWidth={true}
-        open={openModal}
-        onClose={handleClose}
-        sx={{
-          backdropFilter: "blur(3px)",
-        }}
+
+      <PanDialog
+        titleLabel={doI18n(`pages:core-contenthandler_bcv:create_content_${resourceFormat}`, i18nRef.current)}
+        isOpen={openModal}
+        closeFn={() => handleClose()}
       >
-        <AppBar
-          color="secondary"
-          sx={{
-            position: "relative",
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-          }}
-        >
-          <Toolbar>
-            <Typography variant="h6" component="div">
-              {doI18n(
-                `pages:core-contenthandler_bcv:create_content_${resourceFormat}`,
-                i18nRef.current
-              )}
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Typography variant="subtitle2" sx={{ ml: 1, p: 1 }}>
-          {" "}
-          {doI18n(`pages:content:required_field`, i18nRef.current)}
-        </Typography>
-        <Stack spacing={2} sx={{ m: 2 }}>
-          <TextField
-            id="name"
-            required
-            label={doI18n("pages:content:name", i18nRef.current)}
-            value={contentName}
-            onChange={(event) => {
-              setContentName(event.target.value);
-            }}
-          />
-          <Tooltip 
-            open={repoExists} 
-            slotProps={{popper: {modifiers: [{name: 'offset', options: {offset: [0, -7]}}]}}}
-            title={doI18n("pages:core-contenthandler_bcv:name_is_taken", i18nRef.current)} placement="top-start"
+        <DialogContentText sx={{ ml: 1, p: 1 }} variant='subtitle2'>
+          {doI18n(`pages:core-contenthandler_text_translation:required_field`, i18nRef.current)}
+        </DialogContentText>
+        <DialogContent>
+          <Grid2
+            container
+            spacing={2}
+            justifyItems="flex-end"
+            alignItems="stretch"
+            flexDirection={"column"}
           >
             <TextField
-              id="abbr"
+              id="name"
               required
-              label={doI18n("pages:content:abbreviation", i18nRef.current)}
-              value={contentAbbr}
+              label={doI18n("pages:core-contenthandler_bcv:name", i18nRef.current)}
+              value={contentName}
               onChange={(event) => {
-                if (localRepos.map(l => l.split("/")[2]).includes(event.target.value)){
-                  setRepoExists(true);
-                } else {
-                    setRepoExists(false);
-                }
-                setContentAbbr(event.target.value);
+                setContentName(event.target.value);
               }}
             />
-          </Tooltip>
-          <TextField
-            id="type"
-            required
-            disabled={true}
-            sx={{ display: "none" }}
-            label={doI18n("pages:content:type", i18nRef.current)}
-            value={contentType}
-            onChange={(event) => {
-              setContentType(event.target.value);
-            }}
-          />
-          <TextField
-            id="languageCode"
-            required
-            label={doI18n("pages:content:lang_code", i18nRef.current)}
-            value={contentLanguageCode}
-            onChange={(event) => {
-              setContentLanguageCode(event.target.value);
-            }}
-          />
-          <FormControl>
-            <InputLabel
-              id="booksVersification-label"
-              required
-              htmlFor="booksVersification"
-              sx={sx.inputLabel}
+            <Tooltip
+              open={repoExists}
+              slotProps={{ popper: { modifiers: [{ name: 'offset', options: { offset: [0, -7] } }] } }}
+              title={doI18n("pages:core-contenthandler_bcv:name_is_taken", i18nRef.current)} placement="top-start"
             >
-              {doI18n("pages:content:versification_scheme", i18nRef.current)}
-            </InputLabel>
-            <Select
-              variant="outlined"
+              <TextField
+                id="abbr"
+                required
+                label={doI18n("pages:core-contenthandler_bcv:abbreviation", i18nRef.current)}
+                value={contentAbbr}
+                onChange={(event) => {
+                  if (localRepos.map(l => l.split("/")[2]).includes(event.target.value)) {
+                    setRepoExists(true);
+                  } else {
+                    setRepoExists(false);
+                  }
+                  setContentAbbr(event.target.value);
+                }}
+              />
+            </Tooltip>
+            <TextField
+              id="type"
               required
-              labelId="booksVersification-label"
-              name="booksVersification"
-              inputProps={{
-                id: "bookVersification",
-              }}
-              value={versification}
-              label={doI18n(
-                "pages:content:versification_scheme",
-                i18nRef.current
-              )}
+              disabled={true}
+              sx={{ display: "none" }}
+              label={doI18n("pages:core-contenthandler_bcv:type", i18nRef.current)}
+              value={contentType}
               onChange={(event) => {
-                setVersification(event.target.value);
+                setContentType(event.target.value);
               }}
-              sx={sx.select}
-            >
-              {versificationCodes.map((listItem, n) => (
-                <MenuItem key={n} value={listItem} dense>
-                  <ListMenuItem
-                    listItem={`${listItem.toUpperCase()} - ${doI18n(
-                      `scripture:versifications:${listItem}`,
-                      i18nRef.current
-                    )}`}
-                  />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+            />
+            <TextField
+              id="languageCode"
+              required
+              label={doI18n("pages:core-contenthandler_bcv:lang_code", i18nRef.current)}
+              value={contentLanguageCode}
+              onChange={(event) => {
+                setContentLanguageCode(event.target.value);
+              }}
+            />
+            <FormControl sx={{width:"100%"}}>
+              <InputLabel
+                id="booksVersification-label"
+                required
+                htmlFor="booksVersification"
+                sx={sx.inputLabel}
+              >
+                {doI18n("pages:core-contenthandler_bcv:versification_scheme", i18nRef.current)}
+              </InputLabel>
+              <Select
+                variant="outlined"
+                required
+                labelId="booksVersification-label"
+                name="booksVersification"
+                inputProps={{
+                  id: "bookVersification",
+                }}
+                value={versification}
+                label={doI18n(
+                  "pages:core-contenthandler_bcv:versification_scheme",
+                  i18nRef.current
+                )}
+                onChange={(event) => {
+                  setVersification(event.target.value);
+                }}
+                sx={sx.select}
+              >
+                {versificationCodes.map((listItem, n) => (
+                  <MenuItem key={n} value={listItem} dense>
+                    <ListMenuItem
+                      listItem={`${listItem.toUpperCase()} - ${doI18n(
+                        `scripture:versifications:${listItem}`,
+                        i18nRef.current
+                      )}`}
+                    />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid2>
           <FormGroup>
             <FormControlLabel
               control={
@@ -307,7 +294,7 @@ export default function NewBcvContent() {
                   onChange={() => setShowBookFields(!showBookFields)}
                 />
               }
-              label={doI18n("pages:content:add_book_checkbox", i18nRef.current)}
+              label={doI18n("pages:core-contenthandler_bcv:add_book_checkbox", i18nRef.current)}
             />
           </FormGroup>
           {showBookFields && (
@@ -326,7 +313,7 @@ export default function NewBcvContent() {
                       htmlFor="bookCode"
                       sx={sx.inputLabel}
                     >
-                      {doI18n("pages:content:book_code", i18nRef.current)}
+                      {doI18n("pages:core-contenthandler_bcv:book_code", i18nRef.current)}
                     </InputLabel>
                     <Select
                       variant="outlined"
@@ -337,7 +324,7 @@ export default function NewBcvContent() {
                         id: "bookCode",
                       }}
                       value={bookCode}
-                      label={doI18n("pages:content:book_code", i18nRef.current)}
+                      label={doI18n("pages:core-contenthandler_bcv:book_code", i18nRef.current)}
                       onChange={(event) => {
                         setBookCode(event.target.value);
                         setBookAbbr(
@@ -377,7 +364,7 @@ export default function NewBcvContent() {
                     id="bookAbbr"
                     required
                     sx={{ width: "100%" }}
-                    label={doI18n("pages:content:book_abbr", i18nRef.current)}
+                    label={doI18n("pages:core-contenthandler_bcv:book_abbr", i18nRef.current)}
                     value={bookAbbr}
                     onChange={(event) => {
                       setBookAbbr(event.target.value);
@@ -389,7 +376,7 @@ export default function NewBcvContent() {
                     id="bookTitle"
                     required
                     sx={{ width: "100%" }}
-                    label={doI18n("pages:content:book_title", i18nRef.current)}
+                    label={doI18n("pages:core-contenthandler_bcv:book_title", i18nRef.current)}
                     value={bookTitle}
                     onChange={(event) => {
                       setBookTitle(event.target.value);
@@ -406,7 +393,7 @@ export default function NewBcvContent() {
                       />
                     }
                     label={doI18n(
-                      "pages:content:protestant_books_only",
+                      "pages:core-contenthandler_bcv:protestant_books_only",
                       i18nRef.current
                     )}
                   />
@@ -414,36 +401,31 @@ export default function NewBcvContent() {
               </Grid2>
             </>
           )}
-        </Stack>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            {doI18n("pages:content:close", i18nRef.current)}
-          </Button>
-          <Button
-            autoFocus
-            variant="contained"
-            color="primary"
-            disabled={
-              !(
-                contentName.trim().length > 0 &&
-                contentAbbr.trim().length > 0 &&
-                contentType.trim().length > 0 &&
-                contentLanguageCode.trim().length > 0 &&
-                versification.trim().length === 3 &&
-                (!showBookFields ||
-                  (bookCode.trim().length === 3 &&
-                    bookTitle.trim().length > 0 &&
-                    bookAbbr.trim().length > 0))
-              )
-              ||
-              repoExists
-            }
-            onClick={handleCreate}
-          >
-            {doI18n("pages:content:create", i18nRef.current)}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        </DialogContent>
+        <PanDialogActions
+          closeFn={() => handleClose()}
+          closeLabel={doI18n("pages:core-contenthandler_bcv:close", i18nRef.current)}
+          actionFn={handleCreate}
+          actionLabel={doI18n("pages:core-contenthandler_bcv:create", i18nRef.current)}
+
+          isDisabled={
+            !(
+              contentName.trim().length > 0 &&
+              contentAbbr.trim().length > 0 &&
+              contentType.trim().length > 0 &&
+              contentLanguageCode.trim().length > 0 &&
+              versification.trim().length === 3 &&
+              (!showBookFields ||
+                (bookCode.trim().length === 3 &&
+                  bookTitle.trim().length > 0 &&
+                  bookAbbr.trim().length > 0))
+            )
+            ||
+            repoExists
+          }
+        />
+      </PanDialog>
+
       {/* Error Dialog */}
       <Dialog open={errorDialogOpen} onClose={handleCloseErrorDialog}>
         <DialogContent>
@@ -451,7 +433,7 @@ export default function NewBcvContent() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseErrorDialog} variant="contained" color="primary">
-            {doI18n("pages:content:close", i18nRef.current)}
+            {doI18n("pages:core-contenthandler_bcv:close", i18nRef.current)}
           </Button>
         </DialogActions>
       </Dialog>
