@@ -144,12 +144,12 @@ export default function NewBcvContent() {
     if (response.ok) {
       setPostCount(postCount + 1);
       enqueueSnackbar(
-        doI18n("pages:content:content_created", i18nRef.current),
+        doI18n("core-contenthandler_bcvcontent_created", i18nRef.current),
         { variant: "success" }
       );
       handleCloseCreate();
     } else {
-      setErrorMessage(`${doI18n("pages:content:book_creation_error", i18nRef.current)}: ${response.status
+      setErrorMessage(`${doI18n("core-contenthandler_bcvbook_creation_error", i18nRef.current)}: ${response.status
         }`);
       setErrorDialogOpen(true);
     }
@@ -405,6 +405,7 @@ export default function NewBcvContent() {
         <PanDialogActions
           closeFn={() => handleClose()}
           closeLabel={doI18n("pages:core-contenthandler_bcv:close", i18nRef.current)}
+          closeOnAction={false}
           actionFn={handleCreate}
           actionLabel={doI18n("pages:core-contenthandler_bcv:create", i18nRef.current)}
 

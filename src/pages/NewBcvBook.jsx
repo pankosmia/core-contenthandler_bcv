@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from "react";
 import {
-    AppBar,
     Button,
     Checkbox,
     Dialog,
@@ -9,7 +8,6 @@ import {
     FormGroup,
     Stack,
     TextField,
-    Toolbar,
     Typography,
     Select,
     MenuItem,
@@ -343,6 +341,7 @@ export default function NewBcvBook() {
                     closeFn={() => handleClose()}
                     closeLabel={doI18n("pages:core-contenthandler_bcv:close", i18nRef.current)}
                     actionFn={handleCreate}
+                    closeOnAction ={false}
                     actionLabel={doI18n("pages:core-contenthandler_bcv:create", i18nRef.current)}
                     isDisabled={
                         !(
@@ -354,6 +353,7 @@ export default function NewBcvBook() {
                 />
 
             </PanDialog>
+
             {/* Error Dialog */}
             <Dialog open={errorDialogOpen} onClose={handleCloseErrorDialog}>
                 <DialogContent>
