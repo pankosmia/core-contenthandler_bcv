@@ -343,6 +343,7 @@ export default function NewBcvBook() {
                     closeFn={() => handleClose()}
                     closeLabel={doI18n("pages:core-contenthandler_bcv:close", i18nRef.current)}
                     actionFn={handleCreate}
+                    closeOnAction ={false}
                     actionLabel={doI18n("pages:core-contenthandler_bcv:create", i18nRef.current)}
                     isDisabled={
                         !(
@@ -354,6 +355,7 @@ export default function NewBcvBook() {
                 />
 
             </PanDialog>
+
             {/* Error Dialog */}
             <Dialog open={errorDialogOpen} onClose={handleCloseErrorDialog}>
                 <DialogContent>
