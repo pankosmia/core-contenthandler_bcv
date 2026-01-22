@@ -12,7 +12,7 @@
       "create_document": [
         {
           "doc": "Create document translationNotes for bcv",
-          "label": "pages:content:create_content_tn",
+          "label": "pages:core-contenthandler_bcv:create_content_tn",
           "url": "/createDocument/bookChapterVerse?resourceType=tn"
         }
       ],
