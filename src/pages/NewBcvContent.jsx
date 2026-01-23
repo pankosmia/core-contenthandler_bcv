@@ -16,7 +16,8 @@ import {
   Box,
   DialogContent,
   Tooltip,
-  DialogContentText
+  DialogContentText,
+  useTheme
 } from "@mui/material";
 
 import { enqueueSnackbar } from "notistack";
@@ -58,6 +59,7 @@ export default function NewBcvContent() {
   const [errorMessage, setErrorMessage] = useState("");
   const [localRepos, setLocalRepos] = useState([]);
   const [repoExists, setRepoExists] = useState(false);
+  const theme = useTheme();
 
   useEffect(
     () => {
@@ -184,6 +186,7 @@ export default function NewBcvContent() {
         titleLabel={doI18n(`pages:core-contenthandler_bcv:create_content_${resourceFormat}`, i18nRef.current)}
         isOpen={openModal}
         closeFn={() => handleClose()}
+        theme={theme}
       >
         <DialogContentText sx={{ ml: 1, p: 1 }} variant='subtitle2'>
           {doI18n(`pages:core-contenthandler_text_translation:required_field`, i18nRef.current)}
