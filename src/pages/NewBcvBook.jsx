@@ -17,6 +17,7 @@ import {
     Box,
     DialogContent,
     DialogContentText,
+    useTheme,
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import {
@@ -50,6 +51,7 @@ export default function NewBcvBook() {
     const [versificationCodes, setVersificationCodes] = useState([]);
     const [fileVrs, setFileVrs] = useState(false);
     const [nameProject, setNameProject] = useState("");
+    const theme = useTheme();
 
     const getProjectSummaries = async () => {
         const hash = window.location.hash;
@@ -193,6 +195,7 @@ export default function NewBcvBook() {
                 titleLabel={`${doI18n("pages:core-contenthandler_bcv:new_book", i18nRef.current)} - ${nameProject}`}
                 isOpen={open}
                 closeFn={() => handleClose()}
+                theme={theme}
             >
                 <DialogContentText variant="subtitle2" sx={{ ml: 1, p: 1 }}>
                     {doI18n(`pages:core-contenthandler_bcv:required_field`, i18nRef.current)}
