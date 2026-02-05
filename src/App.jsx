@@ -1,6 +1,8 @@
 import { useContext, useState, useCallback, useEffect } from "react";
 import { Grid2 } from "@mui/material";
-import { i18nContext, doI18n } from "pithekos-lib";
+import { doI18n } from "pithekos-lib";
+import { i18nContext } from "pankosmia-rcl";
+
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
     window.innerHeight - 64
