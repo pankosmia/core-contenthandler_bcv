@@ -36,7 +36,6 @@ export default function NewBcvContent() {
   const [contentName, setContentName] = useState("");
   const [contentAbbr, setContentAbbr] = useState("");
   const [contentType, setContentType] = useState("x-bcvnotes");
-  const [contentLanguageCode, setContentLanguageCode] = useState("und");
   const [showBookFields, setShowBookFields] = useState(true);
   const [bookCode, setBookCode] = useState("TIT");
   const [bookTitle, setBookTitle] = useState("Tit");
@@ -183,7 +182,6 @@ export default function NewBcvContent() {
   useEffect(() => {
     setContentName("");
     setContentAbbr("");
-    setContentLanguageCode("und");
     setBookCode("TIT");
     setBookTitle("Titus");
     setBookAbbr("Ti");
@@ -197,7 +195,7 @@ export default function NewBcvContent() {
       content_abbr: contentAbbr,
       tsv_type: resourceFormat,
       content_language_code: currentLanguage.language_code,
-      content_language_name: currentLanguage.language_name,      
+      //content_language_name: currentLanguage.language_name,      
       versification: versification,
       add_book: showBookFields,
       book_code: showBookFields ? bookCode : null,
