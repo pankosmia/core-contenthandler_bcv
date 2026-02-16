@@ -1,13 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import {
-  Button,
-  DialogActions,
   Box,
   DialogContent,
-  DialogContentText,
-  Step,
-  StepLabel,
-  Stepper
 } from "@mui/material";
 
 import { enqueueSnackbar } from "notistack";
@@ -24,7 +18,7 @@ import {
   Header,
 } from "pankosmia-rcl";
 
-import { PanDialog, PanDialogActions } from "pankosmia-rcl";
+import { PanDialog,PanStepperPicker } from "pankosmia-rcl";
 import ErrorDialog from "./NewBcvContent/ErrorDialog";
 import NameDocument from "./NewBcvContent/NameDocument";
 import LanguagePicker from "./NewBcvContent/LanguagePicker";
@@ -56,8 +50,6 @@ export default function NewBcvContent() {
   const [currentLanguage, setCurrentLanguage] = useState({ language_code: "", language_name: "" });
   const [languageIsValid, setLanguageIsValid] = useState(true);
   const [errorAbbreviation, setErrorAbbreviation] = useState(false);
-  const [activeStep, setActiveStep] = useState(0);
-  const [skipped, setSkipped] = useState(new Set());
 
   const steps = [`${doI18n("pages:core-contenthandler_bcv:name_section", i18nRef.current)}`,
   `${doI18n("pages:core-contenthandler_bcv:language", i18nRef.current)}`,
@@ -87,39 +79,15 @@ export default function NewBcvContent() {
       window.location.href = "/clients/content"
     }
   }
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
 
-  const handleNext = async () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-
-    } if (activeStep === steps.length - 1) {
-      try {
-        await handleCreate();
-      } catch (error) {
-        console.error("Erreur création projet", error)
-      }
-      return;
-    }
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
 
   const renderStepContent = (step) => {
     switch (step) {
-      case 1:
+      case 0:
         return <NameDocument contentType={contentType} setContentType={setContentType} repoExists={repoExists} setRepoExists={setRepoExists} contentName={contentName} setContentName={setContentName} contentAbbr={contentAbbr} setContentAbbr={setContentAbbr} errorAbbreviation={errorAbbreviation} setErrorAbbreviation={setErrorAbbreviation} localRepos={localRepos} />
-      case 2:
+      case 1:
         return <LanguagePicker currentLanguage={currentLanguage} setCurrentLanguage={setCurrentLanguage} setIsValid={setLanguageIsValid} />
-      case 3:
+      case 2:
         return <ContentDocument open={openModal} contentOption={contentOption} setContentOption={setContentOption} versification={versification} setVersification={setVersification} bookCode={bookCode} setBookCode={setBookCode} bookAbbr={bookAbbr} bookCodes={bookCodes} setBookAbbr={setBookAbbr} bookTitle={bookTitle} setBookTitle={setBookTitle} />
       default:
         return null;
@@ -247,48 +215,8 @@ export default function NewBcvContent() {
         closeFn={() => handleClose()}
       >
         <DialogContent>
-          <Stepper sx={{ position: "sticky" }} activeStep={activeStep}>
-            {steps.map((label, index) => {
-              const stepProps = {};
-              const labelProps = {};
-              if (isStepSkipped(index)) {
-                stepProps.completed = false;
-              }
-              return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-          {activeStep !== steps.length && (
-            <>
-              <DialogContentText
-                variant='subtitle2'
-                sx={{ paddingBottom: 1 }}
-              >
-                {doI18n(`pages:core-contenthandler_bcv:required_field`, i18nRef.current)}
-              </DialogContentText>
-              {renderStepContent(activeStep + 1)}
-            </>
-          )}
+        <PanStepperPicker steps={steps} renderStepContent={renderStepContent} isStepValid={isStepValid} handleCreate={handleCreate}/>
         </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button
-            color="inherit"
-            disabled={activeStep === 0}
-            onClick={handleBack}
-          >
-            {doI18n("pages:core-contenthandler_bcv:back_button", i18nRef.current)}
-          </Button>
-          <Box sx={{ flex: '1 1 auto' }} />
-          <Button
-            onClick={handleNext}
-            disabled={!isStepValid(activeStep) || repoExists}
-          >
-            {activeStep === steps.length - 1 ? `${doI18n("pages:core-contenthandler_bcv:create", i18nRef.current)}` : `${doI18n("pages:core-contenthandler_bcv:next_button", i18nRef.current)}`}
-          </Button>
-        </DialogActions>
       </PanDialog>
 
       {/* Error Dialog */}
