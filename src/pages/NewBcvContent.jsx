@@ -18,7 +18,7 @@ import {
   Header,
 } from "pankosmia-rcl";
 
-import { PanDialog,PanStepperPicker } from "pankosmia-rcl";
+import { PanDialog, PanStepperPicker } from "pankosmia-rcl";
 import ErrorDialog from "./NewBcvContent/ErrorDialog";
 import NameDocument from "./NewBcvContent/NameDocument";
 import LanguagePicker from "./NewBcvContent/LanguagePicker";
@@ -80,7 +80,6 @@ export default function NewBcvContent() {
     }
   }
 
-
   const renderStepContent = (step) => {
     switch (step) {
       case 0:
@@ -88,7 +87,7 @@ export default function NewBcvContent() {
       case 1:
         return <LanguagePicker currentLanguage={currentLanguage} setCurrentLanguage={setCurrentLanguage} setIsValid={setLanguageIsValid} />
       case 2:
-        return <ContentDocument open={openModal} contentOption={contentOption} setContentOption={setContentOption} versification={versification} setVersification={setVersification} bookCode={bookCode} setBookCode={setBookCode} bookAbbr={bookAbbr} bookCodes={bookCodes} setBookAbbr={setBookAbbr} bookTitle={bookTitle} setBookTitle={setBookTitle} />
+        return <ContentDocument open={openModal} contentOption={contentOption} setContentOption={setContentOption} versification={versification} setVersification={setVersification} bookCode={bookCode} setBookCode={setBookCode} bookAbbr={bookAbbr} bookCodes={bookCodes} setBookAbbr={setBookAbbr} bookTitle={bookTitle} setBookTitle={setBookTitle} addVerset={false} />
       default:
         return null;
     }
@@ -215,7 +214,7 @@ export default function NewBcvContent() {
         closeFn={() => handleClose()}
       >
         <DialogContent>
-        <PanStepperPicker steps={steps} renderStepContent={renderStepContent} isStepValid={isStepValid} handleCreate={handleCreate}/>
+          <PanStepperPicker steps={steps} renderStepContent={renderStepContent} isStepValid={isStepValid} handleCreate={handleCreate} />
         </DialogContent>
       </PanDialog>
 
