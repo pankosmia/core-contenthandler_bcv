@@ -46,6 +46,7 @@ export default function ContentDocument({ open, contentOption, setContentOption,
                         bookCodes={bookCodes}
                         bookTitle={bookTitle}
                         setBookTitle={setBookTitle}
+                        addVerses={false}
                     />
                 </>
             }

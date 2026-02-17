@@ -72,11 +72,16 @@ export default function NewBcvContent() {
     const url = window.location.search;
     const params = new URLSearchParams(url);
     const returnType = params.get("returntypepage");
+    setOpenModal(false);
 
     if (returnType === "dashboard") {
-      window.location.href = "/clients/main"
+      setTimeout(() => {
+        window.location.href = "/clients/main";
+      });
     } else {
-      window.location.href = "/clients/content"
+      setTimeout(() => {
+        window.location.href = "/clients/content";
+      });
     }
   }
 
@@ -122,13 +127,6 @@ export default function NewBcvContent() {
       default:
         return true;
     }
-  };
-
-  const handleCloseCreate = () => {
-    setOpenModal(false);
-    setTimeout(() => {
-      window.location.href = "/clients/content";
-    });
   };
 
   useEffect(() => {
@@ -180,7 +178,7 @@ export default function NewBcvContent() {
         doI18n("pages:core-contenthandler_bcv:content_created", i18nRef.current),
         { variant: "success" }
       );
-      handleCloseCreate();
+      handleClose();
     } else {
       setErrorMessage(`${doI18n("pages:core-contenthandler_bcv:book_creation_error", i18nRef.current)}: ${response.status}`);
       setErrorDialogOpen(true);

@@ -98,18 +98,7 @@ export default function NewBcvBook() {
         }
     }, [open]);
 
-    const handleClose = () => {
-        const url = window.location.search;
-        const params = new URLSearchParams(url);
-        const returnType = params.get("returntypepage");
-        if (returnType === "dashboard") {
-            window.location.href = "/clients/main";
-        } else {
-            window.location.href = "/clients/content";
-        }
-    };
-
-    const handleCloseCreate = async () => {
+    const handleClose = async () => {
         setOpen(false);
         setTimeout(() => {
             window.location.href = '/clients/content';
@@ -132,7 +121,7 @@ export default function NewBcvBook() {
             enqueueSnackbar(doI18n("pages:core-contenthandler_bcv:book_created", i18nRef.current), {
                 variant: "success",
             });
-            handleCloseCreate();
+            handleClose();
         } else {
             setErrorMessage(`${doI18n("pages:core-contenthandler_bcv:book_creation_error", i18nRef.current)}: ${response.status
                 }`);
@@ -189,6 +178,7 @@ export default function NewBcvBook() {
                             bookTitle={bookTitle}
                             setBookTitle={setBookTitle}
                             bookProject={bookName}
+                            addVerses={false}
                         />
                     </Grid2>
                 </DialogContent>
