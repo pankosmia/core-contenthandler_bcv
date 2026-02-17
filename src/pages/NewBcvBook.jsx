@@ -35,12 +35,12 @@ export default function NewBcvBook() {
     const [versification, setVersification] = useState("eng");
     const [fileVrs, setFileVrs] = useState(false);
     const [nameProject, setNameProject] = useState("");
+    const hash = window.location.hash;
+    const query = hash.includes('?') ? hash.split('?')[1] : '';
+    const params = new URLSearchParams(query);
+    const path = params.get('repoPath');
 
     const getProjectSummaries = async () => {
-        const hash = window.location.hash;
-        const query = hash.includes('?') ? hash.split('?')[1] : '';
-        const params = new URLSearchParams(query);
-        const path = params.get('repoPath');
         setRepoPath(path);
         const summariesResponse = await getJson(`/burrito/metadata/summary/${path}`, debugContext.current);
         if (summariesResponse.ok) {
@@ -54,10 +54,6 @@ export default function NewBcvBook() {
     };
 
     const getProjectFiles = async () => {
-        const hash = window.location.hash;
-        const query = hash.includes('?') ? hash.split('?')[1] : '';
-        const params = new URLSearchParams(query);
-        const path = params.get('repoPath');
         const filesResponse = await getJson(`/burrito/paths/${path}`, debugContext.current);
         if (filesResponse.ok) {
             const data = await filesResponse.json;
@@ -67,7 +63,6 @@ export default function NewBcvBook() {
         } else {
             console.error(`${doI18n("pages:core-contenthandler_bcv:error_data", i18nRef.current)}`);
         }
-
     };
 
     useEffect(
@@ -182,8 +177,6 @@ export default function NewBcvBook() {
                         />
                     </Grid2>
                 </DialogContent>
-
-
                 <PanDialogActions
                     closeFn={() => handleClose()}
                     closeLabel={doI18n("pages:core-contenthandler_bcv:close", i18nRef.current)}
@@ -198,11 +191,9 @@ export default function NewBcvBook() {
                         )
                     }
                 />
-
             </PanDialog>
             {/* Error Dialog */}
             <ErrorDialog setErrorDialogOpen={setErrorDialogOpen} handleClose={handleClose} errorDialogOpen={errorDialogOpen} errorMessage={errorMessage} />
-
         </Box>
     );
 }

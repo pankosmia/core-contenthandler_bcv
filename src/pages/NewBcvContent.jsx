@@ -40,8 +40,11 @@ export default function NewBcvContent() {
   const [openModal, setOpenModal] = useState(true);
   const hash = window.location.hash;
   const query = hash.includes("?") ? hash.split("?")[1] : "";
-  const params = new URLSearchParams(query);
-  const resourceFormat = params.get("resourceType");
+  const paramsQuery = new URLSearchParams(query);
+  const resourceFormat = paramsQuery.get("resourceType");
+  const url = window.location.search;
+  const params = new URLSearchParams(url);
+  const returnType = params.get("returntypepage");
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [localRepos, setLocalRepos] = useState([]);
@@ -50,7 +53,7 @@ export default function NewBcvContent() {
   const [currentLanguage, setCurrentLanguage] = useState({ language_code: "", language_name: "" });
   const [languageIsValid, setLanguageIsValid] = useState(true);
   const [errorAbbreviation, setErrorAbbreviation] = useState(false);
-
+  
   const steps = [`${doI18n("pages:core-contenthandler_bcv:name_section", i18nRef.current)}`,
   `${doI18n("pages:core-contenthandler_bcv:language", i18nRef.current)}`,
   `${doI18n("pages:core-contenthandler_bcv:content_section", i18nRef.current)}`
@@ -69,11 +72,7 @@ export default function NewBcvContent() {
   );
 
   const handleClose = () => {
-    const url = window.location.search;
-    const params = new URLSearchParams(url);
-    const returnType = params.get("returntypepage");
     setOpenModal(false);
-
     if (returnType === "dashboard") {
       setTimeout(() => {
         window.location.href = "/clients/main";
@@ -160,7 +159,7 @@ export default function NewBcvContent() {
       content_abbr: contentAbbr,
       tsv_type: resourceFormat,
       content_language_code: currentLanguage.language_code,
-      //content_language_name: currentLanguage.language_name,      
+      //content_language_name: currentLanguage.language_name,
       versification: versification,
       add_book: showBookFields,
       book_code: showBookFields ? bookCode : null,
@@ -201,7 +200,7 @@ export default function NewBcvContent() {
         }}
       />
       <Header
-        titleKey="pages:content:title"
+        titleKey={returnType === "dashboard" ? "pages:core-dashboard:title" : "pages:content:title"}
         currentId="content"
         requireNet={false}
       />
