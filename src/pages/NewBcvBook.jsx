@@ -1,39 +1,23 @@
 import { useState, useContext, useEffect } from "react";
 import {
-    Button,
-    Checkbox,
-    Dialog,
-    FormControl,
-    FormControlLabel,
-    FormGroup,
-    Stack,
-    TextField,
-    Typography,
-    Select,
-    MenuItem,
-    InputLabel,
-    Grid2,
-    DialogActions,
     Box,
     DialogContent,
     DialogContentText,
-    useTheme,
+    Grid2,
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import {
     postJson,
     doI18n,
     getJson,
-    getAndSetJson,
 } from "pithekos-lib";
 import {
     i18nContext,
     debugContext,
     Header,
 } from "pankosmia-rcl";
-import sx from "./Selection.styles";
-import ListMenuItem from "./ListMenuItem";
-import { PanDialog, PanDialogActions } from "pankosmia-rcl";
+import { PanDialog, PanDialogActions, PanVersificationPicker, PanBookPicker } from "pankosmia-rcl";
+import ErrorDialog from "./NewBcvContent/ErrorDialog";
 
 export default function NewBcvBook() {
 
@@ -45,21 +29,18 @@ export default function NewBcvBook() {
     const { i18nRef } = useContext(i18nContext);
     const { debugRef } = useContext(debugContext);
     const [bookCodes, setBookCodes] = useState([]);
-    const [protestantOnly, setProtestantOnly] = useState(true);
     const [bookName, setBookName] = useState([]);
     const [errorDialogOpen, setErrorDialogOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [versification, setVersification] = useState("eng");
-    const [versificationCodes, setVersificationCodes] = useState([]);
     const [fileVrs, setFileVrs] = useState(false);
     const [nameProject, setNameProject] = useState("");
-    const theme = useTheme();
+    const hash = window.location.hash;
+    const query = hash.includes('?') ? hash.split('?')[1] : '';
+    const params = new URLSearchParams(query);
+    const path = params.get('repoPath');
 
     const getProjectSummaries = async () => {
-        const hash = window.location.hash;
-        const query = hash.includes('?') ? hash.split('?')[1] : '';
-        const params = new URLSearchParams(query);
-        const path = params.get('repoPath');
         setRepoPath(path);
         const summariesResponse = await getJson(`/burrito/metadata/summary/${path}`, debugContext.current);
         if (summariesResponse.ok) {
@@ -73,10 +54,6 @@ export default function NewBcvBook() {
     };
 
     const getProjectFiles = async () => {
-        const hash = window.location.hash;
-        const query = hash.includes('?') ? hash.split('?')[1] : '';
-        const params = new URLSearchParams(query);
-        const path = params.get('repoPath');
         const filesResponse = await getJson(`/burrito/paths/${path}`, debugContext.current);
         if (filesResponse.ok) {
             const data = await filesResponse.json;
@@ -86,7 +63,6 @@ export default function NewBcvBook() {
         } else {
             console.error(`${doI18n("pages:core-contenthandler_bcv:error_data", i18nRef.current)}`);
         }
-
     };
 
     useEffect(
@@ -96,16 +72,7 @@ export default function NewBcvBook() {
         },
         []
     );
-    useEffect(() => {
-        if (open) {
-            getAndSetJson({
-                url: "/content-utils/versifications",
-                setter: setVersificationCodes
-            }).then()
-        }
-    },
-        [open]
-    );
+
     useEffect(() => {
         const doFetch = async () => {
             const versificationResponse = await getJson(
@@ -126,18 +93,7 @@ export default function NewBcvBook() {
         }
     }, [open]);
 
-    const handleClose = () => {
-        const url = window.location.search;
-        const params = new URLSearchParams(url);
-        const returnType = params.get("returntypepage");
-        if (returnType === "dashboard") {
-            window.location.href = "/clients/main";
-        } else {
-            window.location.href = "/clients/content";
-        }
-    };
-
-    const handleCloseCreate = async () => {
+    const handleClose = async () => {
         setOpen(false);
         setTimeout(() => {
             window.location.href = '/clients/content';
@@ -160,16 +116,12 @@ export default function NewBcvBook() {
             enqueueSnackbar(doI18n("pages:core-contenthandler_bcv:book_created", i18nRef.current), {
                 variant: "success",
             });
-            handleCloseCreate();
+            handleClose();
         } else {
             setErrorMessage(`${doI18n("pages:core-contenthandler_bcv:book_creation_error", i18nRef.current)}: ${response.status
                 }`);
             setErrorDialogOpen(true);
         }
-    };
-    const handleCloseErrorDialog = () => {
-        setErrorDialogOpen(false);
-        handleClose();
     };
 
     return (
@@ -197,12 +149,11 @@ export default function NewBcvBook() {
                 titleLabel={`${doI18n("pages:core-contenthandler_bcv:new_book", i18nRef.current)} - ${nameProject}`}
                 isOpen={open}
                 closeFn={() => handleClose()}
-                theme={theme}
             >
                 <DialogContentText variant="subtitle2" sx={{ ml: 1, p: 1 }}>
                     {doI18n(`pages:core-contenthandler_bcv:required_field`, i18nRef.current)}
                 </DialogContentText>
-                <Stack spacing={2} sx={{ m: 2 }}>
+                <DialogContent>
                     <Grid2
                         container
                         spacing={2}
@@ -210,143 +161,27 @@ export default function NewBcvBook() {
                         alignItems="stretch"
                     >
                         {fileVrs === false ? (
-                            <FormControl>
-                                <InputLabel id="booksVersification-label" required htmlFor="booksVersification"
-                                    sx={sx.inputLabel}>
-                                    {doI18n("pages:core-contenthandler_bcv:versification_scheme", i18nRef.current)}
-                                </InputLabel>
-                                <Select
-                                    variant="outlined"
-                                    required
-                                    labelId="booksVersification-label"
-                                    name="booksVersification"
-                                    inputProps={{
-                                        id: "bookVersification",
-                                    }}
-                                    value={versification}
-                                    label={doI18n("pages:core-contenthandler_bcv:versification_scheme", i18nRef.current)}
-                                    onChange={(event) => {
-                                        setVersification(event.target.value);
-                                    }}
-                                    sx={sx.select}
-                                >
-                                    {
-                                        versificationCodes.map((listItem, n) => <MenuItem key={n} value={listItem}
-                                            dense>
-                                            <ListMenuItem
-                                                listItem={`${listItem.toUpperCase()} - ${doI18n(`scripture:versifications:${listItem}`, i18nRef.current)}`}
-                                            />
-                                        </MenuItem>
-                                        )
-                                    }
-                                </Select>
-                            </FormControl>
+                            <PanVersificationPicker versification={versification} setVersification={setVersification} isOpen={open} />
                         ) : null}
 
-                        <Grid2 item size={4}>
-                            <FormControl sx={{ width: "100%" }}>
-                                <InputLabel
-                                    id="bookCode-label"
-                                    required
-                                    htmlFor="bookCode"
-                                    sx={sx.inputLabel}
-                                >
-                                    {doI18n("pages:core-contenthandler_bcv:book_code", i18nRef.current)}
-                                </InputLabel>
-                                <Select
-                                    variant="outlined"
-                                    required
-                                    labelId="bookCode-label"
-                                    name="bookCode"
-                                    inputProps={{
-                                        id: "bookCode",
-                                    }}
-                                    value={bookCode}
-                                    label={doI18n("pages:core-contenthandler_bcv:book_code", i18nRef.current)}
-                                    onChange={(event) => {
-                                        setBookCode(event.target.value);
-                                        setBookAbbr(
-                                            ["1", "2", "3"].includes(event.target.value[0])
-                                                ? event.target.value.slice(0, 2) +
-                                                event.target.value[2].toLowerCase()
-                                                : event.target.value[0] +
-                                                event.target.value.slice(1).toLowerCase()
-                                        );
-                                        setBookTitle(
-                                            doI18n(
-                                                `scripture:books:${event.target.value}`,
-                                                i18nRef.current
-                                            )
-                                        );
-                                    }}
-                                    sx={sx.select}
-                                >
-                                    {(protestantOnly ? bookCodes.slice(0, 66) : bookCodes).map(
-                                        (listItem, n) => (
-                                            <MenuItem
-                                                key={n}
-                                                value={listItem}
-                                                dense
-                                                disabled={bookName.includes(listItem)}
-                                            >
-                                                <ListMenuItem
-                                                    listItem={`${listItem} - ${doI18n(
-                                                        `scripture:books:${listItem}`,
-                                                        i18nRef.current
-                                                    )}`}
-                                                />
-                                            </MenuItem>
-                                        )
-                                    )}
-                                </Select>
-                            </FormControl>
-                        </Grid2>
-                        <Grid2 item size={4}>
-                            <TextField
-                                id="bookAbbr"
-                                required
-                                sx={{ width: "100%" }}
-                                label={doI18n("pages:core-contenthandler_bcv:book_abbr", i18nRef.current)}
-                                value={bookAbbr}
-                                onChange={(event) => {
-                                    setBookAbbr(event.target.value);
-                                }}
-                            />
-                        </Grid2>
-                        <Grid2 item size={4}>
-                            <TextField
-                                id="bookTitle"
-                                required
-                                sx={{ width: "100%" }}
-                                label={doI18n("pages:core-contenthandler_bcv:book_title", i18nRef.current)}
-                                value={bookTitle}
-                                onChange={(event) => {
-                                    setBookTitle(event.target.value);
-                                }}
-                            />
-                        </Grid2>
-                        <FormGroup>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        color="secondary"
-                                        checked={protestantOnly}
-                                        onChange={() => setProtestantOnly(!protestantOnly)}
-                                    />
-                                }
-                                label={doI18n(
-                                    "pages:core-contenthandler_bcv:protestant_books_only",
-                                    i18nRef.current
-                                )}
-                            />
-                        </FormGroup>
+                        <PanBookPicker
+                            bookCode={bookCode}
+                            setBookCode={setBookCode}
+                            bookAbbr={bookAbbr}
+                            setBookAbbr={setBookAbbr}
+                            bookCodes={bookCodes}
+                            bookTitle={bookTitle}
+                            setBookTitle={setBookTitle}
+                            bookProject={bookName}
+                            addVerses={false}
+                        />
                     </Grid2>
-                </Stack>
+                </DialogContent>
                 <PanDialogActions
                     closeFn={() => handleClose()}
                     closeLabel={doI18n("pages:core-contenthandler_bcv:close", i18nRef.current)}
                     actionFn={handleCreate}
-                    closeOnAction ={false}
+                    closeOnAction={false}
                     actionLabel={doI18n("pages:core-contenthandler_bcv:create", i18nRef.current)}
                     isDisabled={
                         !(
@@ -356,20 +191,9 @@ export default function NewBcvBook() {
                         )
                     }
                 />
-
             </PanDialog>
-
             {/* Error Dialog */}
-            <Dialog open={errorDialogOpen} onClose={handleCloseErrorDialog}>
-                <DialogContent>
-                    <Typography color="error">{errorMessage}</Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseErrorDialog} variant="contained" color="primary">
-                        {doI18n("pages:core-contenthandler_bcv:close", i18nRef.current)}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <ErrorDialog setErrorDialogOpen={setErrorDialogOpen} handleClose={handleClose} errorDialogOpen={errorDialogOpen} errorMessage={errorMessage} />
         </Box>
     );
 }
