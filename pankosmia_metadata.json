@@ -22,6 +22,26 @@
           "label": "pages:content:new_book",
           "url": "/newBook?repoPath=%%REPO_PATH%%"
         }
+      ],
+      "export": [
+        {
+          "subMenu": [
+            {
+              "tsv": [
+                {
+                  "doc": "Export to tsv a textTranslation document",
+                  "placeHolders": {
+                    "REPO_PATH": {
+                      "doc": "The path to the repo in <X>/<Y>/<Z> format"
+                    }
+                  },
+                  "label": "pages:core-contenthandler_bcv:export_tsv",
+                  "url": "/export/tsv?repoPath=%%REPO_PATH%%"
+                }
+              ]
+            }
+          ]
+        }
       ]
     },
     "x-bcvquestions": {
