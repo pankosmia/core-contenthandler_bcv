@@ -5,6 +5,7 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 import './index.css';
 import NewBcvContent from "./pages/NewBcvContent";
 import NewBcvBook from "./pages/NewBcvBook";
+import TsvExport from "./pages/Export/TsvExport";
 import App from "./App";
 import { MaterialDesignContent, SnackbarProvider } from "notistack";
 import { ThemeProvider } from "@emotion/react";
@@ -23,7 +24,11 @@ const router = createHashRouter([
     {
         path: "newBook",
         element: <NewBcvBook />
-    }
+    },
+    {
+        path: "/export/tsv",
+        element: <TsvExport />
+    },
 ]);
 
 function AppLayout() {

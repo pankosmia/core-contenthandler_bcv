@@ -35,7 +35,7 @@
                       "doc": "The path to the repo in <X>/<Y>/<Z> format"
                     }
                   },
-                  "label": "pages:core-contenthandler_bcv:export_tsv",
+                  "label": "pages:core-contenthandler_bcv:export_as_tsv",
                   "url": "/export/tsv?repoPath=%%REPO_PATH%%"
                 }
               ]
@@ -231,6 +231,36 @@
     "book_content_radio": {
       "en": "Single book",
       "fr": "un seul livre"
+    },
+    "could_not_fetch": {
+      "en": "Could not fetch data",
+      "es": "No se pudieron obtener los datos",
+      "fr": "Les données n'ont pas pu être récupérées",
+      "id": "@Tidak dapat ambil"
+    },
+    "export_as_tsv": {
+      "en": "Save as TSV",
+      "es": "Guardar como TSV",
+      "fr": "Sauvegarder au format TSV",
+      "id": "Simpan konten sebagai TSV"
+    },
+    "pick_one_or_more_books_export": {
+      "en": "Choose one or more books to save",
+      "es": "Elige uno o más libros para guardar",
+      "fr": "Choisir un ou des livres à sauvegarder",
+      "id": "Pilih satuh lebih buku buat disimpan"
+    },
+    "no_books_selected": {
+      "en": "No books were selected so nothing was exported",
+      "fr": "Aucun livre n'a été sélectionné pour exportation",
+      "id": "Buku tidak ditentukan jadi tidak ada ekspor",
+      "es": "No se seleccionaron libros así que no se exportó nada"
+    },
+    "export_label": {
+      "en": "Save",
+      "es": "Guardar",
+      "fr": "Sauvegarder",
+      "id": "Simpan"
     }
   }
 }
