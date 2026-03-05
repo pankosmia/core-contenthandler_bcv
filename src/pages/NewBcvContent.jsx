@@ -23,6 +23,7 @@ import ErrorDialog from "./NewBcvContent/ErrorDialog";
 import NameDocument from "./NewBcvContent/NameDocument";
 import LanguagePicker from "./NewBcvContent/LanguagePicker";
 import ContentDocument from "./NewBcvContent/ContentDocument";
+import { useSearchParams } from "react-router-dom";
 
 export default function NewBcvContent() {
   const { i18nRef } = useContext(i18nContext);
@@ -39,12 +40,11 @@ export default function NewBcvContent() {
   const [bookCodes, setBookCodes] = useState([]);
   const [openModal, setOpenModal] = useState(true);
   const hash = window.location.hash;
-  const query = hash.includes("?") ? hash.split("?")[1] : "";
-  const paramsQuery = new URLSearchParams(query);
-  const resourceFormat = paramsQuery.get("resourceType");
-  const url = window.location.search;
-  const params = new URLSearchParams(url);
-  const returnType = params.get("returntypepage");
+  const query = hash.includes("?") ? hash.split("?") : "";
+  const resourceTypeQuery = new URLSearchParams(query[1]);
+  const typePageQuery = new URLSearchParams(query[2]);
+  const resourceFormat = resourceTypeQuery.get("resourceType");
+  const returnType = typePageQuery.get("returnTypePage");
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [localRepos, setLocalRepos] = useState([]);
