@@ -211,7 +211,7 @@ export default function NewBcvContent() {
         closeFn={() => handleClose()}
       >
         <DialogContent>
-          <PanStepperPicker steps={steps} renderStepContent={renderStepContent} isStepValid={isStepValid} handleCreate={handleCreate} />
+          <PanStepperPicker steps={steps} renderStepContent={renderStepContent} isStepValid={isStepValid} handleCreate={handleCreate} handleClose={handleClose}/>
         </DialogContent>
       </PanDialog>
 
