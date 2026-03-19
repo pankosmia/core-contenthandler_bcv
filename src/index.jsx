@@ -11,6 +11,7 @@ import { MaterialDesignContent, SnackbarProvider } from "notistack";
 import { ThemeProvider } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { createTheme, styled } from "@mui/material";
+import AboutRepo from "./pages/AboutRepo";
 
 const router = createHashRouter([
     {
@@ -28,6 +29,10 @@ const router = createHashRouter([
     {
         path: "/export/tsv",
         element: <TsvExport />
+    },
+     {
+        path: "/aboutRepo",
+        element: <AboutRepo />
     },
 ]);
 

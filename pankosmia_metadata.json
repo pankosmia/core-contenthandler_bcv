@@ -23,6 +23,13 @@
           "url": "/newBook?repoPath=%%REPO_PATH%%"
         }
       ],
+       "about_repo": [
+        {
+          "doc": "About repo translationNotes document",
+          "label": "pages:content:about_repo",
+          "url": "/aboutRepo?repoPath=%%REPO_PATH%%"
+        }
+      ],
       "export": [
         {
           "subMenu": [
