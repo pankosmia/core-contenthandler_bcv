@@ -8,9 +8,11 @@ export default function AboutRepo() {
     const { i18nRef } = useContext(i18nContext);
     const [open, setOpen] = useState(true);
     const hash = window.location.hash;
-    const query = hash.includes('?') ? hash.split('?')[1] : '';
-    const repoPathQuery = new URLSearchParams(query);
+    const query = hash.includes('?') ? hash.split('?') : '';
+    const repoPathQuery = new URLSearchParams(query[1]);
+    const typePageQuery = new URLSearchParams(query[2]);
     const path = repoPathQuery.get('repoPath');
+    const returnType = typePageQuery.get("returnTypePage");
     const [repoData, setRepodata] = useState({});
     const [repoInfo, setRepoInfo] = useState();
     console.log("repoInfo", repoInfo);
@@ -21,7 +23,7 @@ export default function AboutRepo() {
             const data = await summariesResponse.json;
             setRepodata({ ...data, path });
         } else {
-            console.error(`${doI18n("pages:core-contenthandler_text_translation:error_data", i18nRef.current)}`);
+            console.error(`${doI18n("pages:core-contenthandler_bcv:error_data", i18nRef.current)}`);
         }
     };
 
@@ -31,23 +33,25 @@ export default function AboutRepo() {
         },
         []
     );
-    const handleClose = async () => {
-        setOpen(false);
-        setTimeout(() => {
-            window.location.href = '/clients/content';
-        }, 500);
-    };
+    const handleClose = () => {
+    setOpen(false);
+    if (returnType === "dashboard") {
+      setTimeout(() => {
+        window.location.href = "/clients/main";
+      });
+    } else {
+      setTimeout(() => {
+        window.location.href = "/clients/content";
+      });
+    }
+  }
 
     useEffect(() => {
         if (repoData) {
             const info = {
                 ...repoData,
                 nBooks: repoData.book_codes?.length ?? 0,
-                source: repoData.path?.startsWith("_local_")
-                    ? repoData.path?.startsWith("_local_/_sideloaded_")
-                        ? doI18n("pages:content:local_resource", i18nRef.current)
-                        : doI18n("pages:content:local_project", i18nRef.current)
-                    : `${repoData.path?.split("/")[1]} (${repoData.path?.split("/")[0]})`,
+                source: repoData.path?.startsWith("_local_") ? repoData.path?.startsWith("_local_/_sideloaded_") ? doI18n("pages:content:local_resource", i18nRef.current) : doI18n("pages:content:local_project", i18nRef.current) : `${repoData.path?.split("/")[1]} (${repoData.path?.split("/")[0]})`,
             };
             setRepoInfo(info);
         }
@@ -71,8 +75,8 @@ export default function AboutRepo() {
                 }}
             />
             <Header
-                titleKey="pages:core-contenthandler_text_translation:title"
-                currentId="core-contenthandler_text_translation"
+                titleKey={returnType === "dashboard" ? "pages:core-dashboard:title" : "pages:content:title"}
+                currentId="core-contenthandler_bcv"
                 requireNet={false}
             />
             <PanDialog
@@ -85,8 +89,8 @@ export default function AboutRepo() {
                         ? Object.entries(repoInfo).map(([key, value]) => {
                             const keys =
                                 repoInfo.name === repoInfo.description
-                                    ? ['name', 'flavor', 'generated_date', 'language_code','language_name', 'book_codes']
-                                    : ['name', 'description', 'flavor', 'generated_date', 'language_code','language_name', 'book_codes'];
+                                    ? ['name', 'flavor', 'generated_date', 'language_code', 'language_name', 'book_codes']
+                                    : ['name', 'description', 'flavor', 'generated_date', 'language_code', 'language_name', 'book_codes'];
                             if (!keys.includes(key)) return null;
                             return (
                                 <DialogContentText
@@ -118,7 +122,7 @@ export default function AboutRepo() {
                                 </DialogContentText>
                             );
                         })
-                    : null}
+                        : null}
                 </DialogContent>
                 <PanDialogActions
                     closeFn={() => handleClose()}
