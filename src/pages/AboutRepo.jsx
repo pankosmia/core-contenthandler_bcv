@@ -15,8 +15,6 @@ export default function AboutRepo() {
     const returnType = typePageQuery.get("returnTypePage");
     const [repoData, setRepodata] = useState({});
     const [repoInfo, setRepoInfo] = useState();
-    console.log("repoInfo", repoInfo);
-    console.log('repoData', repoData)
     const getProjectSummaries = async () => {
         const summariesResponse = await getJson(`/burrito/metadata/summary/${path}`, debugContext.current);
         if (summariesResponse.ok) {
@@ -51,7 +49,7 @@ export default function AboutRepo() {
             const info = {
                 ...repoData,
                 nBooks: repoData.book_codes?.length ?? 0,
-                source: repoData.path?.startsWith("_local_") ? repoData.path?.startsWith("_local_/_sideloaded_") ? doI18n("pages:content:local_resource", i18nRef.current) : doI18n("pages:content:local_project", i18nRef.current) : `${repoData.path?.split("/")[1]} (${repoData.path?.split("/")[0]})`,
+                source: repoData.path?.startsWith("_local_") ? repoData.path?.startsWith("_local_/_sideloaded_") ? doI18n("pages:content:local_resource", i18nRef.current) : doI18n("pages:content:local_project", i18nRef.current) : null,
             };
             setRepoInfo(info);
         }
@@ -80,7 +78,7 @@ export default function AboutRepo() {
                 requireNet={false}
             />
             <PanDialog
-                titleLabel={`${doI18n('pages:content:about_document', i18nRef.current)} ${repoInfo ? `${repoInfo.source} - ${repoInfo.name}` : repoData.name}`}
+                titleLabel={`${doI18n('pages:content:about_document', i18nRef.current)} ${repoInfo ? `${repoInfo.source ? doI18n(repoInfo.source,i18nRef.current) : `${repoInfo.path?.split("/")[1]} (${repoInfo.path?.split("/")[0]})`}  - ${repoInfo.name}` : repoData.name}`}
                 isOpen={open}
                 closeFn={() => handleClose()}
             >
