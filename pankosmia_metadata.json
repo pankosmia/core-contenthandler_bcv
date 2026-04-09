@@ -23,7 +23,7 @@
           "url": "/newBook?repoPath=%%REPO_PATH%%"
         }
       ],
-       "about_repo": [
+      "about_repo": [
         {
           "doc": "About repo translationNotes document",
           "label": "pages:content:about_repo",
@@ -122,9 +122,9 @@
       "en": "The name is already taken",
       "es": "El nombre ya está en uso"
     },
-    "error_data":{
-      "en":"Error fetching data",
-      "fr":"Erreur lors de la récupération des données"
+    "error_data": {
+      "en": "Error fetching data",
+      "fr": "Erreur lors de la récupération des données"
     },
     "new_book": {
       "en": "New Book",
@@ -214,38 +214,38 @@
       "en": "The book could not be created",
       "fr": "Le livre n'a pas pu être créé",
       "id": "@Kesalahan terjadi: Buku tidak jadi terbuat"
-    },    
-    "name_section":{
-      "en":"Name",
-      "fr":"Nom"
     },
-    "content_section":{
-      "en":"Content",
-      "fr":"Contenu"
+    "name_section": {
+      "en": "Name",
+      "fr": "Nom"
     },
-    "language":{
-      "en":"Language",
-      "fr":"Langue"
+    "content_section": {
+      "en": "Content",
+      "fr": "Contenu"
     },
-    "back_button":{
-      "en":"Back",
-      "fr":"Retour"
+    "language": {
+      "en": "Language",
+      "fr": "Langue"
     },
-    "next_button":{
-      "en":"Next",
-      "fr":"Suivant"
+    "back_button": {
+      "en": "Back",
+      "fr": "Retour"
     },
-    "helper_abbreviation":{
-    "en":"Unique short label to identify your document (2-8 characters, no \" \", no \"_\"at beginning at the end)",
-    "fr":"Combinaison unique de caractères pour identifier un document (2-8 caractères, pas de \" \", pas de \"_\" à la fin)"
+    "next_button": {
+      "en": "Next",
+      "fr": "Suivant"
     },
-      "helper_versification":{
-      "en":"Defines the system of chapters and verses",
-      "fr":"Définit le système des chapitres et des versets"
+    "helper_abbreviation": {
+      "en": "Unique short label to identify your document (2-8 characters, no \" \", no \"_\"at beginning at the end)",
+      "fr": "Combinaison unique de caractères pour identifier un document (2-8 caractères, pas de \" \", pas de \"_\" à la fin)"
     },
-    "helper_book":{
-      "en":"Start with title, chapter and verse numbers",
-      "fr":"Démarrer avec le titre et les numéros des chapitres et des versets"
+    "helper_versification": {
+      "en": "Defines the system of chapters and verses",
+      "fr": "Définit le système des chapitres et des versets"
+    },
+    "helper_book": {
+      "en": "Start with title, chapter and verse numbers",
+      "fr": "Démarrer avec le titre et les numéros des chapitres et des versets"
     },
     "add_content": {
       "en": "Choose inital structure",

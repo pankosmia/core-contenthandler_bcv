@@ -5,7 +5,7 @@ import { i18nContext } from "pankosmia-rcl";
 
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
-    window.innerHeight - 64
+    window.innerHeight - 64,
   );
   const handleWindowResize = useCallback((event) => {
     setMaxWindowHeight(window.innerHeight - 64);
@@ -25,7 +25,7 @@ function App() {
         <h1>
           {doI18n(
             "pages:core-contenthandler_bcv:stub_content",
-            i18nRef.current
+            i18nRef.current,
           )}
         </h1>
       </Grid2>
