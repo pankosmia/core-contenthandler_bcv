@@ -11,7 +11,6 @@ import ErrorDialog from "./NewBcvContent/ErrorDialog";
 import NameDocument from "./NewBcvContent/NameDocument";
 import LanguagePicker from "./NewBcvContent/LanguagePicker";
 import ContentDocument from "./NewBcvContent/ContentDocument";
-import { useSearchParams } from "react-router-dom";
 
 export default function NewBcvContent() {
   const { i18nRef } = useContext(i18nContext);
@@ -46,9 +45,9 @@ export default function NewBcvContent() {
   const [errorAbbreviation, setErrorAbbreviation] = useState(false);
 
   const steps = [
-    `${doI18n("pages:core-contenthandler_bcv:name_section", i18nRef.current)}`,
-    `${doI18n("pages:core-contenthandler_bcv:language", i18nRef.current)}`,
     `${doI18n("pages:core-contenthandler_bcv:content_section", i18nRef.current)}`,
+    `${doI18n("pages:core-contenthandler_bcv:language", i18nRef.current)}`,
+    `${doI18n("pages:core-contenthandler_bcv:name_section", i18nRef.current)}`,
   ];
 
   useEffect(() => {
@@ -77,30 +76,6 @@ export default function NewBcvContent() {
     switch (step) {
       case 0:
         return (
-          <NameDocument
-            contentType={contentType}
-            setContentType={setContentType}
-            repoExists={repoExists}
-            setRepoExists={setRepoExists}
-            contentName={contentName}
-            setContentName={setContentName}
-            contentAbbr={contentAbbr}
-            setContentAbbr={setContentAbbr}
-            errorAbbreviation={errorAbbreviation}
-            setErrorAbbreviation={setErrorAbbreviation}
-            localRepos={localRepos}
-          />
-        );
-      case 1:
-        return (
-          <LanguagePicker
-            currentLanguage={currentLanguage}
-            setCurrentLanguage={setCurrentLanguage}
-            setIsValid={setLanguageIsValid}
-          />
-        );
-      case 2:
-        return (
           <ContentDocument
             open={openModal}
             contentOption={contentOption}
@@ -117,6 +92,31 @@ export default function NewBcvContent() {
             addVerset={false}
           />
         );
+      case 1:
+        return (
+          <LanguagePicker
+            currentLanguage={currentLanguage}
+            setCurrentLanguage={setCurrentLanguage}
+            setIsValid={setLanguageIsValid}
+          />
+        );
+      case 2:
+        return (
+          <NameDocument
+            contentType={contentType}
+            setContentType={setContentType}
+            repoExists={repoExists}
+            setRepoExists={setRepoExists}
+            contentName={contentName}
+            setContentName={setContentName}
+            contentAbbr={contentAbbr}
+            setContentAbbr={setContentAbbr}
+            errorAbbreviation={errorAbbreviation}
+            setErrorAbbreviation={setErrorAbbreviation}
+            localRepos={localRepos}
+          />
+        );
+
       default:
         return null;
     }
@@ -124,20 +124,6 @@ export default function NewBcvContent() {
   const isStepValid = (step) => {
     switch (step) {
       case 0:
-        return (
-          contentName.trim().length > 0 &&
-          contentAbbr.trim().length > 0 &&
-          contentType.trim().length > 0 &&
-          errorAbbreviation === false
-        );
-
-      case 1:
-        return (
-          currentLanguage?.language_code?.trim().length > 0 &&
-          currentLanguage?.language_name?.trim().length > 0 &&
-          languageIsValid === true
-        );
-      case 2:
         if (contentOption === "book") {
           return (
             versification.trim().length === 3 &&
@@ -147,6 +133,19 @@ export default function NewBcvContent() {
           );
         }
         return true;
+      case 1:
+        return (
+          currentLanguage?.language_code?.trim().length > 0 &&
+          currentLanguage?.language_name?.trim().length > 0 &&
+          languageIsValid === true
+        );
+      case 2:
+        return (
+          contentName.trim().length > 0 &&
+          contentAbbr.trim().length > 0 &&
+          contentType.trim().length > 0 &&
+          errorAbbreviation === false
+        );
       default:
         return true;
     }
@@ -253,6 +252,7 @@ export default function NewBcvContent() {
             isStepValid={isStepValid}
             handleCreate={handleCreate}
             handleClose={handleClose}
+            requiredFieldsLabel
           />
         </DialogContent>
       </PanDialog>
