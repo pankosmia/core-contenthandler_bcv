@@ -11,7 +11,6 @@ import ErrorDialog from "./NewBcvContent/ErrorDialog";
 import NameDocument from "./NewBcvContent/NameDocument";
 import LanguagePicker from "./NewBcvContent/LanguagePicker";
 import ContentDocument from "./NewBcvContent/ContentDocument";
-import { useSearchParams } from "react-router-dom";
 
 export default function NewBcvContent() {
   const { i18nRef } = useContext(i18nContext);
@@ -54,7 +53,7 @@ export default function NewBcvContent() {
   useEffect(() => {
     if (openModal) {
       getAndSetJson({
-        url: "/git/list-local-repos",
+        url: "/api/git/list-local-repos",
         setter: setLocalRepos,
       }).then();
     }
@@ -155,7 +154,7 @@ export default function NewBcvContent() {
   useEffect(() => {
     const doFetch = async () => {
       const versificationResponse = await getJson(
-        "/content-utils/versification/eng",
+        "/api/content-utils/versification/eng",
         debugRef.current,
       );
       if (versificationResponse.ok) {
@@ -191,7 +190,7 @@ export default function NewBcvContent() {
       book_abbr: showBookFields ? bookAbbr : null,
     };
     const response = await postJson(
-      "/git/new-bcv-resource",
+      "/api/git/new-bcv-resource",
       JSON.stringify(payload),
       debugRef.current,
     );
@@ -224,7 +223,7 @@ export default function NewBcvContent() {
           backgroundPosition: "center",
           zIndex: -1,
           backgroundImage:
-            'url("/app-resources/pages/content/background_blur.png")',
+            'url("/api/app-resources/pages/content/background_blur.png")',
           backgroundRepeat: "no-repeat",
         }}
       />

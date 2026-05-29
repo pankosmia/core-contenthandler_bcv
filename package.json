@@ -1,6 +1,6 @@
 {
   "name": "core-contenthandler_bcv",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "private": true,
   "homepage": "/clients/core-contenthandler_bcv",
   "dependencies": {
@@ -10,7 +10,7 @@
     "color": "^5.0.3",
     "file-saver": "^2.0.5",
     "notistack": "^3.0.2",
-    "pankosmia-rcl": "^0.1.31",
+    "pankosmia-rcl": "^0.2.1",
     "pithekos-lib": "^0.11.20",
     "prop-types": "^15.8.1",
     "react": "^17.0.0 || ^18.0.0",

@@ -1,7 +1,7 @@
 {
   "id": "core-contenthandler_bcv",
   "exclude_from_menu": true,
-  "minServerVersion": "0.12.14",
+  "minServerVersion": "0.16.1",
   "exclude_from_dashboard": true,
   "require": {
     "net": false,
