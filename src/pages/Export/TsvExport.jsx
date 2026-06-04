@@ -33,7 +33,7 @@ function TsvExport() {
     const path = params.get("repoPath");
     setRepoPath(path);
     const summariesResponse = await getJson(
-      `/burrito/metadata/summary/${path}`,
+      `/api/burrito/metadata/summary/${path}`,
       debugContext.current,
     );
     if (summariesResponse.ok) {
@@ -49,7 +49,7 @@ function TsvExport() {
   }, []);
 
   const tsvExportOneBook = async (bookCode) => {
-    const bookUrl = `/burrito/ingredient/raw/${repoPath}?ipath=${bookCode}.tsv`;
+    const bookUrl = `/api/burrito/ingredient/raw/${repoPath}?ipath=${bookCode}.tsv`;
     const bookTsvResponse = await getText(bookUrl, debugRef.current);
     if (!bookTsvResponse.ok) {
       enqueueSnackbar(
@@ -94,7 +94,7 @@ function TsvExport() {
   useEffect(() => {
     const doFetch = async () => {
       const versificationResponse = await getJson(
-        "/content-utils/versification/eng",
+        "/api/content-utils/versification/eng",
         debugRef.current,
       );
       if (versificationResponse.ok) {
@@ -117,7 +117,7 @@ function TsvExport() {
           backgroundPosition: "center",
           zIndex: -1,
           backgroundImage:
-            'url("/app-resources/pages/content/background_blur.png")',
+            'url("/api/app-resources/pages/content/background_blur.png")',
           backgroundRepeat: "no-repeat",
           backdropFilter: "blur(3px)",
         }}
