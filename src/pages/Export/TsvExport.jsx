@@ -9,7 +9,8 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { getText, doI18n, getJson } from "pithekos-lib";
+import { getText, getJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
 import { debugContext, i18nContext, Header } from "pankosmia-rcl";
 
 import { enqueueSnackbar } from "notistack";
