@@ -7,7 +7,7 @@ import {
   Radio,
   Typography,
 } from "@mui/material";
-import { doI18n } from "pithekos-lib";
+import { doI18n } from "pankosmia-lib/i18n";
 import {
   i18nContext,
   PanVersificationPicker,

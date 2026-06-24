@@ -2,8 +2,8 @@ import { useState, useContext, useEffect } from "react";
 import { Box, DialogContent } from "@mui/material";
 
 import { enqueueSnackbar } from "notistack";
-import { postJson, doI18n, getAndSetJson, getJson } from "pithekos-lib";
-
+import { postJson, getAndSetJson, getJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
 import { i18nContext, debugContext, Header } from "pankosmia-rcl";
 
 import { PanDialog, PanStepperPicker } from "pankosmia-rcl";
