@@ -29,8 +29,8 @@ importers:
         specifier: ^0.0.3
         version: 0.0.3
       pankosmia-rcl:
-        specifier: 0.4.0
-        version: 0.4.0(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@7.2.0)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.2.18)(eslint@8.57.1(supports-color@7.2.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@7.2.0)(typescript@7.0.2)
+        specifier: 0.4.18
+        version: 0.4.18(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@7.2.0)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.2.18)(eslint@8.57.1(supports-color@7.2.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@7.2.0)(typescript@7.0.2)
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
@@ -3902,10 +3902,10 @@ packages:
         integrity: sha512-aOANGTQvag5anAadz7Jn52wQYhJiDlEDPT6pRBXzEf9JecKyvW1sQL82wTFdeRU8PRJghIl1oMW9AhFBocPr9g==,
       }
 
-  pankosmia-rcl@0.4.0:
+  pankosmia-rcl@0.4.18:
     resolution:
       {
-        integrity: sha512-3Ux3r/qRmXsc/AHJPn42dTPBquC/AArCKCYdcC6MthgSZAH2WXQdSS4x4tz+iotGKDaqLkylcamo8gVF8QO8pA==,
+        integrity: sha512-QrUthKwDNORPi8uaHzSHk5NeW6LSHTiiLtC0Qw8CRZ+q9XdQibfseo/iszxmv8RrjWjvreNOW94ljIM4xAIVRQ==,
       }
     peerDependencies:
       react: ^17.0.0 || ^18.0.0
@@ -7353,7 +7353,7 @@ snapshots:
 
   pankosmia-lib@0.0.3: {}
 
-  pankosmia-rcl@0.4.0(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@7.2.0)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.2.18)(eslint@8.57.1(supports-color@7.2.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@7.2.0)(typescript@7.0.2):
+  pankosmia-rcl@0.4.18(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@7.2.0)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.2.18)(eslint@8.57.1(supports-color@7.2.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@7.2.0)(typescript@7.0.2):
     dependencies:
       "@emotion/react": 11.14.0(@types/react@19.2.18)(react@18.3.1)(supports-color@7.2.0)
       "@emotion/styled": 11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@18.3.1)(supports-color@7.2.0))(@types/react@19.2.18)(react@18.3.1)(supports-color@7.2.0)
