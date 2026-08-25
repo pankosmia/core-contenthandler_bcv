@@ -1,4 +1,4 @@
-import { Grid2, TextField, Tooltip } from "@mui/material";
+import { Grid, TextField, Tooltip } from "@mui/material";
 import { doI18n } from "pankosmia-lib/i18n";
 import { useContext } from "react";
 import { i18nContext } from "pankosmia-rcl";
@@ -21,12 +21,14 @@ export default function NameDocument({
 
   return (
     <>
-      <Grid2
+      <Grid
         container
         spacing={2}
-        justifyItems="flex-end"
-        alignItems="stretch"
-        flexDirection={"column"}
+        sx={{
+          justifyContent: "flex-end",
+          alignItems: "stretch",
+          flexDirection: "column",
+        }}
       >
         <TextField
           id="name"
@@ -70,7 +72,7 @@ export default function NameDocument({
             }}
           />
         </Tooltip>
-      </Grid2>
+      </Grid>
       <TextField
         id="type"
         required
