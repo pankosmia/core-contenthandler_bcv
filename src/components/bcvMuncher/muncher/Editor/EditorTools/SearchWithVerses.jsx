@@ -238,7 +238,7 @@ function SearchWithVerses({
                                   <Add sx={{ fontSize: "1.2rem" }} />
                                   <Typography variant="caption">
                                     {doI18n(
-                                      "pages:core-local-workspace:add",
+                                      "pages:core-contenthandler_bcv:add",
                                       i18nRef.current,
                                     )}
                                   </Typography>

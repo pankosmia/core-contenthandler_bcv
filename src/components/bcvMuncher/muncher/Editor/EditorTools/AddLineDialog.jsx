@@ -76,14 +76,14 @@ function AddLineDialog({
               color="inherit"
               onClick={handleCloseModalNewNote}
               aria-label={doI18n(
-                "pages:core-local-workspace:close",
+                "pages:core-contenthandler_bcv:close",
                 i18nRef.current,
               )}
             >
               <CloseIcon />
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                 {doI18n(
-                  `pages:core-local-workspace:${!resourceType.includes("note") ? "new_bcv_question" : resourceType}`,
+                  `pages:core-contenthandler_bcv:${!resourceType.includes("note") ? "new_bcv_question" : resourceType}`,
                   i18nRef.current,
                 )}
               </Typography>
@@ -97,7 +97,7 @@ function AddLineDialog({
                 setCellValueChanged(false);
               }}
             >
-              {doI18n("pages:core-local-workspace:create", i18nRef.current)}
+              {doI18n("pages:core-contenthandler_bcv:create", i18nRef.current)}
             </Button>
           </Toolbar>
         </AppBar>

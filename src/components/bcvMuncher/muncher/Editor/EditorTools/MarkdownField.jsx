@@ -48,11 +48,11 @@ function MarkdownField({
           <TextField
             label={
               doI18n(
-                `pages:core-local-workspace:${label.toLowerCase()}`,
+                `pages:core-contenthandler_bcv:${label.toLowerCase()}`,
                 i18nRef.current,
               ) ||
               doI18n(
-                `pages:core-local-workspace:text_paragraph`,
+                `pages:core-contenthandler_bcv:text_paragraph`,
                 i18nRef.current,
               )
             }

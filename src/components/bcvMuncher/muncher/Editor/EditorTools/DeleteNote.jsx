@@ -47,7 +47,7 @@ function DeleteNote({
         <DialogContentText>
           <Typography variant="h6">
             {doI18n(
-              "pages:core-local-workspace:delete_note_bcv",
+              "pages:core-contenthandler_bcv:delete_note_bcv",
               i18nRef.current,
             )}
           </Typography>
@@ -55,7 +55,7 @@ function DeleteNote({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>
-          {doI18n("pages:core-local-workspace:cancel", i18nRef.current)}
+          {doI18n("pages:core-contenthandler_bcv:cancel", i18nRef.current)}
         </Button>
         <Button
           color="warning"
@@ -65,7 +65,7 @@ function DeleteNote({
           }}
         >
           {doI18n(
-            "pages:core-local-workspace:do_delete_button",
+            "pages:core-contenthandler_bcv:do_delete_button",
             i18nRef.current,
           )}
         </Button>

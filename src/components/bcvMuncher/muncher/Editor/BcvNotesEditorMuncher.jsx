@@ -189,7 +189,7 @@ function BcvNotesEditorMuncher({
           <Grid sx={{ display: "flex" }} gap={1}>
             <Tooltip
               title={doI18n(
-                "pages:core-local-workspace:button_edit_layout",
+                "pages:core-contenthandler_bcv:button_edit_layout",
                 i18nRef.current,
                 debugRef.current,
               )}
@@ -257,7 +257,10 @@ function BcvNotesEditorMuncher({
               i18nRef={i18nRef}
             />
             <Typography>
-              {doI18n("pages:core-local-workspace:no_notes", i18nRef.current)}
+              {doI18n(
+                "pages:core-contenthandler_bcv:no_notes",
+                i18nRef.current,
+              )}
             </Typography>
           </Stack>
         </Box>

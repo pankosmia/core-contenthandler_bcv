@@ -272,7 +272,7 @@ function TsvLineForm({
           }
           label={
             doI18n(
-              "pages:core-local-workspace:show_all_fields",
+              "pages:core-contenthandler_bcv:show_all_fields",
               i18nRef.current,
             ) || "Show all fields"
           }
@@ -287,21 +287,27 @@ function TsvLineForm({
           onClick={handleOpenRef}
           sx={{ mb: 1, color: "text.secondary" }}
         >
-          {doI18n("pages:core-local-workspace:reference", i18nRef.current)}{" "}
+          {doI18n("pages:core-contenthandler_bcv:reference", i18nRef.current)}{" "}
           {currentRow[refIndex] ||
-            doI18n("pages:core-local-workspace:no_reference", i18nRef.current)}
+            doI18n(
+              "pages:core-contenthandler_bcv:no_reference",
+              i18nRef.current,
+            )}
         </Button>
       )}
       <Dialog open={openRefDialog} onClose={() => setOpenRefDialog(false)}>
         <DialogTitle>
-          {doI18n("pages:core-local-workspace:edit_reference", i18nRef.current)}
+          {doI18n(
+            "pages:core-contenthandler_bcv:edit_reference",
+            i18nRef.current,
+          )}
         </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
             label={doI18n(
-              "pages:core-local-workspace:example_reference",
+              "pages:core-contenthandler_bcv:example_reference",
               i18nRef.current,
             )}
             fullWidth
@@ -315,10 +321,10 @@ function TsvLineForm({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenRefDialog(false)}>
-            {doI18n("pages:core-local-workspace:cancel", i18nRef.current)}
+            {doI18n("pages:core-contenthandler_bcv:cancel", i18nRef.current)}
           </Button>
           <Button onClick={handleSaveRef} variant="contained">
-            {doI18n("pages:core-local-workspace:apply", i18nRef.current)}
+            {doI18n("pages:core-contenthandler_bcv:apply", i18nRef.current)}
           </Button>
         </DialogActions>
       </Dialog>
@@ -354,7 +360,7 @@ function TsvLineForm({
             >
               <TextField
                 label={doI18n(
-                  "pages:core-local-workspace:quote",
+                  "pages:core-contenthandler_bcv:quote",
                   i18nRef.current,
                 )}
                 value={currentRow[quoteIndex] || ""}
@@ -371,7 +377,7 @@ function TsvLineForm({
                 <TextField
                   fullWidth
                   label={doI18n(
-                    "pages:core-local-workspace:occurrence_number",
+                    "pages:core-contenthandler_bcv:occurrence_number",
                     i18nRef.current,
                   )}
                   value={
@@ -428,7 +434,7 @@ function TsvLineForm({
               <TextField
                 fullWidth
                 label={doI18n(
-                  "pages:core-local-workspace:total_occurrences",
+                  "pages:core-contenthandler_bcv:total_occurrences",
                   i18nRef.current,
                 )}
                 value={currentRow[occsIndex] || ""}
@@ -493,16 +499,16 @@ function TsvLineForm({
                 label={
                   cleanColumn === "question"
                     ? doI18n(
-                        "pages:core-local-workspace:question",
+                        "pages:core-contenthandler_bcv:question",
                         i18nRef.current,
                       ) || "question"
                     : cleanColumn === "response"
                       ? doI18n(
-                          "pages:core-local-workspace:answer",
+                          "pages:core-contenthandler_bcv:answer",
                           i18nRef.current,
                         ) || "answer"
                       : doI18n(
-                          "pages:core-local-workspace:note",
+                          "pages:core-contenthandler_bcv:note",
                           i18nRef.current,
                         ) || "note"
                 }
@@ -510,7 +516,7 @@ function TsvLineForm({
             ) : (
               <TextField
                 label={doI18n(
-                  `pages:core-local-workspace:${cleanColumn}`,
+                  `pages:core-contenthandler_bcv:${cleanColumn}`,
                   i18nRef.current,
                 )}
                 value={currentRow[realIndex] || ""}

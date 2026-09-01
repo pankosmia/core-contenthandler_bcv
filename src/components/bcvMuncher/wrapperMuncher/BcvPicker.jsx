@@ -68,7 +68,7 @@ export default function BcvPicker({ setFirstChapter, disable = false }) {
     <Stack direction="row" spacing={1} alignItems="center">
       <TextField
         disabled={disable}
-        label={`${doI18n("pages:core-local-workspace:book", i18nRef.current)}`}
+        label={`${doI18n("pages:core-contenthandler_bcv:book", i18nRef.current)}`}
         id="book-button"
         size="small"
         select

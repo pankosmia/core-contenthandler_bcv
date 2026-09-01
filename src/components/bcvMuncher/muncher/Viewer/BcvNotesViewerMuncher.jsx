@@ -125,7 +125,7 @@ function BcvNotesViewerMuncher({ metadata, debugRef, systemBcv, i18nRef }) {
                       <Markdown className="markdown">
                         {notesContent ||
                           doI18n(
-                            "pages:core-local-workspace:no_verse",
+                            "pages:core-contenthandler_bcv:no_verse",
                             i18nRef.current,
                           )}
                       </Markdown>

@@ -35,7 +35,7 @@ function AddFab({
         sx={{ ml: 2 }}
       >
         <AddIcon sx={{ mr: 1 }} />
-        {doI18n("pages:core-local-workspace:add", i18nRef.current)}
+        {doI18n("pages:core-contenthandler_bcv:add", i18nRef.current)}
       </Fab>
       <AddLineDialog
         mode="add"

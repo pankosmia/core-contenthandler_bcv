@@ -178,7 +178,7 @@ function BcvQuestionsViewerMuncher({ metadata, systemBcv, debugRef, i18nRef }) {
           ) : (
             <Typography sx={{ pl: 2 }}>
               {doI18n(
-                "pages:core-local-workspace:no_question",
+                "pages:core-contenthandler_bcv:no_question",
                 i18nRef.current,
               )}
             </Typography>

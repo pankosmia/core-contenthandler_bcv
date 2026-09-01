@@ -281,6 +281,150 @@
       "es": "Guardar",
       "fr": "Sauvegarder",
       "id": "Simpan"
+    },
+    "button_edit_layout": {
+      "en": "Edit layout and resources",
+      "fr": "Editer disposition et choix de ressources"
+    },
+    "no_notes": {
+      "en": "No notes found",
+      "fr": "Aucune note trouvée",
+      "es": "No se encontraron notas"
+    },
+    "add": {
+      "en": "Add",
+      "fr": "Ajouter",
+      "id": "Tambah",
+      "es": "Agregar"
+    },
+    "book": {
+      "en": "Book",
+      "fr": "Livre"
+    },
+    "delete_note_bcv": {
+      "en": "Deletion is permanent and irreversible. Continue anyway?",
+      "fr": "La suppression est définitive et irréversible. Continuer quand même ?",
+      "id": "@Akan menghapus konten ini. Operasi ini tidak dapat dibalikkan. Klik \"batal\" kecuali yakin ingin menghapus konten ini secara permanen.",
+      "es": "La opción de borrar es permanente e irreversible. ¿Desea continuar?"
+    },
+    "cancel": {
+      "en": "Cancel",
+      "fr": "Annuler",
+      "es": "Cancelar",
+      "id": "Batal"
+    },
+    "do_delete_button": {
+      "en": "Delete",
+      "fr": "Supprimer",
+      "id": "Hapus"
+    },
+    "text_paragraph": {
+      "en": "Text paragraph",
+      "fr": "Texte du paragraphe"
+    },
+    "saved": {
+      "en": "Saved",
+      "fr": "Sauvegardé",
+      "id": "Telah disimpan"
+    },
+    "save_error": {
+      "en": "Could not save",
+      "fr": "La sauvegarde a échoué",
+      "id": "Tidak dapat disimpan"
+    },
+    "show_all_fields": {
+      "en": "Show all fields",
+      "es": "Mostrar todos los campos"
+    },
+    "reference": {
+      "en": "REF",
+      "es": "REF",
+      "fr": "REF"
+    },
+    "no_reference": {
+      "en": "No reference",
+      "es": "Sin referencia"
+    },
+    "edit_reference": {
+      "en": "Edit reference (REF)",
+      "es": "Editar referencia (REF)",
+      "fr": "Modifier la référence (REF)"
+    },
+    "example_reference": {
+      "en": "Reference (e.g., 1:1)",
+      "es": "Referencia (ej: 1:1)"
+    },
+    "apply": {
+      "en": "Apply",
+      "fr": "Appliquer",
+      "id": "Terap",
+      "es": "Aplicar"
+    },
+    "quote": {
+      "en": "Quote",
+      "es": "Cita"
+    },
+    "occurrence_number": {
+      "en": "Occurrence n°",
+      "es": "N° de ocurrencia"
+    },
+    "occurence": {
+      "en": "Occurrence",
+      "es": "Ocurrencia"
+    },
+    "total_occurrences": {
+      "en": "Total occurrences",
+      "es": "Ocurrencias totales"
+    },
+    "question": {
+      "en": "Question",
+      "es": "Pregunta"
+    },
+    "answer": {
+      "en": "Answer",
+      "es": "Respuesta"
+    },
+    "note": {
+      "en": "Note",
+      "es": "Nota"
+    },
+    "response": {
+      "en": "Response",
+      "es": "Respuesta"
+    },
+    "no_verse": {
+      "en": "No notes found for this verse",
+      "fr": "Pas de note pour ce verset"
+    },
+    "no_question": {
+      "en": "No question found for this verse",
+      "fr": "Aucune question trouvée pour ce verset "
+    },
+    "new_bcv_question": {
+      "en": "New question",
+      "es": "Nueva pregunta"
+    },
+    "new_bcv_note": {
+      "en": "New note",
+      "fr": "Nouvelle note",
+      "id": "Catatan baru",
+      "es": "Nueva nota"
+    },
+    "tags": {
+      "en": "Tags",
+      "es": "Etiquetas"
+    },
+    "support": {
+      "en": "Support reference",
+      "es": "Referencia de ayuda"
+    },
+    "id": {
+      "en": "id",
+      "es": "id"
+    },
+    "ref": {
+      "en": "REF",
+      "es": "REF"
     }
   }
 }
