@@ -65,18 +65,6 @@ export default function MuncherTest() {
       <WrapperNav flavor={["x-bcvnotes", "x-bcvquestions"]} />
 
       <Box sx={{ display: "flex", width: "100%", overflowY: "scroll" }}>
-        {metadata && (
-          <Box sx={{ flex: 1, margin: 2 }}>
-            <BcvNotesEditorMuncher
-              metadata={metadata}
-              debugRef={debugRef}
-              systemBcv={systemBcv}
-              i18nRef={i18nRef}
-              bcvRef={bcvRef}
-              currentProjectRef={currentProjectRef}
-            />
-          </Box>
-        )}
         {metadata && flavor === "x-bcvnotes" && (
           <Box sx={{ flex: 1, margin: 5 }}>
             <BcvNotesViewerMuncher
@@ -94,6 +82,18 @@ export default function MuncherTest() {
               debugRef={debugRef}
               systemBcv={systemBcv}
               i18nRef={i18nRef}
+            />
+          </Box>
+        )}
+        {metadata && (
+          <Box sx={{ flex: 1, margin: 2 }}>
+            <BcvNotesEditorMuncher
+              metadata={metadata}
+              debugRef={debugRef}
+              systemBcv={systemBcv}
+              i18nRef={i18nRef}
+              bcvRef={bcvRef}
+              currentProjectRef={currentProjectRef}
             />
           </Box>
         )}
