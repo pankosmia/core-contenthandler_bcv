@@ -36,7 +36,7 @@
     "react-router-dom": "^7.9.4"
   },
   "scripts": {
-    "publish": "pnpm run build:package  && cd ./src/components/bcvMuncher && npm publish --dry-run",
+    "publish": "pnpm run build:package  && cd ./src/components/bcvMuncher && npm publish",
     "build": "vite build",
     "build:package": "vite build --mode isMuncher",
     "dev": "vite",
