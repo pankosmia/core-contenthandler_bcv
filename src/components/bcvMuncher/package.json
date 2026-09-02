@@ -9,8 +9,9 @@
     "munchersPackageExport"
   ],
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.4.0",
     "@mui/material": "^9.3.1",
     "color": "^5.0.3",
     "file-saver": "^2.0.5",
@@ -37,10 +38,8 @@
     "react-dom": "^19.2.8"
   },
   "scripts": {
-    "publish": "pnpm run build:package  && cd ./src/components/bcvMuncher && npm publish",
-    "start": "vite",
     "build": "vite build",
-    "build:vite": "vite build",
+    "build:package": "vite build --mode isMuncher",
     "dev": "vite",
     "prepare": "husky"
   },

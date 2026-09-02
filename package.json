@@ -9,8 +9,9 @@
     "pnpm": "11.20.0"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.4.0",
     "@mui/material": "^9.3.1",
     "color": "^5.0.3",
     "file-saver": "^2.0.5",
@@ -29,12 +30,13 @@
     "vite": "^6.0.7"
   },
   "peerDependencies": {
+    "notistack": "^3.0.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "notistack": "^3.0.2",
     "react-router-dom": "^7.9.4"
   },
   "scripts": {
+    "publish": "pnpm run build:package  && cd ./src/components/bcvMuncher && npm publish --dry-run",
     "build": "vite build",
     "build:package": "vite build --mode isMuncher",
     "dev": "vite",
