@@ -40,6 +40,7 @@ export default defineConfig(({ mode }) => {
                 "react-dom": "ReactDOM",
                 "react-router-dom": "ReactRouterDOM",
                 "pankosmia-rcl": "pankosmiaRcl",
+                notistack: "notistack",
               },
             },
           },
