@@ -1,6 +1,6 @@
 {
   "name": "pankosmia-bcv-muncher",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "private": false,
   "homepage": "https://github.com/pankosmia/core-contenthandler_bcv",
   "main": "munchersPackageExport/bcv-muncher-rcl.umd.js",
@@ -17,14 +17,9 @@
     "file-saver": "^2.0.5",
     "font-detect-rhl": "^1.1.10",
     "md5": "^2.3.0",
-    "notistack": "^3.0.2",
     "pankosmia-lib": "^0.0.3",
-    "pankosmia-rcl": "0.7.1",
     "prop-types": "^15.8.1",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
     "react-markdown": "^10.1.0",
-    "react-router-dom": "^7.9.4",
     "uuid": "^14.0.2"
   },
   "devDependencies": {
@@ -35,9 +30,10 @@
   },
   "peerDependencies": {
     "notistack": "^3.0.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "pankosmia-rcl": "^0.7.1"
+    "pankosmia-rcl": "^0.7.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^6.27.0"
   },
   "scripts": {
     "build": "vite build",
