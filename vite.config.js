@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
               "./src/components/bcvMuncher/muncher/index.js",
             ),
             name: "pankosmiaRcl",
-            fileName: (format) => `bcv_muncher-rcl.${format}.js`,
+            fileName: (format) => `bcv-muncher-rcl.${format}.js`,
           },
         }
       : {
