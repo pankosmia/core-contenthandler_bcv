@@ -40,6 +40,7 @@ export default defineConfig(({ mode }) => {
                 "react-dom": "ReactDOM",
                 "react-router-dom": "ReactRouterDOM",
                 "pankosmia-rcl": "pankosmiaRcl",
+                notistack: "notistack",
               },
             },
           },
@@ -50,7 +51,7 @@ export default defineConfig(({ mode }) => {
               "./src/components/bcvMuncher/muncher/index.js",
             ),
             name: "pankosmiaRcl",
-            fileName: (format) => `bcv_muncher-rcl.${format}.js`,
+            fileName: (format) => `bcv-muncher-rcl.${format}.js`,
           },
         }
       : {

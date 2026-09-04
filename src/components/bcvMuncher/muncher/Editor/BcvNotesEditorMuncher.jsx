@@ -57,7 +57,7 @@ function BcvNotesEditorMuncher({
   // utilisation de la fonction getAllData
   useEffect(() => {
     getAllData().then();
-  }, [systemBcv.bookCode]);
+  }, [systemBcv?.bookCode]);
 
   const updateBcv = (rowN) => {
     const newCurrentRow = ingredient[rowN][0];

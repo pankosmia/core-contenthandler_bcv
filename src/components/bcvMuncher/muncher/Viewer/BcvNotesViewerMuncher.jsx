@@ -122,13 +122,15 @@ function BcvNotesViewerMuncher({ metadata, debugRef, systemBcv, i18nRef }) {
                   </AccordionSummary>
                   <AccordionDetails>
                     {ingredient && (
-                      <Markdown className="markdown">
-                        {notesContent ||
-                          doI18n(
-                            "pages:core-contenthandler_bcv:no_verse",
-                            i18nRef.current,
-                          )}
-                      </Markdown>
+                      <div className="markdown">
+                        <Markdown>
+                          {notesContent ||
+                            doI18n(
+                              "pages:core-contenthandler_bcv:no_verse",
+                              i18nRef.current,
+                            )}
+                        </Markdown>
+                      </div>
                     )}
                   </AccordionDetails>
                 </Accordion>
