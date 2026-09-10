@@ -59,6 +59,24 @@ function BcvNotesEditorMuncher({
     getAllData().then();
   }, [systemBcv?.bookCode]);
 
+  useEffect(() => {
+    if (!ingredient || ingredient.length === 0 || currentRowN < 1) return;
+
+    const columnNames = ingredient[0] || [];
+    const quoteIndex = columnNames.findIndex((c) =>
+      c.toLowerCase().includes("quote"),
+    );
+    if (quoteIndex === -1) return;
+
+    const snippet = ingredient[currentRowN]?.[quoteIndex]?.trim();
+    if (snippet) {
+      postEmptyJson(
+        `/api/app-state/snippet/${encodeURIComponent(snippet)}`,
+        debugRef.current,
+      );
+    }
+  }, [currentRowN, ingredient]);
+
   const updateBcv = (rowN) => {
     const newCurrentRow = ingredient[rowN][0];
     const newCurrentRowCV = newCurrentRow.split(":");
