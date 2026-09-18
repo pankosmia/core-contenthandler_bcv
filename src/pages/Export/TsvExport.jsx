@@ -9,7 +9,8 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { getText, doI18n, getJson } from "pithekos-lib";
+import { getText, getJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
 import { debugContext, i18nContext, Header } from "pankosmia-rcl";
 
 import { enqueueSnackbar } from "notistack";
@@ -25,13 +26,16 @@ function TsvExport() {
   const [bookNames, setBookNames] = useState([]);
   const [repoPath, setRepoPath] = useState([]);
   const [open, setOpen] = useState(true);
+  const [returnTypePage, setReturnTypePage] = useState(null);
 
   const getProjectSummaries = async () => {
     const hash = window.location.hash;
     const query = hash.includes("?") ? hash.split("?")[1] : "";
     const params = new URLSearchParams(query);
     const path = params.get("repoPath");
+    const returnType = params.get("returnTypePage");
     setRepoPath(path);
+    setReturnTypePage(returnType);
     const summariesResponse = await getJson(
       `/api/burrito/metadata/summary/${path}`,
       debugContext.current,
@@ -84,13 +88,21 @@ function TsvExport() {
 
   const handleClose = () => {
     setOpen(false);
+    if (returnTypePage === "dashboard") {
+      return (window.location.href = "/clients/main");
+    }
     return (window.location.href = "/clients/content");
   };
 
   const handleCloseCreate = async () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    window.location.href = "/clients/content";
+    if (returnTypePage === "dashboard") {
+      window.location.href = "/clients/main";
+    } else {
+      window.location.href = "/clients/content";
+    }
   };
+
   useEffect(() => {
     const doFetch = async () => {
       const versificationResponse = await getJson(

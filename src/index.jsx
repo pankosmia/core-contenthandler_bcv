@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { getAndSetJson } from "pithekos-lib";
+import { getAndSetJson } from "pankosmia-lib/http";
 import { SpaContainer } from "pankosmia-rcl";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
@@ -11,6 +11,7 @@ import { MaterialDesignContent, SnackbarProvider } from "notistack";
 import { ThemeProvider } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { createTheme, styled } from "@mui/material";
+import MuncherTest from "./pages/MuncherTest";
 
 const router = createHashRouter([
   {
@@ -28,6 +29,10 @@ const router = createHashRouter([
   {
     path: "/export/tsv",
     element: <TsvExport />,
+  },
+  {
+    path: "/MuncherTest",
+    element: <MuncherTest />,
   },
 ]);
 

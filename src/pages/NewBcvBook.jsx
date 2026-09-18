@@ -1,7 +1,8 @@
 import { useState, useContext, useEffect } from "react";
-import { Box, DialogContent, DialogContentText, Grid2 } from "@mui/material";
+import { Box, DialogContent, DialogContentText, Grid } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
-import { postJson, doI18n, getJson } from "pithekos-lib";
+import { postJson, getJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
 import { i18nContext, debugContext, Header } from "pankosmia-rcl";
 import {
   PanDialog,
@@ -161,11 +162,10 @@ export default function NewBcvBook() {
           )}
         </DialogContentText>
         <DialogContent>
-          <Grid2
+          <Grid
             container
+            sx={{ justifyItems: "flex-end", alignItems: "stretch" }}
             spacing={2}
-            justifyItems="flex-end"
-            alignItems="stretch"
           >
             {fileVrs === false ? (
               <PanVersificationPicker
@@ -186,7 +186,7 @@ export default function NewBcvBook() {
               bookProject={bookName}
               addVerses={false}
             />
-          </Grid2>
+          </Grid>
         </DialogContent>
         <PanDialogActions
           closeFn={() => handleClose()}
