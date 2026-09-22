@@ -43,7 +43,6 @@ function TsvLineForm({
   const columnNames = ingredient[0] || [];
   const [openRefDialog, setOpenRefDialog] = useState(false);
   const [tempRef, setTempRef] = useState("");
-
   const isCreate = mode === "add";
   const isQuestionsFlavor =
     resourceType === "new_bcv_question" ||

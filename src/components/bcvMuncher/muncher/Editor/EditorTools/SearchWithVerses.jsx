@@ -26,6 +26,8 @@ function SearchWithVerses({
   setRefDisabled,
   resourceType,
   i18nRef,
+  showAllFields,
+  setShowAllFields,
 }) {
   const [openVerses, setOpenVerses] = useState({});
   const [openedModal, setOpenedModal] = useState(null);
@@ -104,6 +106,8 @@ function SearchWithVerses({
         setRefDisabled={setRefDisabled}
         resourceType={resourceType}
         i18nRef={i18nRef}
+        showAllFields={showAllFields}
+        setShowAllFields={setShowAllFields}
       />
       <Box
         sx={{
@@ -273,6 +277,8 @@ function SearchWithVerses({
         setRefDisabled={setRefDisabled}
         resourceType={resourceType}
         i18nRef={i18nRef}
+        showAllFields={showAllFields}
+        setShowAllFields={setShowAllFields}
       />
     </Stack>
   );
