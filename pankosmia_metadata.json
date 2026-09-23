@@ -480,6 +480,10 @@
       "en": "This book already exists",
       "fr": "Ce livre existe déjà",
       "es": "Este libro ya existe"
+    },
+    "bad_book_code_filename": {
+      "en": "The file name must start with a 3-letter book code.",
+      "fr": "Le nom du fichier doit commencer par un code livre composé de 3 lettres."
     }
   }
 }

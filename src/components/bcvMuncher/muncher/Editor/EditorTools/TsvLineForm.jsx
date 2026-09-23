@@ -260,174 +260,229 @@ function TsvLineForm({
 
   return (
     <Box sx={{ padding: 1, justifyContent: "center", height: "50%" }}>
-      <ActionsButtons
-        updateBcv={updateBcv}
-        rowData={currentRow}
-        saveFunction={saveFunction}
-        handleCancel={handleCancel}
-        mode={mode}
-        ingredient={ingredient}
-        setIngredient={setIngredient}
-        currentRowN={currentRowN}
-        setCurrentRowN={setCurrentRowN}
-        cellValueChanged={cellValueChanged}
-        setCellValueChanged={setCellValueChanged}
-        i18nRef={i18nRef}
-      />
-      {isQuestionsFlavor && (
-        <FormControlLabel
-          control={
-            <Switch
-              checked={showAllFields}
-              onChange={(e) => setShowAllFields(e.target.checked)}
-              size="small"
-            />
-          }
-          label={
-            doI18n(
-              "pages:core-contenthandler_bcv:show_all_fields",
-              i18nRef.current,
-            ) || "Show all fields"
-          }
-          sx={{ mb: 1 }}
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          padding: 1,
+          justifyContent: "center",
+          top: 0,
+          zIndex: 1100,
+          position: "sticky",
+          background: "white",
+        }}
+      >
+        <ActionsButtons
+          updateBcv={updateBcv}
+          rowData={currentRow}
+          saveFunction={saveFunction}
+          handleCancel={handleCancel}
+          mode={mode}
+          ingredient={ingredient}
+          setIngredient={setIngredient}
+          currentRowN={currentRowN}
+          setCurrentRowN={setCurrentRowN}
+          cellValueChanged={cellValueChanged}
+          setCellValueChanged={setCellValueChanged}
+          i18nRef={i18nRef}
         />
-      )}
-      {!isCreate && (
-        <Button
-          variant="text"
-          size="small"
-          startIcon={<EditIcon />}
-          onClick={handleOpenRef}
-          sx={{ mb: 1, color: "text.secondary" }}
-        >
-          {doI18n("pages:core-contenthandler_bcv:reference", i18nRef.current)}{" "}
-          {currentRow[refIndex] ||
-            doI18n(
-              "pages:core-contenthandler_bcv:no_reference",
-              i18nRef.current,
-            )}
-        </Button>
-      )}
-      <Dialog open={openRefDialog} onClose={() => setOpenRefDialog(false)}>
-        <DialogTitle>
-          {doI18n(
-            "pages:core-contenthandler_bcv:edit_reference",
-            i18nRef.current,
-          )}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label={doI18n(
-              "pages:core-contenthandler_bcv:example_reference",
-              i18nRef.current,
-            )}
-            fullWidth
-            value={tempRef}
-            onChange={(e) => {
-              const cleanRef = e.target.value.replace(/\s/g, "");
-              setTempRef(cleanRef);
-            }}
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenRefDialog(false)}>
-            {doI18n("pages:core-contenthandler_bcv:cancel", i18nRef.current)}
-          </Button>
-          <Button onClick={handleSaveRef} variant="contained">
-            {doI18n("pages:core-contenthandler_bcv:apply", i18nRef.current)}
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {activeColumns.map((column) => {
-        const cleanColumn = column.trim().replace(/\r/g, "").toLowerCase();
-        const isRef =
-          cleanColumn.toLowerCase() === "ref" ||
-          cleanColumn.toLowerCase() === "reference";
-        const isId = cleanColumn.toLowerCase().includes("id");
-        const isRefOrId = ["ref", "id", "reference"].includes(
-          cleanColumn.toLowerCase(),
-        );
-        const realIndex = columnNames.findIndex(
-          (col) =>
-            col.replace("\r", "").trim().toLowerCase() ===
-            cleanColumn.toLowerCase(),
-        );
-
-        if (realIndex === -1) return null;
-
-        if (!isCreate && isRefOrId && !refDisabled) {
-          return null;
-        }
-
-        if (cleanColumn === "quote" && isNoteResource()) {
-          return (
-            <Stack
-              direction="row"
-              spacing={1}
-              alignItems="flex-end"
-              key="snippet-row"
-              sx={{ pt: 1, mb: 2 }}
-            >
-              <TextField
-                label={doI18n(
-                  "pages:core-contenthandler_bcv:quote",
-                  i18nRef.current,
-                )}
-                value={currentRow[quoteIndex] || ""}
-                onChange={(e) => changeCell(e, quoteIndex)}
-                fullWidth
+      </Box>
+      <Box>
+        {isQuestionsFlavor && (
+          <FormControlLabel
+            control={
+              <Switch
+                checked={showAllFields}
+                onChange={(e) => setShowAllFields(e.target.checked)}
                 size="small"
               />
+            }
+            label={
+              doI18n(
+                "pages:core-contenthandler_bcv:show_all_fields",
+                i18nRef.current,
+              ) || "Show all fields"
+            }
+            sx={{ mb: 1, marginLeft: 0 }}
+          />
+        )}
+        {!isCreate && (
+          <Button
+            variant="text"
+            size="small"
+            startIcon={<EditIcon />}
+            onClick={handleOpenRef}
+            sx={{ mb: 1, color: "text.secondary" }}
+          >
+            {doI18n("pages:core-contenthandler_bcv:reference", i18nRef.current)}{" "}
+            {currentRow[refIndex] ||
+              doI18n(
+                "pages:core-contenthandler_bcv:no_reference",
+                i18nRef.current,
+              )}
+          </Button>
+        )}
+        <Dialog open={openRefDialog} onClose={() => setOpenRefDialog(false)}>
+          <DialogTitle>
+            {doI18n(
+              "pages:core-contenthandler_bcv:edit_reference",
+              i18nRef.current,
+            )}
+          </DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label={doI18n(
+                "pages:core-contenthandler_bcv:example_reference",
+                i18nRef.current,
+              )}
+              fullWidth
+              value={tempRef}
+              onChange={(e) => {
+                const cleanRef = e.target.value.replace(/\s/g, "");
+                setTempRef(cleanRef);
+              }}
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenRefDialog(false)}>
+              {doI18n("pages:core-contenthandler_bcv:cancel", i18nRef.current)}
+            </Button>
+            <Button onClick={handleSaveRef} variant="contained">
+              {doI18n("pages:core-contenthandler_bcv:apply", i18nRef.current)}
+            </Button>
+          </DialogActions>
+        </Dialog>
+        {activeColumns.map((column) => {
+          const cleanColumn = column.trim().replace(/\r/g, "").toLowerCase();
+          const isRef =
+            cleanColumn.toLowerCase() === "ref" ||
+            cleanColumn.toLowerCase() === "reference";
+          const isId = cleanColumn.toLowerCase().includes("id");
+          const isRefOrId = ["ref", "id", "reference"].includes(
+            cleanColumn.toLowerCase(),
+          );
+          const realIndex = columnNames.findIndex(
+            (col) =>
+              col.replace("\r", "").trim().toLowerCase() ===
+              cleanColumn.toLowerCase(),
+          );
+
+          if (realIndex === -1) return null;
+
+          if (!isCreate && isRefOrId && !refDisabled) {
+            return null;
+          }
+
+          if (cleanColumn === "quote" && isNoteResource()) {
+            return (
               <Stack
                 direction="row"
-                alignItems="center"
-                spacing={0}
-                sx={{ width: "40%" }}
+                spacing={1}
+                alignItems="flex-end"
+                key="snippet-row"
+                sx={{ pt: 1, mb: 2 }}
               >
+                <TextField
+                  label={doI18n(
+                    "pages:core-contenthandler_bcv:quote",
+                    i18nRef.current,
+                  )}
+                  value={currentRow[quoteIndex] || ""}
+                  onChange={(e) => changeCell(e, quoteIndex)}
+                  fullWidth
+                  size="small"
+                />
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={0}
+                  sx={{ width: "40%" }}
+                >
+                  <TextField
+                    fullWidth
+                    label={doI18n(
+                      "pages:core-contenthandler_bcv:occurrence_number",
+                      i18nRef.current,
+                    )}
+                    value={
+                      currentRow[occIndex]?.toString() === "0" ||
+                      !currentRow[occIndex]
+                        ? ""
+                        : currentRow[occIndex].toString()
+                    }
+                    size="small"
+                    onFocus={() => {
+                      const currentVal = currentRow[occIndex]?.toString();
+                      if (!currentVal || currentVal === "0") {
+                        const newRow = [...currentRow];
+                        newRow[occIndex] = suggestedOrder;
+                        setCurrentRow(newRow);
+                        setCellValueChanged(true);
+                      }
+                    }}
+                    slotProps={{
+                      input: {
+                        readOnly: true,
+                        sx: {
+                          textAlign: "center",
+                          fontWeight: "bold",
+                        },
+                        endAdornment: (
+                          <Stack direction="column" sx={{ mr: -0.5 }}>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleNudge(1, occIndex)}
+                              sx={{ p: 0, height: 15 }}
+                            >
+                              <ArrowDropUpIcon fontSize="inherit" />
+                            </IconButton>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleNudge(-1, occIndex)}
+                              sx={{ p: 0, height: 15 }}
+                            >
+                              <ArrowDropDownIcon fontSize="inherit" />
+                            </IconButton>
+                          </Stack>
+                        ),
+                      },
+                      inputLabel: {
+                        shrink: !!(
+                          currentRow[occIndex] &&
+                          currentRow[occIndex].toString() !== "0"
+                        ),
+                      },
+                    }}
+                  />
+                </Stack>
                 <TextField
                   fullWidth
                   label={doI18n(
-                    "pages:core-contenthandler_bcv:occurrence_number",
+                    "pages:core-contenthandler_bcv:total_occurrences",
                     i18nRef.current,
                   )}
-                  value={
-                    currentRow[occIndex]?.toString() === "0" ||
-                    !currentRow[occIndex]
-                      ? ""
-                      : currentRow[occIndex].toString()
-                  }
+                  value={currentRow[occsIndex] || ""}
                   size="small"
-                  onFocus={() => {
-                    const currentVal = currentRow[occIndex]?.toString();
-                    if (!currentVal || currentVal === "0") {
-                      const newRow = [...currentRow];
-                      newRow[occIndex] = suggestedOrder;
-                      setCurrentRow(newRow);
-                      setCellValueChanged(true);
-                    }
-                  }}
+                  sx={{ width: "40%" }}
                   slotProps={{
                     input: {
                       readOnly: true,
-                      sx: {
-                        textAlign: "center",
-                        fontWeight: "bold",
-                      },
+                      sx: { textAlign: "center", fontWeight: "bold" },
                       endAdornment: (
                         <Stack direction="column" sx={{ mr: -0.5 }}>
                           <IconButton
                             size="small"
-                            onClick={() => handleNudge(1, occIndex)}
+                            onClick={() => handleNudge(1, occsIndex)}
                             sx={{ p: 0, height: 15 }}
                           >
                             <ArrowDropUpIcon fontSize="inherit" />
                           </IconButton>
                           <IconButton
                             size="small"
-                            onClick={() => handleNudge(-1, occIndex)}
+                            onClick={() => handleNudge(-1, occsIndex)}
                             sx={{ p: 0, height: 15 }}
                           >
                             <ArrowDropDownIcon fontSize="inherit" />
@@ -435,128 +490,92 @@ function TsvLineForm({
                         </Stack>
                       ),
                     },
-                    inputLabel: {
-                      shrink: !!(
-                        currentRow[occIndex] &&
-                        currentRow[occIndex].toString() !== "0"
-                      ),
-                    },
+                    inputLabel: { shrink: !!currentRow[occsIndex] },
+                  }}
+                  onFocus={() => {
+                    if (!currentRow[occsIndex]) {
+                      const newRow = [...currentRow];
+                      newRow[occsIndex] = totalNotesInRef.toString();
+                      setCurrentRow(newRow);
+                      setCellValueChanged(true);
+                    }
                   }}
                 />
               </Stack>
-              <TextField
-                fullWidth
-                label={doI18n(
-                  "pages:core-contenthandler_bcv:total_occurrences",
-                  i18nRef.current,
-                )}
-                value={currentRow[occsIndex] || ""}
-                size="small"
-                sx={{ width: "40%" }}
-                slotProps={{
-                  input: {
-                    readOnly: true,
-                    sx: { textAlign: "center", fontWeight: "bold" },
-                    endAdornment: (
-                      <Stack direction="column" sx={{ mr: -0.5 }}>
-                        <IconButton
-                          size="small"
-                          onClick={() => handleNudge(1, occsIndex)}
-                          sx={{ p: 0, height: 15 }}
-                        >
-                          <ArrowDropUpIcon fontSize="inherit" />
-                        </IconButton>
-                        <IconButton
-                          size="small"
-                          onClick={() => handleNudge(-1, occsIndex)}
-                          sx={{ p: 0, height: 15 }}
-                        >
-                          <ArrowDropDownIcon fontSize="inherit" />
-                        </IconButton>
-                      </Stack>
-                    ),
-                  },
-                  inputLabel: { shrink: !!currentRow[occsIndex] },
-                }}
-                onFocus={() => {
-                  if (!currentRow[occsIndex]) {
-                    const newRow = [...currentRow];
-                    newRow[occsIndex] = totalNotesInRef.toString();
-                    setCurrentRow(newRow);
-                    setCellValueChanged(true);
-                  }
-                }}
-              />
-            </Stack>
-          );
-        }
+            );
+          }
 
-        if (cleanColumn === "occurrence" || cleanColumn === "occurence") {
-          return null;
-        }
+          if (cleanColumn === "occurrence" || cleanColumn === "occurence") {
+            return null;
+          }
 
-        return (
-          <FormControl fullWidth margin="normal" key={cleanColumn + realIndex}>
-            {["note", "question", "response"].some((word) =>
-              cleanColumn.toLowerCase().includes(word),
-            ) ? (
-              <MarkdownField
-                value={currentRow[realIndex]}
-                columnNames={columnNames}
-                onChangeNote={(e) => changeCell(e, realIndex)}
-                fieldN={realIndex}
-                ingredient={ingredient}
-                currentRowN={currentRowN}
-                mode={mode}
-                i18nRef={i18nRef}
-                label={
-                  cleanColumn === "question"
-                    ? doI18n(
-                        "pages:core-contenthandler_bcv:question",
-                        i18nRef.current,
-                      ) || "question"
-                    : cleanColumn === "response"
+          return (
+            <FormControl
+              fullWidth
+              margin="normal"
+              key={cleanColumn + realIndex}
+            >
+              {["note", "question", "response"].some((word) =>
+                cleanColumn.toLowerCase().includes(word),
+              ) ? (
+                <MarkdownField
+                  value={currentRow[realIndex]}
+                  columnNames={columnNames}
+                  onChangeNote={(e) => changeCell(e, realIndex)}
+                  fieldN={realIndex}
+                  ingredient={ingredient}
+                  currentRowN={currentRowN}
+                  mode={mode}
+                  i18nRef={i18nRef}
+                  label={
+                    cleanColumn === "question"
                       ? doI18n(
-                          "pages:core-contenthandler_bcv:answer",
+                          "pages:core-contenthandler_bcv:question",
                           i18nRef.current,
-                        ) || "answer"
-                      : doI18n(
-                          "pages:core-contenthandler_bcv:note",
-                          i18nRef.current,
-                        ) || "note"
-                }
-              />
-            ) : (
-              <TextField
-                label={doI18n(
-                  `pages:core-contenthandler_bcv:${cleanColumn}`,
-                  i18nRef.current,
-                )}
-                value={currentRow[realIndex] || ""}
-                placeholder={
-                  cleanColumn.includes("Reference") ||
-                  cleanColumn.includes("REF")
-                    ? "1:1"
-                    : ""
-                }
-                required={
-                  cleanColumn.includes("Reference") ||
-                  cleanColumn.includes("REF")
-                }
-                disabled={
-                  isId || (mode === "edit" && isRef) || (refDisabled && isRef)
-                }
-                variant="outlined"
-                fullWidth
-                size="small"
-                onChange={(e) => {
-                  changeCell(e, realIndex);
-                }}
-              />
-            )}
-          </FormControl>
-        );
-      })}
+                        ) || "question"
+                      : cleanColumn === "response"
+                        ? doI18n(
+                            "pages:core-contenthandler_bcv:answer",
+                            i18nRef.current,
+                          ) || "answer"
+                        : doI18n(
+                            "pages:core-contenthandler_bcv:note",
+                            i18nRef.current,
+                          ) || "note"
+                  }
+                />
+              ) : (
+                <TextField
+                  label={doI18n(
+                    `pages:core-contenthandler_bcv:${cleanColumn}`,
+                    i18nRef.current,
+                  )}
+                  value={currentRow[realIndex] || ""}
+                  placeholder={
+                    cleanColumn.includes("Reference") ||
+                    cleanColumn.includes("REF")
+                      ? "1:1"
+                      : ""
+                  }
+                  required={
+                    cleanColumn.includes("Reference") ||
+                    cleanColumn.includes("REF")
+                  }
+                  disabled={
+                    isId || (mode === "edit" && isRef) || (refDisabled && isRef)
+                  }
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  onChange={(e) => {
+                    changeCell(e, realIndex);
+                  }}
+                />
+              )}
+            </FormControl>
+          );
+        })}
+      </Box>
     </Box>
   );
 }

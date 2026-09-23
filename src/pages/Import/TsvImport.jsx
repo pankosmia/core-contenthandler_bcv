@@ -8,17 +8,6 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { PanDialog, PanDialogActions } from "pankosmia-rcl";
 import { useFilePicker } from "use-file-picker";
 
-const LINE2_REGEX = /^(?=(?:[^\t]*\t){6,})(?=.*:).*$/;
-
-function validateTsv(text) {
-  const lines = text
-    .replace(/\r\n/g, "\n")
-    .split("\n")
-    .filter((l) => l !== "");
-  const line2 = lines[1] ?? "";
-  return LINE2_REGEX.test(line2);
-}
-
 export default function TsvImport() {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -29,7 +18,7 @@ export default function TsvImport() {
   const [repoBooks, setRepoBooks] = useState([]);
   const [repoPath, setRepoPath] = useState([]);
   const [nameProject, setNameProject] = useState("");
-
+  const [resourceType, setResourceType] = useState("");
   const [loading, setLoading] = useState(false);
   const [filePicked, setFilePicked] = useState(null);
   const [localTsvContent, setLocalTsvContent] = useState(null);
@@ -48,6 +37,21 @@ export default function TsvImport() {
   const typePageQuery = new URLSearchParams(query[2]);
   const path = repoPathQuery.get("repoPath");
   const returnType = typePageQuery.get("returnTypePage");
+
+  const LINE2_REGEX = /^(?=(?:[^\t]*\t){6,})(?=.*:).*$/;
+
+  function validateTsv(text) {
+    const lines = text
+      .replace(/\r\n/g, "\n")
+      .split("\n")
+      .filter((l) => l !== "");
+    const header = lines[0] ?? "";
+    const columns = header.split("\t").map((c) => c.trim().toLowerCase());
+    setResourceType(columns.includes("note") ? "Notes" : "Questions");
+
+    const line2 = lines[1] ?? "";
+    return LINE2_REGEX.test(line2);
+  }
 
   const bookCodeFromFile = filePicked
     ? filePicked.split(".")[0].toUpperCase()
@@ -86,6 +90,31 @@ export default function TsvImport() {
     setLocalTsvContent(file.content);
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (tsvFiles.length > 0) {
+      const file = tsvFiles[0];
+
+      const bookCode = file.name.split(".")[0].toUpperCase();
+
+      if (!/^[A-Z]{3}$/.test(bookCode)) {
+        enqueueSnackbar(
+          doI18n(
+            "pages:core-contenthandler_bcv:bad_book_code_filename",
+            i18nRef.current,
+          ),
+          { variant: "error" },
+        );
+
+        setFilePicked(null);
+        setLocalTsvContent(null);
+        return;
+      }
+
+      setFilePicked(file.name);
+      handleFilePicked(file);
+    }
+  }, [tsvFiles]);
 
   const handleCreateLocalBook = async (tsvContent, repoPathArg) => {
     if (!bookCodeFromFile) {
@@ -212,7 +241,7 @@ export default function TsvImport() {
           {localTsvContent !== null && isTsvValid && !bookIsDuplicate && (
             <Stack spacing={2} sx={{ mt: 0.5 }}>
               <Typography variant="body1">
-                {`Book Code: ${bookCodeFromFile}`}
+                {`Book Code: ${bookCodeFromFile}(${resourceType})`}
               </Typography>
             </Stack>
           )}
