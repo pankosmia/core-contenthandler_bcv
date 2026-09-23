@@ -260,6 +260,20 @@ function TsvLineForm({
 
   return (
     <Box sx={{ padding: 1, justifyContent: "center", height: "50%" }}>
+      <ActionsButtons
+        updateBcv={updateBcv}
+        rowData={currentRow}
+        saveFunction={saveFunction}
+        handleCancel={handleCancel}
+        mode={mode}
+        ingredient={ingredient}
+        setIngredient={setIngredient}
+        currentRowN={currentRowN}
+        setCurrentRowN={setCurrentRowN}
+        cellValueChanged={cellValueChanged}
+        setCellValueChanged={setCellValueChanged}
+        i18nRef={i18nRef}
+      />
       {isQuestionsFlavor && (
         <FormControlLabel
           control={
@@ -543,20 +557,6 @@ function TsvLineForm({
           </FormControl>
         );
       })}
-      <ActionsButtons
-        updateBcv={updateBcv}
-        rowData={currentRow}
-        saveFunction={saveFunction}
-        handleCancel={handleCancel}
-        mode={mode}
-        ingredient={ingredient}
-        setIngredient={setIngredient}
-        currentRowN={currentRowN}
-        setCurrentRowN={setCurrentRowN}
-        cellValueChanged={cellValueChanged}
-        setCellValueChanged={setCellValueChanged}
-        i18nRef={i18nRef}
-      />
     </Box>
   );
 }

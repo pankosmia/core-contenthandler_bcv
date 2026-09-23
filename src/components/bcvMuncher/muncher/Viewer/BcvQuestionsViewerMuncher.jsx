@@ -169,7 +169,9 @@ function BcvQuestionsViewerMuncher({ metadata, systemBcv, debugRef, i18nRef }) {
                   </AccordionSummary>
                   <AccordionDetails>
                     {ingredient && (
-                      <Markdown className="markdown">{`${verseAnswers[n]}`}</Markdown>
+                      <div className="markdown">
+                        <Markdown>{`${verseAnswers[n]}`}</Markdown>
+                      </div>
                     )}
                   </AccordionDetails>
                 </Accordion>
