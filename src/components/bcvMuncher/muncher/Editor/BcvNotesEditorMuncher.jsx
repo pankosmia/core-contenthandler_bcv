@@ -37,7 +37,7 @@ function BcvNotesEditorMuncher({
   const [currentChapter, setCurrentChapter] = useState("1");
   const [refDisabled, setRefDisabled] = useState(false);
   const [resourceType, setResourceType] = useState("new_bcv_note");
-  const [showAllFields, setShowAllFields] = useState(false);
+  const [showAllFields, setShowAllFields] = useState(true);
 
   const navigate = useNavigate();
 
