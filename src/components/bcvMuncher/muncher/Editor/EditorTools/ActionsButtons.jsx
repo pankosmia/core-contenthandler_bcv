@@ -54,7 +54,13 @@ function ActionsButtons({
   return (
     <Box>
       <Box
-        sx={{ display: "flex", gap: 2, padding: 1, justifyContent: "center" }}
+        sx={{
+          display: "flex",
+          gap: 2,
+          padding: 1,
+          justifyContent: "center",
+          position: "sticky",
+        }}
       >
         {mode === "edit" && (
           <>
