@@ -23,6 +23,18 @@
           "url": "/newBook?repoPath=%%REPO_PATH%%"
         }
       ],
+      "import_book": [
+        {
+          "doc": "Import a book into a bcv document",
+          "placeHolders": {
+            "REPO_PATH": {
+              "doc": "The path to the repo in <X>/<Y>/<Z> format"
+            }
+          },
+          "label": "pages:content:import_book",
+          "url": "/importBook?repoPath=%%REPO_PATH%%"
+        }
+      ],
       "export": [
         {
           "subMenu": [
@@ -59,6 +71,18 @@
         {
           "label": "pages:content:new_book",
           "url": "/newBook?repoPath=%%REPO_PATH%%"
+        }
+      ],
+      "import_book": [
+        {
+          "doc": "Import a book into a bcv document",
+          "placeHolders": {
+            "REPO_PATH": {
+              "doc": "The path to the repo in <X>/<Y>/<Z> format"
+            }
+          },
+          "label": "pages:content:import_book",
+          "url": "/importBook?repoPath=%%REPO_PATH%%"
         }
       ],
       "export": [
@@ -425,6 +449,37 @@
     "ref": {
       "en": "REF",
       "es": "REF"
+    },
+    "no_tsv_id_found": {
+      "en": "",
+      "fr": ""
+    },
+    "book_created": {
+      "en": "Book created",
+      "fr": "Livre créé",
+      "id": "Buku telah dibuat",
+      "es": "Libro creado"
+    },
+    "import_content": {
+      "en": "Import from computer",
+      "es": "Importar desde la computadora",
+      "fr": "Importer depuis l'ordinateur",
+      "id": "Impor dari komputer"
+    },
+    "import_click": {
+      "en": "Import TSV file",
+      "fr": "Importer fichier TSV",
+      "es": "Importar el archivo TSV"
+    },
+    "tsv_invalid": {
+      "en": "The file should be in the TSV format",
+      "fr": "Le fichier devrait être au format TSV",
+      "es": "Este archivo debe estar en formato TSV"
+    },
+    "book_already_exists": {
+      "en": "This book already exists",
+      "fr": "Ce livre existe déjà",
+      "es": "Este libro ya existe"
     }
   }
 }

@@ -12,7 +12,7 @@ import { ThemeProvider } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { createTheme, styled } from "@mui/material";
 import MuncherTest from "./pages/MuncherTest";
-
+import TsvImport from "./pages/Import/TsvImport";
 const router = createHashRouter([
   {
     path: "/",
@@ -33,6 +33,10 @@ const router = createHashRouter([
   {
     path: "/MuncherTest",
     element: <MuncherTest />,
+  },
+  {
+    path: "importBook",
+    element: <TsvImport />,
   },
 ]);
 

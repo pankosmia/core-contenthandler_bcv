@@ -20,6 +20,7 @@
     "pankosmia-lib": "^0.0.3",
     "prop-types": "^15.8.1",
     "react-markdown": "^10.1.0",
+    "use-file-picker": "^2.1.4",
     "uuid": "^14.0.2"
   },
   "devDependencies": {
