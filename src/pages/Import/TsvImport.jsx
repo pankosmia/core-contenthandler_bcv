@@ -91,31 +91,9 @@ export default function TsvImport() {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (tsvFiles.length > 0) {
-      const file = tsvFiles[0];
-
-      const bookCode = file.name.split(".")[0].toUpperCase();
-
-      if (!/^[A-Z]{3}$/.test(bookCode)) {
-        enqueueSnackbar(
-          doI18n(
-            "pages:core-contenthandler_bcv:bad_book_code_filename",
-            i18nRef.current,
-          ),
-          { variant: "error" },
-        );
-
-        setFilePicked(null);
-        setLocalTsvContent(null);
-        return;
-      }
-
-      setFilePicked(file.name);
-      handleFilePicked(file);
-    }
-  }, [tsvFiles]);
-
+  const isBookCodeValid =
+    bookCodeFromFile !== null &&
+    /^(?:[0-9]{3}|[0-9][A-Z]{2})$/.test(bookCodeFromFile);
   const handleCreateLocalBook = async (tsvContent, repoPathArg) => {
     if (!bookCodeFromFile) {
       enqueueSnackbar(
@@ -127,6 +105,7 @@ export default function TsvImport() {
       );
       return;
     }
+
     if (repoBooks.includes(bookCodeFromFile)) {
       return;
     }
@@ -224,27 +203,35 @@ export default function TsvImport() {
                   )}
           </Button>
 
-          {localTsvContent !== null && (bookIsDuplicate || !isTsvValid) && (
-            <Typography sx={{ color: "red", paddingTop: "8px" }}>
-              {!isTsvValid
-                ? doI18n(
-                    "pages:core-contenthandler_bcv:tsv_invalid",
-                    i18nRef.current,
-                  )
-                : doI18n(
-                    "pages:core-contenthandler_bcv:book_already_exists",
-                    i18nRef.current,
-                  )}
-            </Typography>
-          )}
-
-          {localTsvContent !== null && isTsvValid && !bookIsDuplicate && (
-            <Stack spacing={2} sx={{ mt: 0.5 }}>
-              <Typography variant="body1">
-                {`Book Code: ${bookCodeFromFile}(${resourceType})`}
+          {localTsvContent !== null &&
+            (!isBookCodeValid || !isTsvValid || bookIsDuplicate) && (
+              <Typography sx={{ color: "red", paddingTop: "8px" }}>
+                {!isBookCodeValid
+                  ? doI18n(
+                      "pages:core-contenthandler_bcv:bad_book_code_filename",
+                      i18nRef.current,
+                    )
+                  : !isTsvValid
+                    ? doI18n(
+                        "pages:core-contenthandler_bcv:tsv_invalid",
+                        i18nRef.current,
+                      )
+                    : doI18n(
+                        "pages:core-contenthandler_bcv:book_already_exists",
+                        i18nRef.current,
+                      )}
               </Typography>
-            </Stack>
-          )}
+            )}
+          {localTsvContent !== null &&
+            isBookCodeValid &&
+            isTsvValid &&
+            !bookIsDuplicate && (
+              <Stack spacing={2} sx={{ mt: 0.5 }}>
+                <Typography variant="body1">
+                  {`Book Code: ${bookCodeFromFile}(${resourceType})`}
+                </Typography>
+              </Stack>
+            )}
         </DialogContent>
         <PanDialogActions
           closeFn={() => {
@@ -263,7 +250,11 @@ export default function TsvImport() {
             "pages:core-contenthandler_bcv:create",
             i18nRef.current,
           )}
-          isDisabled={localTsvContent ? bookIsDuplicate || !isTsvValid : true}
+          isDisabled={
+            localTsvContent
+              ? !isBookCodeValid || bookIsDuplicate || !isTsvValid
+              : true
+          }
         />
       </PanDialog>
     </Box>

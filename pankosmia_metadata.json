@@ -482,8 +482,8 @@
       "es": "Este libro ya existe"
     },
     "bad_book_code_filename": {
-      "en": "The file name must start with a 3-letter book code.",
-      "fr": "Le nom du fichier doit commencer par un code livre composé de 3 lettres."
+      "en": "The file name must start with a valid 3-character book code (e.g. GEN, 1JN).",
+      "fr": "Le nom du fichier doit commencer par un code livre valide de 3 caractères (ex. GEN, 1JN)."
     }
   }
 }
