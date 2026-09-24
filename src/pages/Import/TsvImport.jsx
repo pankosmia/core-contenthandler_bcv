@@ -8,17 +8,6 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { PanDialog, PanDialogActions } from "pankosmia-rcl";
 import { useFilePicker } from "use-file-picker";
 
-const LINE2_REGEX = /^(?=(?:[^\t]*\t){6,})(?=.*:).*$/;
-
-function validateTsv(text) {
-  const lines = text
-    .replace(/\r\n/g, "\n")
-    .split("\n")
-    .filter((l) => l !== "");
-  const line2 = lines[1] ?? "";
-  return LINE2_REGEX.test(line2);
-}
-
 export default function TsvImport() {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -29,7 +18,7 @@ export default function TsvImport() {
   const [repoBooks, setRepoBooks] = useState([]);
   const [repoPath, setRepoPath] = useState([]);
   const [nameProject, setNameProject] = useState("");
-
+  const [resourceType, setResourceType] = useState("");
   const [loading, setLoading] = useState(false);
   const [filePicked, setFilePicked] = useState(null);
   const [localTsvContent, setLocalTsvContent] = useState(null);
@@ -48,6 +37,21 @@ export default function TsvImport() {
   const typePageQuery = new URLSearchParams(query[2]);
   const path = repoPathQuery.get("repoPath");
   const returnType = typePageQuery.get("returnTypePage");
+
+  const LINE2_REGEX = /^(?=(?:[^\t]*\t){6,})(?=.*:).*$/;
+
+  function validateTsv(text) {
+    const lines = text
+      .replace(/\r\n/g, "\n")
+      .split("\n")
+      .filter((l) => l !== "");
+    const header = lines[0] ?? "";
+    const columns = header.split("\t").map((c) => c.trim().toLowerCase());
+    setResourceType(columns.includes("note") ? "Notes" : "Questions");
+
+    const line2 = lines[1] ?? "";
+    return LINE2_REGEX.test(line2);
+  }
 
   const bookCodeFromFile = filePicked
     ? filePicked.split(".")[0].toUpperCase()
@@ -87,6 +91,9 @@ export default function TsvImport() {
     setLoading(false);
   };
 
+  const isBookCodeValid =
+    bookCodeFromFile !== null &&
+    /^(?:[0-9]{3}|[0-9][A-Z]{2})$/.test(bookCodeFromFile);
   const handleCreateLocalBook = async (tsvContent, repoPathArg) => {
     if (!bookCodeFromFile) {
       enqueueSnackbar(
@@ -98,6 +105,7 @@ export default function TsvImport() {
       );
       return;
     }
+
     if (repoBooks.includes(bookCodeFromFile)) {
       return;
     }
@@ -195,27 +203,35 @@ export default function TsvImport() {
                   )}
           </Button>
 
-          {localTsvContent !== null && (bookIsDuplicate || !isTsvValid) && (
-            <Typography sx={{ color: "red", paddingTop: "8px" }}>
-              {!isTsvValid
-                ? doI18n(
-                    "pages:core-contenthandler_bcv:tsv_invalid",
-                    i18nRef.current,
-                  )
-                : doI18n(
-                    "pages:core-contenthandler_bcv:book_already_exists",
-                    i18nRef.current,
-                  )}
-            </Typography>
-          )}
-
-          {localTsvContent !== null && isTsvValid && !bookIsDuplicate && (
-            <Stack spacing={2} sx={{ mt: 0.5 }}>
-              <Typography variant="body1">
-                {`Book Code: ${bookCodeFromFile}`}
+          {localTsvContent !== null &&
+            (!isBookCodeValid || !isTsvValid || bookIsDuplicate) && (
+              <Typography sx={{ color: "red", paddingTop: "8px" }}>
+                {!isBookCodeValid
+                  ? doI18n(
+                      "pages:core-contenthandler_bcv:bad_book_code_filename",
+                      i18nRef.current,
+                    )
+                  : !isTsvValid
+                    ? doI18n(
+                        "pages:core-contenthandler_bcv:tsv_invalid",
+                        i18nRef.current,
+                      )
+                    : doI18n(
+                        "pages:core-contenthandler_bcv:book_already_exists",
+                        i18nRef.current,
+                      )}
               </Typography>
-            </Stack>
-          )}
+            )}
+          {localTsvContent !== null &&
+            isBookCodeValid &&
+            isTsvValid &&
+            !bookIsDuplicate && (
+              <Stack spacing={2} sx={{ mt: 0.5 }}>
+                <Typography variant="body1">
+                  {`Book Code: ${bookCodeFromFile}(${resourceType})`}
+                </Typography>
+              </Stack>
+            )}
         </DialogContent>
         <PanDialogActions
           closeFn={() => {
@@ -234,7 +250,11 @@ export default function TsvImport() {
             "pages:core-contenthandler_bcv:create",
             i18nRef.current,
           )}
-          isDisabled={localTsvContent ? bookIsDuplicate || !isTsvValid : true}
+          isDisabled={
+            localTsvContent
+              ? !isBookCodeValid || bookIsDuplicate || !isTsvValid
+              : true
+          }
         />
       </PanDialog>
     </Box>

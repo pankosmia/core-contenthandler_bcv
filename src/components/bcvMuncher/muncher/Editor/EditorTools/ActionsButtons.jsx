@@ -53,110 +53,99 @@ function ActionsButtons({
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-          padding: 1,
-          justifyContent: "center",
-          position: "sticky",
-        }}
-      >
-        {mode === "edit" && (
-          <>
-            <IconButton
-              variant="contained"
-              onClick={() => {
-                previousRow();
-              }}
-              sx={{
-                mt: 2,
-                "&.Mui-disabled": {
-                  color: "#424242",
-                },
-              }}
-            >
-              <ArrowBackIosNewIcon />
-            </IconButton>
+      {mode === "edit" && (
+        <>
+          <IconButton
+            variant="contained"
+            onClick={() => {
+              previousRow();
+            }}
+            sx={{
+              mt: 2,
+              "&.Mui-disabled": {
+                color: "#424242",
+              },
+            }}
+          >
+            <ArrowBackIosNewIcon />
+          </IconButton>
 
-            <IconButton
-              onClick={() => {
-                saveFunction(currentRowN, rowData);
-                setCellValueChanged(false);
-              }}
-              variant="contained"
-              disabled={!cellValueChanged}
-              sx={{
-                mt: 2,
-                "&.Mui-disabled": {
-                  color: "#bebbbbff",
-                },
-              }}
-            >
-              <CheckIcon
-                size="large"
-                color={!cellValueChanged ? "#eaeaea" : "primary"}
-              />
-            </IconButton>
+          <IconButton
+            onClick={() => {
+              saveFunction(currentRowN, rowData);
+              setCellValueChanged(false);
+            }}
+            variant="contained"
+            disabled={!cellValueChanged}
+            sx={{
+              mt: 2,
+              "&.Mui-disabled": {
+                color: "#bebbbbff",
+              },
+            }}
+          >
+            <CheckIcon
+              size="large"
+              color={!cellValueChanged ? "#eaeaea" : "primary"}
+            />
+          </IconButton>
 
-            <IconButton
-              onClick={() => {
-                handleCancel();
-                setCellValueChanged(false);
-              }}
-              variant="contained"
-              disabled={!cellValueChanged}
-              sx={{
-                mt: 2,
-                "&.Mui-disabled": {
-                  color: "#bebbbbff",
-                },
-              }}
-            >
-              <RestoreIcon
-                size="large"
-                color={!cellValueChanged ? "#eaeaea" : "primary"}
-              />
-            </IconButton>
-            <IconButton
-              onClick={() => handleOpenModalDelete()}
-              sx={{
-                mt: 2,
-                "&.Mui-disabled": {
-                  color: "#bebbbbff",
-                },
-              }}
-              disabled={
+          <IconButton
+            onClick={() => {
+              handleCancel();
+              setCellValueChanged(false);
+            }}
+            variant="contained"
+            disabled={!cellValueChanged}
+            sx={{
+              mt: 2,
+              "&.Mui-disabled": {
+                color: "#bebbbbff",
+              },
+            }}
+          >
+            <RestoreIcon
+              size="large"
+              color={!cellValueChanged ? "#eaeaea" : "primary"}
+            />
+          </IconButton>
+          <IconButton
+            onClick={() => handleOpenModalDelete()}
+            sx={{
+              mt: 2,
+              "&.Mui-disabled": {
+                color: "#bebbbbff",
+              },
+            }}
+            disabled={
+              ingredient[currentRowN] && ingredient[currentRowN].length === 1
+            }
+          >
+            <DeleteIcon
+              size="large"
+              color={
                 ingredient[currentRowN] && ingredient[currentRowN].length === 1
+                  ? "#eaeaea"
+                  : "primary"
               }
-            >
-              <DeleteIcon
-                size="large"
-                color={
-                  ingredient[currentRowN] &&
-                  ingredient[currentRowN].length === 1
-                    ? "#eaeaea"
-                    : "primary"
-                }
-              />
-            </IconButton>
-            <IconButton
-              onClick={() => {
-                nextRow();
-              }}
-              variant="contained"
-              sx={{
-                mt: 2,
-                "&.Mui-disabled": {
-                  color: "#424242",
-                },
-              }}
-            >
-              <ArrowForwardIosIcon />
-            </IconButton>
-          </>
-        )}
-      </Box>
+            />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              nextRow();
+            }}
+            variant="contained"
+            sx={{
+              mt: 2,
+              "&.Mui-disabled": {
+                color: "#424242",
+              },
+            }}
+          >
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </>
+      )}
       <DeleteNote
         mode="delete"
         open={openedModalDelete === "delete"}
