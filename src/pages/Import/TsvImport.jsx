@@ -92,8 +92,7 @@ export default function TsvImport() {
   };
 
   const isBookCodeValid =
-    bookCodeFromFile !== null &&
-    /^[A-Z 1-6][A-Z][A-Z 2]\.[Tt][Ss][Vv]$/.test(bookCodeFromFile);
+    bookCodeFromFile !== null && /^[A-Z1-6][A-Z][A-Z2]$/.test(bookCodeFromFile);
   const handleCreateLocalBook = async (tsvContent, repoPathArg) => {
     if (!bookCodeFromFile) {
       enqueueSnackbar(
