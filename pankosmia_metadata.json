@@ -451,8 +451,8 @@
       "es": "REF"
     },
     "no_tsv_id_found": {
-      "en": "no_tsv_id_found.",
-      "fr": "Nom de fichier incorrect."
+      "en": "The filename is does not have the correct format. It should include the 3-character code of a Bible book",
+      "fr": "Le nom de fichier n'est pas au bon format. Il devrait contenir un code de livre biblique (3 caractères)"
     },
     "book_created": {
       "en": "Book created",
