@@ -201,13 +201,18 @@ export default function TsvImport() {
                     i18nRef.current,
                   )}
           </Button>
-
+          <Typography sx={{ paddingTop: 1 }}>
+            {doI18n(
+              "pages:core-contenthandler_bcv:bad_book_code_filename",
+              i18nRef.current,
+            )}
+          </Typography>
           {localTsvContent !== null &&
             (!isBookCodeValid || !isTsvValid || bookIsDuplicate) && (
               <Typography sx={{ color: "red", paddingTop: "8px" }}>
                 {!isBookCodeValid
                   ? doI18n(
-                      "pages:core-contenthandler_bcv:bad_book_code_filename",
+                      "pages:core-contenthandler_bcv:no_tsv_id_found",
                       i18nRef.current,
                     )
                   : !isTsvValid
@@ -227,7 +232,7 @@ export default function TsvImport() {
             !bookIsDuplicate && (
               <Stack spacing={2} sx={{ mt: 0.5 }}>
                 <Typography variant="body1">
-                  {`Book Code: ${bookCodeFromFile}(${resourceType})`}
+                  {`Book Code: ${bookCodeFromFile} (${resourceType})`}
                 </Typography>
               </Stack>
             )}
