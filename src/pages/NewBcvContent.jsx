@@ -127,7 +127,8 @@ export default function NewBcvContent() {
           contentName.trim().length > 0 &&
           contentAbbr.trim().length > 0 &&
           contentType.trim().length > 0 &&
-          errorAbbreviation === false
+          errorAbbreviation === false &&
+          repoExists === false
         );
 
       case 1:
