@@ -1,5 +1,12 @@
 import { useContext, useState, useEffect } from "react";
-import { Button, DialogContent, Box, Typography, Stack } from "@mui/material";
+import {
+  Button,
+  DialogContent,
+  Box,
+  Typography,
+  Stack,
+  Grid,
+} from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { getJson, postJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
@@ -183,51 +190,62 @@ export default function TsvImport() {
         titleLabel={`${doI18n("pages:core-contenthandler_bcv:import_content", i18nRef.current)} - ${nameProject}`}
       >
         <DialogContent sx={{ mt: 1 }}>
-          <Button
-            onClick={() => openTsvPicker()}
-            type="button"
-            disabled={loading}
-            variant="contained"
-            color="primary"
-            component="span"
-            startIcon={<UploadFileIcon />}
-          >
-            {loading
-              ? "Reading File..."
-              : filePicked
-                ? filePicked
-                : doI18n(
-                    "pages:core-contenthandler_bcv:import_click",
-                    i18nRef.current,
-                  )}
-          </Button>
-
-          {localTsvContent !== null &&
-            (!isBookCodeValid || !isTsvValid || bookIsDuplicate) && (
-              <Typography sx={{ color: "red", paddingTop: "8px" }}>
-                {!isBookCodeValid
-                  ? doI18n(
-                      "pages:core-contenthandler_bcv:bad_book_code_filename",
-                      i18nRef.current,
-                    )
-                  : !isTsvValid
-                    ? doI18n(
-                        "pages:core-contenthandler_bcv:tsv_invalid",
-                        i18nRef.current,
-                      )
+          <Grid container spacing={1}>
+            <Grid size={"auto"}>
+              <Button
+                onClick={() => openTsvPicker()}
+                type="button"
+                disabled={loading}
+                variant="contained"
+                color="primary"
+                component="span"
+                startIcon={<UploadFileIcon />}
+              >
+                {loading
+                  ? "Reading File..."
+                  : filePicked
+                    ? filePicked
                     : doI18n(
-                        "pages:core-contenthandler_bcv:book_already_exists",
+                        "pages:core-contenthandler_bcv:import_click",
                         i18nRef.current,
                       )}
-              </Typography>
+              </Button>
+            </Grid>
+            <Grid size={"auto"}>
+              {localTsvContent !== null &&
+                (!isBookCodeValid || !isTsvValid || bookIsDuplicate) && (
+                  <Typography sx={{ color: "red", paddingTop: "8px" }}>
+                    {!isBookCodeValid
+                      ? doI18n(
+                          "pages:core-contenthandler_bcv:no_tsv_id_found",
+                          i18nRef.current,
+                        )
+                      : !isTsvValid
+                        ? doI18n(
+                            "pages:core-contenthandler_bcv:tsv_invalid",
+                            i18nRef.current,
+                          )
+                        : doI18n(
+                            "pages:core-contenthandler_bcv:book_already_exists",
+                            i18nRef.current,
+                          )}
+                  </Typography>
+                )}
+            </Grid>
+          </Grid>
+          <Typography sx={{ paddingTop: 1 }}>
+            {doI18n(
+              "pages:core-contenthandler_bcv:bad_book_code_filename",
+              i18nRef.current,
             )}
+          </Typography>
           {localTsvContent !== null &&
             isBookCodeValid &&
             isTsvValid &&
             !bookIsDuplicate && (
               <Stack spacing={2} sx={{ mt: 0.5 }}>
                 <Typography variant="body1">
-                  {`Book Code: ${bookCodeFromFile}(${resourceType})`}
+                  {`Book Code: ${bookCodeFromFile} (${resourceType})`}
                 </Typography>
               </Stack>
             )}
