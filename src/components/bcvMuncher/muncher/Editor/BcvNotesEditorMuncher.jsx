@@ -37,7 +37,7 @@ function BcvNotesEditorMuncher({
   const [currentChapter, setCurrentChapter] = useState("1");
   const [refDisabled, setRefDisabled] = useState(false);
   const [resourceType, setResourceType] = useState("new_bcv_note");
-  const [showAllFields, setShowAllFields] = useState(false);
+  const [showAllFields, setShowAllFields] = useState(true);
 
   const navigate = useNavigate();
 
@@ -242,6 +242,8 @@ function BcvNotesEditorMuncher({
             setRefDisabled={setRefDisabled}
             resourceType={resourceType}
             i18nRef={i18nRef}
+            showAllFields={showAllFields}
+            setShowAllFields={setShowAllFields}
           />
           <Editor
             currentRowN={currentRowN}
@@ -273,6 +275,8 @@ function BcvNotesEditorMuncher({
               setRefDisabled={setRefDisabled}
               resourceType={resourceType}
               i18nRef={i18nRef}
+              showAllFields={showAllFields}
+              setShowAllFields={setShowAllFields}
             />
             <Typography>
               {doI18n(

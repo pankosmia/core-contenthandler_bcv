@@ -24,6 +24,8 @@ function AddLineDialog({
   setRefDisabled,
   resourceType,
   i18nRef,
+  showAllFields,
+  setShowAllFields,
 }) {
   const [newCurrentRow, setNewCurrentRow] = useState(Array(7).fill("", 0, 7));
 
@@ -116,6 +118,8 @@ function AddLineDialog({
           refDisabled={refDisabled}
           setRefDisabled={setRefDisabled}
           i18nRef={i18nRef}
+          showAllFields={showAllFields}
+          setShowAllFields={setShowAllFields}
         />
       </Box>
     </Modal>

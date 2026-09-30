@@ -14,6 +14,8 @@ function AddFab({
   refDisabled,
   setRefDisabled,
   resourceType,
+  showAllFields,
+  setShowAllFields,
   i18nRef,
 }) {
   const [openedModal, setOpenedModal] = useState(null);
@@ -51,6 +53,8 @@ function AddFab({
         setRefDisabled={setRefDisabled}
         resourceType={resourceType}
         i18nRef={i18nRef}
+        showAllFields={showAllFields}
+        setShowAllFields={setShowAllFields}
       />
     </Box>
   );
