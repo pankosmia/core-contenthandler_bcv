@@ -45,7 +45,7 @@ export default function TsvImport() {
   const path = repoPathQuery.get("repoPath");
   const returnType = typePageQuery.get("returnTypePage");
 
-  const LINE2_REGEX = /^(?=(?:[^\t]*\t){6,})(?=.*:).*$/;
+  const LINE2_REGEX = /^[^\t\n]*(?:\t[^\t\n]*){6}$/;
 
   function validateTsv(text) {
     const lines = text

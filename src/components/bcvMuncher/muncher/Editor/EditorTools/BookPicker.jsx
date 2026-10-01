@@ -12,7 +12,9 @@ function BookPicker({
   disable = false,
 }) {
   const [contentBooks, setContentBooks] = useState([]);
+  console.log("🚀 ~ BookPicker ~ contentBooks:", contentBooks);
   const [currentBook, setCurrentBook] = useState(bcvRef.current.bookCode);
+  console.log("🚀 ~ BookPicker ~ currentBook:", currentBook);
 
   useEffect(() => {
     const getProjectBooks = async () => {
@@ -53,7 +55,10 @@ function BookPicker({
               sx={{ maxHeight: "3rem", height: "2rem" }}
               value={b}
               key={n}
-              onClick={() => setCurrentBook(b)}
+              onClick={() => {
+                setCurrentBook(b);
+                console.log(`ici`);
+              }}
             >
               {doI18n(`scripture:books:${b}`, i18nRef.current)}
             </MenuItem>
