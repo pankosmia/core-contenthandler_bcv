@@ -147,7 +147,6 @@ function TsvExport() {
         )}
         closeFn={() => handleClose()}
         isOpen={open}
-        theme={theme}
         fullWidth={false}
       >
         <DialogContent sx={{ mt: 1 }} style={{ overflow: "hidden" }}>

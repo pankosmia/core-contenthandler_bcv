@@ -451,8 +451,8 @@
       "es": "REF"
     },
     "no_tsv_id_found": {
-      "en": "Invalid file name.",
-      "fr": "Nom de fichier incorrect."
+      "en": "Invalid file name or format.",
+      "fr": "Nom ou format de fichier incorrect."
     },
     "book_created": {
       "en": "Book created",
