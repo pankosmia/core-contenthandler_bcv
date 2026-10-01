@@ -53,14 +53,14 @@ export default function NewBcvContent() {
     switch (optionCopyright) {
       case "public-domain":
         return doI18n(
-          "pages:core-contenthandler_text_translation:public_domain",
+          "pages:core-contenthandler_bcv:public_domain",
           i18nRef.current,
         );
       case "all_rights_reserved":
         return `${copyright.author_name} ${copyright.year}`;
       default:
         return doI18n(
-          "pages:core-contenthandler_text_translation:unspecified_copyright",
+          "pages:core-contenthandler_bcv:unspecified_copyright",
           i18nRef.current,
         );
     }
