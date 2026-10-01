@@ -454,6 +454,10 @@
       "en": "Invalid file name.",
       "fr": "Nom de fichier incorrect."
     },
+    "not_a_tsv": {
+      "en": "Invalid file format.",
+      "fr": "Format de fichier incorrect."
+    },
     "book_created": {
       "en": "Book created",
       "fr": "Livre créé",
@@ -484,6 +488,14 @@
     "bad_book_code_filename": {
       "en": "The TSV file should be named using a three-character book code (GEN.tsv, 1JN.tsv, etc) and contain at least six columns separated by tabs.",
       "fr": "Le fichier TSV doit avoir un code de livre à trois caractères comme nom (GEN.tsv, 1JN.tsv, etc) et contenir au moins six colonnes séparées par des tabulations."
+    },
+    "public_domain": {
+      "en": "Public Domain",
+      "fr": "Domaine Public"
+    },
+    "unspecified_copyright": {
+      "en": "Unspecified",
+      "fr": "Non spécifié"
     }
   }
 }

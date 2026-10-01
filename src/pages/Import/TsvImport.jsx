@@ -60,8 +60,10 @@ export default function TsvImport() {
     return LINE2_REGEX.test(line2);
   }
 
-  const bookCodeFromFile = filePicked
-    ? filePicked.split(".")[0].toUpperCase()
+  const fileName = filePicked;
+  const isTsvExtension = fileName !== null && /\.[Tt][Ss][Vv]$/i.test(fileName);
+  const bookCodeFromFile = fileName
+    ? fileName.replace(/\.[Tt][Ss][Vv]$/i, "")
     : null;
 
   const getProjectSummaries = async () => {
@@ -213,11 +215,14 @@ export default function TsvImport() {
             </Grid>
             <Grid size={"auto"}>
               {localTsvContent !== null &&
-                (!isBookCodeValid || !isTsvValid || bookIsDuplicate) && (
+                (!isTsvExtension ||
+                  !isBookCodeValid ||
+                  !isTsvValid ||
+                  bookIsDuplicate) && (
                   <Typography sx={{ color: "red", paddingTop: "8px" }}>
-                    {!isBookCodeValid
+                    {!isTsvExtension
                       ? doI18n(
-                          "pages:core-contenthandler_bcv:no_tsv_id_found",
+                          "pages:core-contenthandler_bcv:not_a_tsv",
                           i18nRef.current,
                         )
                       : !isTsvValid
@@ -225,10 +230,15 @@ export default function TsvImport() {
                             "pages:core-contenthandler_bcv:tsv_invalid",
                             i18nRef.current,
                           )
-                        : doI18n(
-                            "pages:core-contenthandler_bcv:book_already_exists",
-                            i18nRef.current,
-                          )}
+                        : !isBookCodeValid
+                          ? doI18n(
+                              "pages:core-contenthandler_bcv:no_tsv_id_found",
+                              i18nRef.current,
+                            )
+                          : doI18n(
+                              "pages:core-contenthandler_bcv:book_already_exists",
+                              i18nRef.current,
+                            )}
                   </Typography>
                 )}
             </Grid>
@@ -240,6 +250,7 @@ export default function TsvImport() {
             )}
           </Typography>
           {localTsvContent !== null &&
+            isTsvExtension &&
             isBookCodeValid &&
             isTsvValid &&
             !bookIsDuplicate && (
@@ -269,7 +280,10 @@ export default function TsvImport() {
           )}
           isDisabled={
             localTsvContent
-              ? !isBookCodeValid || bookIsDuplicate || !isTsvValid
+              ? !isBookCodeValid ||
+                bookIsDuplicate ||
+                !isTsvValid ||
+                !isTsvExtension
               : true
           }
         />
