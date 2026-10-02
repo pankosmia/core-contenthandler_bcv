@@ -1,4 +1,3 @@
-import { Typography } from "@mui/material";
 import { getJson, postEmptyJson, getText } from "pankosmia-lib/http";
 export async function getFirstChapterTextTranslation(
   currentProjectRefCurr,
