@@ -9,6 +9,11 @@
   },
   "endpoints": {
     "x-bcvnotes": {
+      "edit": {
+        "doc": "main page for workspace",
+        "label": "pages:core-client-workspace:main",
+        "url": "core-local-workspace#"
+      },
       "create_document": [
         {
           "doc": "Create document translationNotes for bcv",
@@ -57,6 +62,11 @@
       ]
     },
     "x-bcvquestions": {
+      "edit": {
+        "doc": "main page for workspace",
+        "label": "pages:core-client-workspace:main",
+        "url": "core-local-workspace#"
+      },
       "create_document": [
         {
           "label": "pages:core-contenthandler_bcv:create_content_tq",
@@ -496,6 +506,10 @@
     "unspecified_copyright": {
       "en": "Unspecified",
       "fr": "Non spécifié"
+    },
+    "book_deleted": {
+      "en": "Book deleted",
+      "fr": "Livre supprimé"
     }
   }
 }
