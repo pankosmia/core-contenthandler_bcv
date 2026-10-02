@@ -53,7 +53,9 @@ function BookPicker({
               sx={{ maxHeight: "3rem", height: "2rem" }}
               value={b}
               key={n}
-              onClick={() => setCurrentBook(b)}
+              onClick={() => {
+                setCurrentBook(b);
+              }}
             >
               {doI18n(`scripture:books:${b}`, i18nRef.current)}
             </MenuItem>

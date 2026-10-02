@@ -5,11 +5,11 @@ export async function getFirstChapterTextTranslation(
   bookCode,
 ) {
   const projectPath = `${currentProjectRefCurr.source}/${currentProjectRefCurr.organization}/${currentProjectRefCurr.project}`;
-  const responce = await getText(
+  const response = await getText(
     `/api/burrito/ingredient/raw/${projectPath}?ipath=${bookCode}.usfm`,
   );
-  if (responce.ok) {
-    const usfmString = responce.text;
+  if (response.ok) {
+    const usfmString = response.text;
     const re = /\\c\s+(\d+)/;
     const match = usfmString.match(re);
     if (match) {
@@ -28,12 +28,12 @@ export async function getFirstChapterJuxta(
   bookCode,
 ) {
   const projectPath = `${currentProjectRefCurr.source}/${currentProjectRefCurr.organization}/${currentProjectRefCurr.project}`;
-  const responce = await getJson(
+  const response = await getJson(
     `/api/burrito/ingredient/raw/${projectPath}?ipath=${bookCode}.json`,
     debugRefCurr,
   );
-  if (responce.ok) {
-    let [chapter, verse] = responce.json[0].chunks[0].source[0].cv.split(":");
+  if (response.ok) {
+    let [chapter, verse] = response.json[0].chunks[0].source[0].cv.split(":");
     postEmptyJson(
       `/api/navigation/bcv/${bookCode}/${chapter}/${verse}`,
       debugRefCurr,
@@ -47,12 +47,12 @@ export async function getFirstChapterBCVNotes(
   bookCode,
 ) {
   const projectPath = `${currentProjectRefCurr.source}/${currentProjectRefCurr.organization}/${currentProjectRefCurr.project}`;
-  const responce = await getText(
+  const response = await getText(
     `/api/burrito/ingredient/raw/${projectPath}?ipath=${bookCode}.tsv`,
     debugRefCurr,
   );
-  if (responce.ok) {
-    const firstCol = responce.text
+  if (response.ok) {
+    const firstCol = response.text
       .split("\n")
       .map((line) => line.split("\t")[0].trim()) // first column
       .filter((v) => /^\d+:\d+$/.test(v)) // only chapter:verse
@@ -67,6 +67,8 @@ export async function getFirstChapterBCVNotes(
         `/api/navigation/bcv/${bookCode}/${chapter}/${verse}`,
         debugRefCurr,
       );
+    } else {
+      return postEmptyJson(`/api/navigation/bcv/${bookCode}/0/0`, debugRefCurr);
     }
   }
 }
