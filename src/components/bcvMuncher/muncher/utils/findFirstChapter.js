@@ -69,7 +69,7 @@ export async function getFirstChapterBCVNotes(
         debugRefCurr,
       );
     } else {
-      return postEmptyJson(`/api/navigation/bcv/${bookCode}/1/1`, debugRefCurr);
+      return postEmptyJson(`/api/navigation/bcv/${bookCode}/0/0`, debugRefCurr);
     }
   }
 }
