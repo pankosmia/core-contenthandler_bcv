@@ -107,7 +107,9 @@ function BcvNotesEditorMuncher({
     const currentChecksum = md5(JSON.stringify(ingredient));
     return originalChecksum !== currentChecksum;
   }, [ingredient, md5Ingredient]);
+
   useEffect(() => {
+    console.log("electronAPI:", window.electronAPI, "modified:", isModified());
     const isElectron = !!window.electronAPI;
     if (isElectron) {
       if (isModified()) {

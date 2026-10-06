@@ -60,12 +60,7 @@ function ActionsButtons({
             onClick={() => {
               previousRow();
             }}
-            sx={{
-              mt: 2,
-              "&.Mui-disabled": {
-                color: "#424242",
-              },
-            }}
+            disabled={currentRowN <= 1 || ingredient.length <= 1}
           >
             <ArrowBackIosNewIcon />
           </IconButton>
@@ -77,12 +72,6 @@ function ActionsButtons({
             }}
             variant="contained"
             disabled={!cellValueChanged}
-            sx={{
-              mt: 2,
-              "&.Mui-disabled": {
-                color: "#bebbbbff",
-              },
-            }}
           >
             <CheckIcon
               size="large"
@@ -97,12 +86,6 @@ function ActionsButtons({
             }}
             variant="contained"
             disabled={!cellValueChanged}
-            sx={{
-              mt: 2,
-              "&.Mui-disabled": {
-                color: "#bebbbbff",
-              },
-            }}
           >
             <RestoreIcon
               size="large"
@@ -111,22 +94,14 @@ function ActionsButtons({
           </IconButton>
           <IconButton
             onClick={() => handleOpenModalDelete()}
-            sx={{
-              mt: 2,
-              "&.Mui-disabled": {
-                color: "#bebbbbff",
-              },
-            }}
             disabled={
               ingredient[currentRowN] && ingredient[currentRowN].length === 1
             }
           >
             <DeleteIcon
               size="large"
-              color={
+              disabled={
                 ingredient[currentRowN] && ingredient[currentRowN].length === 1
-                  ? "#eaeaea"
-                  : "primary"
               }
             />
           </IconButton>
@@ -135,12 +110,11 @@ function ActionsButtons({
               nextRow();
             }}
             variant="contained"
-            sx={{
-              mt: 2,
-              "&.Mui-disabled": {
-                color: "#424242",
-              },
-            }}
+            disabled={
+              !ingredient[currentRowN] ||
+              ingredient[currentRowN].length === 0 ||
+              !ingredient[currentRowN + 1]
+            }
           >
             <ArrowForwardIosIcon />
           </IconButton>

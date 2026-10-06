@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   i18nContext as I18nContext,
@@ -20,6 +20,17 @@ function SaveTsvButton({
   i18nRef,
   systemBcv,
 }) {
+  useEffect(() => {
+    const isElectron = !!window.electronAPI;
+    if (isElectron) {
+      if (!(md5(JSON.stringify(ingredient)) === md5Ingredient)) {
+        window.electronAPI.setCanClose(false);
+      } else {
+        window.electronAPI.setCanClose(true);
+      }
+    }
+  }, [ingredient, md5Ingredient]);
+
   const [contentChanged, _setContentChanged] = useState(false);
 
   // Met à jour le fichier TSV

@@ -11,7 +11,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import TsvLineForm from "./TsvLineForm";
 import { doI18n } from "pankosmia-lib/i18n";
-
+import { PanDialog, PanDialogActions } from "pankosmia-rcl";
 function AddLineDialog({
   open,
   closeModal,
@@ -43,66 +43,28 @@ function AddLineDialog({
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={handleCloseModalNewNote}
+    <Box
       sx={{
-        backdropFilter: "blur(3px)",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        maxHeight: "80vh",
+        maxWidth: "80vw",
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        borderRadius: 2,
+        overflow: "auto",
       }}
     >
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          maxHeight: "80vh",
-          maxWidth: "80vw",
-          bgcolor: "background.paper",
-          boxShadow: 24,
-          borderRadius: 2,
-          overflow: "auto",
-        }}
+      <PanDialog
+        titleLabel={doI18n(
+          `pages:core-contenthandler_bcv:${!resourceType.includes("note") ? "new_bcv_question" : resourceType}`,
+          i18nRef.current,
+        )}
+        isOpen={open}
+        closeFn={() => handleCloseModalNewNote()}
       >
-        <AppBar
-          color="secondary"
-          sx={{
-            position: "relative",
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-          }}
-        >
-          <Toolbar sx={{ justifyContent: "space-between" }}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleCloseModalNewNote}
-              aria-label={doI18n(
-                "pages:core-contenthandler_bcv:close",
-                i18nRef.current,
-              )}
-            >
-              <CloseIcon />
-              <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                {doI18n(
-                  `pages:core-contenthandler_bcv:${!resourceType.includes("note") ? "new_bcv_question" : resourceType}`,
-                  i18nRef.current,
-                )}
-              </Typography>
-            </IconButton>
-            <Button
-              autoFocus
-              color="inherit"
-              disabled={!cellValueChanged}
-              onClick={() => {
-                handleSaveNewTsvRow(currentRowN, newCurrentRow);
-                setCellValueChanged(false);
-              }}
-            >
-              {doI18n("pages:core-contenthandler_bcv:create", i18nRef.current)}
-            </Button>
-          </Toolbar>
-        </AppBar>
         <TsvLineForm
           mode="add"
           currentRow={newCurrentRow}
@@ -121,8 +83,24 @@ function AddLineDialog({
           showAllFields={showAllFields}
           setShowAllFields={setShowAllFields}
         />
-      </Box>
-    </Modal>
+        <PanDialogActions
+          actionLabel={doI18n(
+            "pages:core-contenthandler_bcv:create",
+            i18nRef.current,
+          )}
+          actionFn={() => {
+            handleSaveNewTsvRow(currentRowN, newCurrentRow);
+            setCellValueChanged(false);
+          }}
+          isDisabled={!cellValueChanged}
+          closeFn={() => handleCloseModalNewNote()}
+          closeLabel={doI18n(
+            "pages:core-contenthandler_bcv:close",
+            i18nRef.current,
+          )}
+        />
+      </PanDialog>
+    </Box>
   );
 }
 
