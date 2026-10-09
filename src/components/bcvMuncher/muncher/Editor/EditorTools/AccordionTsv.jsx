@@ -42,12 +42,13 @@ export default function AccordionTsv({
         setRepoFlavor(data.flavor);
       } else {
         console.error(
-          `${doI18n("pages:core-contenthandler-generic:error_data", i18nRef.current)}`,
+          `${doI18n("pages:core-contenthandler_bcv:error_data", i18nRef.current)}`,
         );
       }
     };
     getProjectSummaries();
   }, []);
+
   const header = ingredient?.[0];
 
   const markdownColumns = ["note", "question", "response"];
@@ -60,6 +61,7 @@ export default function AccordionTsv({
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
   const handleCellChange = (rowIndex, cellIndex, newValue) => {
     setIngredient((prev) =>
       prev.map((row, r) =>
@@ -69,6 +71,7 @@ export default function AccordionTsv({
       ),
     );
   };
+
   const handleDeleteRow = (rowN) => {
     const newIngredient = [...ingredient];
     newIngredient.splice(rowN, 1);
@@ -145,6 +148,7 @@ export default function AccordionTsv({
                   size="small"
                   key={cellIndex}
                   value={cell}
+                  disabled={cellIndex === 1}
                   label={header[cellIndex]}
                   variant="outlined"
                   fullWidth
