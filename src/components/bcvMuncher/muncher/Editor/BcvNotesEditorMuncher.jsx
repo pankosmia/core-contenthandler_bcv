@@ -8,6 +8,7 @@ import {
   FormControlLabel,
   Tooltip,
   IconButton,
+  Accordion,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { postEmptyJson, getText } from "pankosmia-lib/http";
@@ -21,6 +22,7 @@ import BookPicker from "./EditorTools/BookPicker";
 import NotesChapterPicker from "./EditorTools/NotesChapterPicker";
 import { getFirstChapterBCVNotes } from "../utils/findFirstChapter";
 import LayoutIcon from "../layouts/LayoutIcon";
+import AccordionTsv from "./EditorTools/AccordionTsv";
 
 function BcvNotesEditorMuncher({
   metadata,
@@ -155,139 +157,140 @@ function BcvNotesEditorMuncher({
   }, [ingredient]);
 
   return (
-    <Stack
-      sx={{
-        padding: 2,
-      }}
-    >
-      {/* <SearchNavBar getAllData={getAllData} /> */}
-      <Box
-        sx={{
-          position: "fixed",
-          top: "48px",
-          left: 0,
-          right: 0,
-          display: "flex",
-          padding: 2,
-        }}
-      >
-        <Grid
-          container
-          sx={{
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Grid sx={{ display: "flex" }} gap={1}>
-            <SaveTsvButton
-              metadata={metadata}
-              ingredient={ingredient}
-              setIngredient={setIngredient}
-              md5Ingredient={md5Ingredient}
-              setMd5Ingredient={setMd5Ingredient}
-              i18nRef={i18nRef}
-              systemBcv={systemBcv}
-            />
-          </Grid>
-          <Grid sx={{ display: "flex" }} gap={1}>
-            <BookPicker
-              bcvRef={bcvRef}
-              debugRef={debugRef}
-              i18nRef={i18nRef}
-              currentProjectRef={currentProjectRef}
-              setFirstChapter={getFirstChapterBCVNotes}
-            />
-            <NotesChapterPicker
-              ingredient={ingredient}
-              currentChapter={currentChapter}
-              setCurrentChapter={setCurrentChapter}
-            />
-          </Grid>
-          <Grid sx={{ display: "flex" }} gap={1}>
-            <Tooltip
-              title={doI18n(
-                "pages:core-contenthandler_bcv:button_edit_layout",
-                i18nRef.current,
-                debugRef.current,
-              )}
-            >
-              <IconButton
-                disabled={md5(JSON.stringify(ingredient)) !== md5Ingredient}
-                onClick={() =>
-                  navigate({
-                    pathname: "/",
-                    search: "return-page=workspace",
-                  })
-                }
-              >
-                <LayoutIcon />
-              </IconButton>
-            </Tooltip>
-          </Grid>
-        </Grid>
-      </Box>
-      {notesExist.length > 0 ? (
-        <Box sx={{ display: "flex", gap: 2, flexGrow: 1, padding: 2 }}>
-          <SearchWithVerses
-            ingredient={ingredient}
-            setIngredient={setIngredient}
-            currentRowN={currentRowN}
-            setCurrentRowN={setCurrentRowN}
-            cellValueChanged={cellValueChanged}
-            setCellValueChanged={setCellValueChanged}
-            updateBcv={updateBcv}
-            currentChapter={currentChapter}
-            refDisabled={refDisabled}
-            setRefDisabled={setRefDisabled}
-            resourceType={resourceType}
-            i18nRef={i18nRef}
-            showAllFields={showAllFields}
-            setShowAllFields={setShowAllFields}
-          />
-          <Editor
-            currentRowN={currentRowN}
-            setCurrentRowN={setCurrentRowN}
-            ingredient={ingredient}
-            setIngredient={setIngredient}
-            updateBcv={updateBcv}
-            cellValueChanged={cellValueChanged}
-            setCellValueChanged={setCellValueChanged}
-            refDisabled={refDisabled}
-            setRefDisabled={setRefDisabled}
-            resourceType={resourceType}
-            showAllFields={showAllFields}
-            setShowAllFields={setShowAllFields}
-            i18nRef={i18nRef}
-          />
-        </Box>
-      ) : (
-        <Box sx={{ display: "flex", gap: 2, flexGrow: 1, padding: 2 }}>
-          <Stack spacing={2}>
-            <AddFab
-              currentRowN={currentRowN}
-              setCurrentRowN={setCurrentRowN}
-              ingredient={ingredient}
-              setIngredient={setIngredient}
-              cellValueChanged={cellValueChanged}
-              setCellValueChanged={setCellValueChanged}
-              refDisabled={refDisabled}
-              setRefDisabled={setRefDisabled}
-              resourceType={resourceType}
-              i18nRef={i18nRef}
-              showAllFields={showAllFields}
-              setShowAllFields={setShowAllFields}
-            />
-            <Typography>
-              {doI18n(
-                "pages:core-contenthandler_bcv:no_notes",
-                i18nRef.current,
-              )}
-            </Typography>
-          </Stack>
-        </Box>
-      )}
-    </Stack>
+    // <Stack
+    //   sx={{
+    //     padding: 2,
+    //   }}
+    // >
+    //   {/* <SearchNavBar getAllData={getAllData} /> */}
+    //   <Box
+    //     sx={{
+    //       position: "fixed",
+    //       top: "48px",
+    //       left: 0,
+    //       right: 0,
+    //       display: "flex",
+    //       padding: 2,
+    //     }}
+    //   >
+    //     <Grid
+    //       container
+    //       sx={{
+    //         alignItems: "flex-start",
+    //         justifyContent: "space-between",
+    //         width: "100%",
+    //       }}
+    //     >
+    //       <Grid sx={{ display: "flex" }} gap={1}>
+    //         <SaveTsvButton
+    //           metadata={metadata}
+    //           ingredient={ingredient}
+    //           setIngredient={setIngredient}
+    //           md5Ingredient={md5Ingredient}
+    //           setMd5Ingredient={setMd5Ingredient}
+    //           i18nRef={i18nRef}
+    //           systemBcv={systemBcv}
+    //         />
+    //       </Grid>
+    //       <Grid sx={{ display: "flex" }} gap={1}>
+    //         <BookPicker
+    //           bcvRef={bcvRef}
+    //           debugRef={debugRef}
+    //           i18nRef={i18nRef}
+    //           currentProjectRef={currentProjectRef}
+    //           setFirstChapter={getFirstChapterBCVNotes}
+    //         />
+    //         <NotesChapterPicker
+    //           ingredient={ingredient}
+    //           currentChapter={currentChapter}
+    //           setCurrentChapter={setCurrentChapter}
+    //         />
+    //       </Grid>
+    //       <Grid sx={{ display: "flex" }} gap={1}>
+    //         <Tooltip
+    //           title={doI18n(
+    //             "pages:core-contenthandler_bcv:button_edit_layout",
+    //             i18nRef.current,
+    //             debugRef.current,
+    //           )}
+    //         >
+    //           <IconButton
+    //             disabled={md5(JSON.stringify(ingredient)) !== md5Ingredient}
+    //             onClick={() =>
+    //               navigate({
+    //                 pathname: "/",
+    //                 search: "return-page=workspace",
+    //               })
+    //             }
+    //           >
+    //             <LayoutIcon />
+    //           </IconButton>
+    //         </Tooltip>
+    //       </Grid>
+    //     </Grid>
+    //   </Box>
+    //   {notesExist.length > 0 ? (
+    //     <Box sx={{ display: "flex", gap: 2, flexGrow: 1, padding: 2 }}>
+    //       <SearchWithVerses
+    //         ingredient={ingredient}
+    //         setIngredient={setIngredient}
+    //         currentRowN={currentRowN}
+    //         setCurrentRowN={setCurrentRowN}
+    //         cellValueChanged={cellValueChanged}
+    //         setCellValueChanged={setCellValueChanged}
+    //         updateBcv={updateBcv}
+    //         currentChapter={currentChapter}
+    //         refDisabled={refDisabled}
+    //         setRefDisabled={setRefDisabled}
+    //         resourceType={resourceType}
+    //         i18nRef={i18nRef}
+    //         showAllFields={showAllFields}
+    //         setShowAllFields={setShowAllFields}
+    //       />
+    //       <Editor
+    //         currentRowN={currentRowN}
+    //         setCurrentRowN={setCurrentRowN}
+    //         ingredient={ingredient}
+    //         setIngredient={setIngredient}
+    //         updateBcv={updateBcv}
+    //         cellValueChanged={cellValueChanged}
+    //         setCellValueChanged={setCellValueChanged}
+    //         refDisabled={refDisabled}
+    //         setRefDisabled={setRefDisabled}
+    //         resourceType={resourceType}
+    //         showAllFields={showAllFields}
+    //         setShowAllFields={setShowAllFields}
+    //         i18nRef={i18nRef}
+    //       />
+    //     </Box>
+    //   ) : (
+    //     <Box sx={{ display: "flex", gap: 2, flexGrow: 1, padding: 2 }}>
+    //       <Stack spacing={2}>
+    //         <AddFab
+    //           currentRowN={currentRowN}
+    //           setCurrentRowN={setCurrentRowN}
+    //           ingredient={ingredient}
+    //           setIngredient={setIngredient}
+    //           cellValueChanged={cellValueChanged}
+    //           setCellValueChanged={setCellValueChanged}
+    //           refDisabled={refDisabled}
+    //           setRefDisabled={setRefDisabled}
+    //           resourceType={resourceType}
+    //           i18nRef={i18nRef}
+    //           showAllFields={showAllFields}
+    //           setShowAllFields={setShowAllFields}
+    //         />
+    //         <Typography>
+    //           {doI18n(
+    //             "pages:core-contenthandler_bcv:no_notes",
+    //             i18nRef.current,
+    //           )}
+    //         </Typography>
+    //       </Stack>
+    //     </Box>
+    //   )}
+    // </Stack>
+    <AccordionTsv ingredient={ingredient} metadata={metadata} />
   );
 }
 
