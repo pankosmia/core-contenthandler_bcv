@@ -8,6 +8,7 @@ import {
   Button,
   IconButton,
   Box,
+  useTheme,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState, useContext, useEffect } from "react";
@@ -17,14 +18,21 @@ import { getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import { i18nContext, debugContext, Header } from "pankosmia-rcl";
 import MarkdownField from "./MarkdownField";
+import md5 from "md5";
 
-export default function AccordionTsv({ ingredient, metadata, setIngredient }) {
-  console.log("🚀 ~ AccordionTsv ~ ingredient:", ingredient);
+export default function AccordionTsv({
+  ingredient,
+  metadata,
+  setIngredient,
+  md5Ingredient,
+  setMd5Ingredient,
+}) {
   const i18nRef = useContext(i18nContext);
   const debugRef = useContext(debugContext);
   const [expanded, setExpanded] = useState(false);
   const [repoFlavor, setRepoFlavor] = useState("");
-
+  const theme = useTheme();
+  console.log("🚀 ~ AccordionTsv ~ theme:", theme);
   useEffect(() => {
     const getProjectSummaries = async () => {
       const summariesResponse = await getJson(
@@ -83,9 +91,12 @@ export default function AccordionTsv({ ingredient, metadata, setIngredient }) {
             expandIcon={<ExpandMoreIcon />}
           >
             <Typography
-              color="secondary"
               component="span"
-              sx={{ width: "33%", flexShrink: 0 }}
+              sx={{
+                width: "33%",
+                flexShrink: 0,
+                color: theme.palette.secondary.main,
+              }}
             >
               {row[1]}
             </Typography>
@@ -112,6 +123,7 @@ export default function AccordionTsv({ ingredient, metadata, setIngredient }) {
                   value={cell}
                   label={header[cellIndex]}
                   onChange={(newValue) => {
+                    setMd5Ingredient(md5(JSON.stringify(ingredient)));
                     handleCellChange(index, cellIndex, newValue);
                   }}
                 />
@@ -126,6 +138,7 @@ export default function AccordionTsv({ ingredient, metadata, setIngredient }) {
                   multiline
                   type="number"
                   onChange={(newValue) => {
+                    setMd5Ingredient(md5(JSON.stringify(ingredient)));
                     handleCellChange(index, cellIndex, newValue.target.value);
                   }}
                 />
@@ -139,6 +152,7 @@ export default function AccordionTsv({ ingredient, metadata, setIngredient }) {
                   fullWidth
                   multiline
                   onChange={(newValue) => {
+                    setMd5Ingredient(md5(JSON.stringify(ingredient)));
                     handleCellChange(index, cellIndex, newValue.target.value);
                   }}
                 />
