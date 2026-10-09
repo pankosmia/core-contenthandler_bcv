@@ -8,7 +8,6 @@ import {
   Button,
   IconButton,
   Box,
-  useTheme,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState, useContext, useEffect } from "react";
@@ -31,8 +30,7 @@ export default function AccordionTsv({
   const debugRef = useContext(debugContext);
   const [expanded, setExpanded] = useState(false);
   const [repoFlavor, setRepoFlavor] = useState("");
-  const theme = useTheme();
-  console.log("🚀 ~ AccordionTsv ~ theme:", theme);
+
   useEffect(() => {
     const getProjectSummaries = async () => {
       const summariesResponse = await getJson(
@@ -92,10 +90,10 @@ export default function AccordionTsv({
           >
             <Typography
               component="span"
+              color="textSecondary"
               sx={{
                 width: "33%",
                 flexShrink: 0,
-                color: theme.palette.secondary.main,
               }}
             >
               {row[1]}
