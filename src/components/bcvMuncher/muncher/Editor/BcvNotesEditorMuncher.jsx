@@ -290,7 +290,22 @@ function BcvNotesEditorMuncher({
     //     </Box>
     //   )}
     // </Stack>
-    <AccordionTsv ingredient={ingredient} metadata={metadata} />
+    <>
+      <AccordionTsv
+        ingredient={ingredient}
+        setIngredient={setIngredient}
+        metadata={metadata}
+      />
+      <SaveTsvButton
+        metadata={metadata}
+        ingredient={ingredient}
+        setIngredient={setIngredient}
+        md5Ingredient={md5Ingredient}
+        setMd5Ingredient={setMd5Ingredient}
+        i18nRef={i18nRef}
+        systemBcv={systemBcv}
+      />
+    </>
   );
 }
 
