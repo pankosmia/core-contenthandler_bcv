@@ -42,6 +42,14 @@ export default function AccordionTsv({ ingredient, metadata, setIngredient }) {
     };
     getProjectSummaries();
   }, []);
+  const header = ingredient?.[0];
+
+  const markdownColumns = ["note", "question", "response"];
+  const isMarkdownColumn = (cellIndex) =>
+    markdownColumns.includes(header[cellIndex]?.trim().toLowerCase());
+
+  const isOccurrenceColumn = (cellIndex) =>
+    header[cellIndex]?.trim().toLowerCase() === "occurrence";
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -55,13 +63,11 @@ export default function AccordionTsv({ ingredient, metadata, setIngredient }) {
       ),
     );
   };
-  const header = ingredient?.[0];
-
-  const markdownColumns = ["note", "question", "response"];
-  const isMarkdownColumn = (cellIndex) =>
-    markdownColumns.includes(header[cellIndex]?.trim().toLowerCase());
-  const isOccurrenceColumn = (cellIndex) =>
-    header[cellIndex]?.trim().toLowerCase() === "occurrence";
+  const handleDeleteRow = (rowN) => {
+    const newIngredient = [...ingredient];
+    newIngredient.splice(rowN, 1);
+    setIngredient(newIngredient);
+  };
 
   return (
     <Box>
@@ -76,7 +82,11 @@ export default function AccordionTsv({ ingredient, metadata, setIngredient }) {
             id={`panel${index}d-header`}
             expandIcon={<ExpandMoreIcon />}
           >
-            <Typography component="span" sx={{ width: "33%", flexShrink: 0 }}>
+            <Typography
+              color="secondary"
+              component="span"
+              sx={{ width: "33%", flexShrink: 0 }}
+            >
               {row[1]}
             </Typography>
 
@@ -89,7 +99,7 @@ export default function AccordionTsv({ ingredient, metadata, setIngredient }) {
                 whiteSpace: "pre-line",
               }}
             >
-              {repoFlavor === "x-bcvquestions" ? row[5] : row[6]}
+              {repoFlavor && repoFlavor === "x-bcvquestions" ? row[5] : row[6]}
             </Typography>
           </AccordionSummary>
           <AccordionDetails
@@ -136,7 +146,7 @@ export default function AccordionTsv({ ingredient, metadata, setIngredient }) {
             )}
           </AccordionDetails>
           <AccordionActions>
-            <IconButton>
+            <IconButton onClick={() => handleDeleteRow(index)}>
               <DeleteOutlinedIcon />
             </IconButton>
           </AccordionActions>
