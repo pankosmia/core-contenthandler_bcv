@@ -17,7 +17,7 @@ import TsvImport from "./pages/Import/TsvImport";
 const router = createHashRouter([
   {
     path: "/",
-    element: <App />,
+    element: <MuncherTest />,
   },
   {
     path: "/createDocument/bookChapterVerse",

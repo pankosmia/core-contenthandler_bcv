@@ -17,6 +17,7 @@
     "file-saver": "^2.0.5",
     "font-detect-rhl": "^1.1.10",
     "md5": "^2.3.0",
+    "mui-nested-menu": "^4.0.3",
     "pankosmia-lib": "^0.0.3",
     "prop-types": "^15.8.1",
     "react-markdown": "^10.1.0",

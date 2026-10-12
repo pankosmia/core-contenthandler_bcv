@@ -23,6 +23,7 @@ import NotesChapterPicker from "./EditorTools/NotesChapterPicker";
 import { getFirstChapterBCVNotes } from "../utils/findFirstChapter";
 import LayoutIcon from "../layouts/LayoutIcon";
 import AccordionTsv from "./EditorTools/AccordionTsv";
+import NavigationRef from "./EditorTools/NavigationRef";
 
 function BcvNotesEditorMuncher({
   metadata,
@@ -108,6 +109,7 @@ function BcvNotesEditorMuncher({
 
   return (
     <>
+      <NavigationRef ingredient={ingredient} i18nRef={i18nRef} />
       <AccordionTsv
         ingredient={ingredient}
         setIngredient={setIngredient}

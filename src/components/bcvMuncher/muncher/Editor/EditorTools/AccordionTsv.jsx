@@ -15,7 +15,7 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Markdown from "react-markdown";
 import { getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
-import { i18nContext, debugContext, Header } from "pankosmia-rcl";
+import { i18nContext, debugContext } from "pankosmia-rcl";
 import MarkdownField from "./MarkdownField";
 import md5 from "md5";
 
@@ -80,94 +80,99 @@ export default function AccordionTsv({
 
   return (
     <Box>
-      {ingredient?.map((row, index) => (
-        <Accordion
-          key={index}
-          expanded={expanded === `panel${index}`}
-          onChange={handleChange(`panel${index}`)}
-        >
-          <AccordionSummary
-            aria-controls={`panel${index}d-content`}
-            id={`panel${index}d-header`}
-            expandIcon={<ExpandMoreIcon />}
+      {ingredient?.map((row, index) => {
+        if (index === 0) return null;
+        return (
+          <Accordion
+            key={index}
+            expanded={expanded === `panel${index}`}
+            onChange={handleChange(`panel${index}`)}
           >
-            <Typography
-              component="span"
-              color="textSecondary"
-              sx={{
-                width: "33%",
-                flexShrink: 0,
-              }}
+            <AccordionSummary
+              aria-controls={`panel${index}d-content`}
+              id={`panel${index}d-header`}
+              expandIcon={<ExpandMoreIcon />}
             >
-              {row[1]}
-            </Typography>
+              <Typography
+                component="span"
+                color="textSecondary"
+                sx={{
+                  width: "33%",
+                  flexShrink: 0,
+                }}
+              >
+                {row[1]}
+              </Typography>
 
-            <Typography
-              sx={{
-                display: "-webkit-box",
-                WebkitLineClamp: 1,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                whiteSpace: "pre-line",
-              }}
+              <Typography
+                sx={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {repoFlavor && repoFlavor === "x-bcvquestions"
+                  ? row[5]
+                  : row[6]}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails
+              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
-              {repoFlavor && repoFlavor === "x-bcvquestions" ? row[5] : row[6]}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-          >
-            {row.map((cell, cellIndex) =>
-              isMarkdownColumn(cellIndex) ? (
-                <MarkdownField
-                  key={cellIndex}
-                  value={cell}
-                  label={header[cellIndex]}
-                  onChange={(newValue) => {
-                    setMd5Ingredient(md5(JSON.stringify(ingredient)));
-                    handleCellChange(index, cellIndex, newValue);
-                  }}
-                />
-              ) : isOccurrenceColumn(cellIndex) ? (
-                <TextField
-                  size="small"
-                  key={cellIndex}
-                  value={cell}
-                  label={header[cellIndex]}
-                  variant="outlined"
-                  fullWidth
-                  multiline
-                  type="number"
-                  onChange={(newValue) => {
-                    setMd5Ingredient(md5(JSON.stringify(ingredient)));
-                    handleCellChange(index, cellIndex, newValue.target.value);
-                  }}
-                />
-              ) : (
-                <TextField
-                  size="small"
-                  key={cellIndex}
-                  value={cell}
-                  disabled={cellIndex === 1}
-                  label={header[cellIndex]}
-                  variant="outlined"
-                  fullWidth
-                  multiline
-                  onChange={(newValue) => {
-                    setMd5Ingredient(md5(JSON.stringify(ingredient)));
-                    handleCellChange(index, cellIndex, newValue.target.value);
-                  }}
-                />
-              ),
-            )}
-          </AccordionDetails>
-          <AccordionActions>
-            <IconButton onClick={() => handleDeleteRow(index)}>
-              <DeleteOutlinedIcon />
-            </IconButton>
-          </AccordionActions>
-        </Accordion>
-      ))}
+              {row.map((cell, cellIndex) =>
+                isMarkdownColumn(cellIndex) ? (
+                  <MarkdownField
+                    key={cellIndex}
+                    value={cell}
+                    label={header[cellIndex]}
+                    onChange={(newValue) => {
+                      setMd5Ingredient(md5(JSON.stringify(ingredient)));
+                      handleCellChange(index, cellIndex, newValue);
+                    }}
+                  />
+                ) : isOccurrenceColumn(cellIndex) ? (
+                  <TextField
+                    size="small"
+                    key={cellIndex}
+                    value={cell}
+                    label={header[cellIndex]}
+                    variant="outlined"
+                    fullWidth
+                    multiline
+                    type="number"
+                    onChange={(newValue) => {
+                      setMd5Ingredient(md5(JSON.stringify(ingredient)));
+                      handleCellChange(index, cellIndex, newValue.target.value);
+                    }}
+                  />
+                ) : (
+                  <TextField
+                    size="small"
+                    key={cellIndex}
+                    value={cell}
+                    disabled={cellIndex === 1}
+                    label={header[cellIndex]}
+                    variant="outlined"
+                    fullWidth
+                    multiline
+                    onChange={(newValue) => {
+                      setMd5Ingredient(md5(JSON.stringify(ingredient)));
+                      handleCellChange(index, cellIndex, newValue.target.value);
+                    }}
+                  />
+                ),
+              )}
+            </AccordionDetails>
+            <AccordionActions>
+              <IconButton onClick={() => handleDeleteRow(index)}>
+                <DeleteOutlinedIcon />
+              </IconButton>
+            </AccordionActions>
+          </Accordion>
+        );
+      })}
     </Box>
   );
 }

@@ -371,9 +371,9 @@
       "es": "Mostrar todos los campos"
     },
     "reference": {
-      "en": "REF",
-      "es": "REF",
-      "fr": "REF"
+      "en": "Reference",
+      "es": "Referencia",
+      "fr": "Référence"
     },
     "no_reference": {
       "en": "No reference",
@@ -460,10 +460,6 @@
       "en": "id",
       "es": "id"
     },
-    "ref": {
-      "en": "REF",
-      "es": "REF"
-    },
     "no_tsv_id_found": {
       "en": "Invalid file name.",
       "fr": "Nom de fichier incorrect."
@@ -514,6 +510,14 @@
     "book_deleted": {
       "en": "Book deleted",
       "fr": "Livre supprimé"
+    },
+    "helper_text_add_reference": {
+      "en": "Both fields accept a number or text 'intro', Verse also a verse range (eg,1-4)",
+      "fr": "Les deux champs acceptent un numéro ou le texte 'intro', le verset accepte également une plage de versets (ex,1-4)"
+    },
+    "add_reference": {
+      "en": "Add reference",
+      "fr": "Ajouter une référence"
     }
   }
 }
