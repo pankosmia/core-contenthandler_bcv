@@ -37,6 +37,7 @@ export default function NavigationRef({
   const subOpen = Boolean(openSubMenu);
 
   const rows = ingredient?.slice(1);
+
   const groupedRows = [];
   rows.forEach((row) => {
     const group = groupedRows.find((g) => g[0][0] === row[0]);
@@ -45,6 +46,13 @@ export default function NavigationRef({
     } else {
       groupedRows.push([row]);
     }
+  });
+  const parseRef = (ref) => ref.split(":").map((n) => parseInt(n, 10) || 0);
+
+  groupedRows.sort((a, b) => {
+    const [chA, vA] = parseRef(a[0][0]);
+    const [chB, vB] = parseRef(b[0][0]);
+    return chA - chB || vA - vB;
   });
   const allGroupNames = groupedRows.map((group) => group[0][0].split(":")[0]);
 
@@ -104,7 +112,7 @@ export default function NavigationRef({
             if (event?.target?.closest?.(".MuiMenuItem-root")) return;
             closeAll();
           }}
-          renderValue={(value) => value}
+          renderValue={(value) => value || currentReference[0]}
         >
           {groupList.map(([groupName]) => {
             const selectedChapter =
@@ -140,7 +148,6 @@ export default function NavigationRef({
             {currentReferences.map((reference) => (
               <MenuItem
                 key={reference}
-                selected={reference === currentReference}
                 onClick={() => handleSelectReference(reference)}
               >
                 {reference.split(":")[1]}

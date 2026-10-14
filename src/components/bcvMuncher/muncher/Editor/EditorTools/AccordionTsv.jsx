@@ -17,6 +17,7 @@ import { getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import MarkdownField from "./MarkdownField";
 import md5 from "md5";
+import NumberField from "./NumberField";
 
 export default function AccordionTsv({
   ingredient,
@@ -134,16 +135,11 @@ export default function AccordionTsv({
                     }}
                   />
                 ) : isOccurrenceColumn(cellIndex) ? (
-                  <TextField
+                  <NumberField
                     size="small"
-                    key={cellIndex}
-                    value={cell}
+                    defaultValue={cell}
                     label={header[cellIndex]}
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    type="number"
-                    onChange={(newValue) => {
+                    onValueChange={(newValue) => {
                       setMd5Ingredient(md5(JSON.stringify(ingredient)));
                       handleCellChange(index, cellIndex, newValue.target.value);
                     }}

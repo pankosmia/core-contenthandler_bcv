@@ -29,8 +29,8 @@ export default function AddReference({
     setAddReferenceOpen(false);
     setCurrentReference(`${chapter}:${verse}`);
   };
-  const RegexChapter = /^(front|intro|[0-9]+)$/;
-  const RegexVerse = /^(front|intro|[0-9]+|[0-9]+\s*-\s*[0-9]+)$/;
+  const RegexChapter = /^(front|intro|back|[0-9]+)$/;
+  const RegexVerse = /^(front|intro|back|[0-9]+|[0-9]+\s*-\s*[0-9]+)$/;
   return (
     <PanAdvancedDialog
       titleLabel={doI18n(
