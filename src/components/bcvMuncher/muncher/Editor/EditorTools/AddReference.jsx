@@ -29,7 +29,8 @@ export default function AddReference({
     setAddReferenceOpen(false);
     setCurrentReference(`${chapter}:${verse}`);
   };
-
+  const RegexChapter = /^(front|intro|[0-9]+)$/;
+  const RegexVerse = /^(front|intro|[0-9]+|[0-9]+\s*-\s*[0-9]+)$/;
   return (
     <PanAdvancedDialog
       titleLabel={doI18n(
@@ -69,6 +70,7 @@ export default function AddReference({
           value={chapter}
           onChange={(e) => setChapter(e.target.value)}
           sx={{ flex: 1 }}
+          error={chapter && !RegexChapter.test(chapter)}
         />
 
         <Typography variant="h6">:</Typography>
@@ -79,6 +81,7 @@ export default function AddReference({
           value={verse}
           onChange={(e) => setVerse(e.target.value)}
           sx={{ flex: 1 }}
+          error={verse && !RegexVerse.test(verse)}
         />
       </Box>
       <Typography

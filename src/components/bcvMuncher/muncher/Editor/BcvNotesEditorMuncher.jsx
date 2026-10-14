@@ -106,6 +106,15 @@ function BcvNotesEditorMuncher({
 
   return (
     <>
+      <SaveTsvButton
+        metadata={metadata}
+        ingredient={ingredient}
+        setIngredient={setIngredient}
+        md5Ingredient={md5Ingredient}
+        setMd5Ingredient={setMd5Ingredient}
+        i18nRef={i18nRef}
+        systemBcv={systemBcv}
+      />
       <NavigationRef
         ingredient={ingredient}
         setIngredient={setIngredient}
@@ -122,15 +131,6 @@ function BcvNotesEditorMuncher({
         i18nRef={i18nRef}
         debugRef={debugRef}
         currentReference={currentReference}
-      />
-      <SaveTsvButton
-        metadata={metadata}
-        ingredient={ingredient}
-        setIngredient={setIngredient}
-        md5Ingredient={md5Ingredient}
-        setMd5Ingredient={setMd5Ingredient}
-        i18nRef={i18nRef}
-        systemBcv={systemBcv}
       />
     </>
   );

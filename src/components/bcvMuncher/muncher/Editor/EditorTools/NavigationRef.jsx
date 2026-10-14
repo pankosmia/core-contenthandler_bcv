@@ -10,6 +10,8 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Popper,
+  MenuList,
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -83,7 +85,7 @@ export default function NavigationRef({
 
   return (
     <>
-      <FormControl size="small" sx={{ minWidth: 160 }}>
+      <FormControl size="small" sx={{ minWidth: 110 }}>
         <InputLabel id="reference-label">
           {doI18n("pages:core-contenthandler_bcv:reference", i18nRef.current)}
         </InputLabel>
@@ -94,6 +96,7 @@ export default function NavigationRef({
             "pages:core-contenthandler_bcv:reference",
             i18nRef.current,
           )}
+          displayEmpty
           value={currentReference}
           open={openMainMenu}
           onOpen={() => setOpenMainMenu(true)}
@@ -121,37 +124,31 @@ export default function NavigationRef({
 
           <MenuItem onClick={handleAddReference}>
             <AddIcon fontSize="small" sx={{ mr: 1 }} />
-            {doI18n(
-              "pages:core-contenthandler_bcv:add_reference",
-              i18nRef.current,
-            )}
+            {doI18n("pages:core-contenthandler_bcv:add", i18nRef.current)}
           </MenuItem>
         </Select>
       </FormControl>
 
-      <Menu
-        anchorEl={openSubMenu}
+      <Popper
         open={Boolean(openSubMenu)}
-        onClose={closeAll}
-        hideBackdrop
-        disableEnforceFocus
-        disableAutoFocus
-        disableRestoreFocus
-        disableScrollLock
-        sx={{ pointerEvents: "none" }}
-        slotProps={{ paper: { sx: { pointerEvents: "auto" } } }}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorEl={openSubMenu}
+        placement="right-start"
+        sx={{ zIndex: (theme) => theme.zIndex.modal + 1 }}
       >
-        {currentReferences.map((reference) => (
-          <MenuItem
-            key={reference}
-            onClick={() => handleSelectReference(reference)}
-          >
-            {reference.split(":")[1]}
-          </MenuItem>
-        ))}
-      </Menu>
+        <Paper sx={{ maxHeight: "60vh", overflowY: "auto" }}>
+          <MenuList>
+            {currentReferences.map((reference) => (
+              <MenuItem
+                key={reference}
+                selected={reference === currentReference}
+                onClick={() => handleSelectReference(reference)}
+              >
+                {reference.split(":")[1]}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Paper>
+      </Popper>
 
       {addReferenceOpen && (
         <AddReference
