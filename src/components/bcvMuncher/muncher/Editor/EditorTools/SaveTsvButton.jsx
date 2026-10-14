@@ -1,10 +1,4 @@
 import { useState } from "react";
-
-import {
-  i18nContext as I18nContext,
-  debugContext as DebugContext,
-  bcvContext as BcvContext,
-} from "pankosmia-rcl";
 import { postJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import { enqueueSnackbar } from "notistack";
@@ -19,6 +13,7 @@ function SaveTsvButton({
   setMd5Ingredient,
   i18nRef,
   systemBcv,
+  debugRef,
 }) {
   const [contentChanged, _setContentChanged] = useState(false);
 

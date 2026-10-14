@@ -10,12 +10,11 @@ import {
   Box,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Markdown from "react-markdown";
 import { getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
-import { i18nContext, debugContext } from "pankosmia-rcl";
 import MarkdownField from "./MarkdownField";
 import md5 from "md5";
 
@@ -25,9 +24,10 @@ export default function AccordionTsv({
   setIngredient,
   md5Ingredient,
   setMd5Ingredient,
+  i18nRef,
+  debugRef,
+  currentReference,
 }) {
-  const i18nRef = useContext(i18nContext);
-  const debugRef = useContext(debugContext);
   const [expanded, setExpanded] = useState(false);
   const [repoFlavor, setRepoFlavor] = useState("");
 
@@ -82,6 +82,7 @@ export default function AccordionTsv({
     <Box>
       {ingredient?.map((row, index) => {
         if (index === 0) return null;
+        if (row[0] !== currentReference) return null;
         return (
           <Accordion
             key={index}

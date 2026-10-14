@@ -6,6 +6,10 @@ import {
   Divider,
   InputAdornment,
   ListItemText,
+  Paper,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -16,27 +20,40 @@ import { PanDialog } from "pankosmia-rcl";
 import { doI18n } from "pankosmia-lib/i18n";
 import AddReference from "./AddReference";
 
-export default function NavigationRef({ ingredient, i18nRef }) {
+export default function NavigationRef({
+  ingredient,
+  setIngredient,
+  i18nRef,
+  currentReference,
+  setCurrentReference,
+}) {
   const [openMainMenu, setOpenMainMenu] = useState(null);
   const [openSubMenu, setOpenSubMenu] = useState(null);
   const [currentGroup, setCurrentGroup] = useState(null);
-  const [value, setValue] = useState("");
   const [addReferenceOpen, setAddReferenceOpen] = useState(false);
   const open = Boolean(openMainMenu);
   const subOpen = Boolean(openSubMenu);
 
-  const rows = (ingredient ?? []).slice(1);
-
-  const allGroupNames = rows.map((row) => row[0].split(":")[0]);
+  const rows = ingredient?.slice(1);
+  const groupedRows = [];
+  rows.forEach((row) => {
+    const group = groupedRows.find((g) => g[0][0] === row[0]);
+    if (group) {
+      group.push(row);
+    } else {
+      groupedRows.push([row]);
+    }
+  });
+  const allGroupNames = groupedRows.map((group) => group[0][0].split(":")[0]);
 
   const groupNames = allGroupNames.filter(
     (name, index) => allGroupNames.indexOf(name) === index,
   );
 
   const groupList = groupNames.map((groupName) => {
-    const references = rows
-      .filter((row) => row[0].split(":")[0] === groupName)
-      .map((row) => row[0]);
+    const references = groupedRows
+      .filter((group) => group[0][0].split(":")[0] === groupName)
+      .map((group) => group[0][0]);
 
     return [groupName, references];
   });
@@ -55,78 +72,97 @@ export default function NavigationRef({ ingredient, i18nRef }) {
     setCurrentGroup(null);
   };
 
-  const select = (reference) => {
-    setValue(reference);
-
+  const handleSelectReference = (reference) => {
+    setCurrentReference(reference);
     closeAll();
   };
   const handleAddReference = () => {
     setAddReferenceOpen(true);
-
     closeAll();
   };
+
   return (
     <>
-      <TextField
-        label={doI18n(
-          "pages:core-contenthandler_bcv:reference",
-          i18nRef.current,
-        )}
-        value={value}
-        onClick={(e) => setOpenMainMenu(e.currentTarget)}
-        slotProps={{
-          input: {
-            readOnly: true,
-            sx: {
-              cursor: "pointer",
-              "& input": {
-                cursor: "pointer",
-                caretColor: "transparent",
-              },
-            },
-            endAdornment: (
-              <InputAdornment position="end">
-                {open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-              </InputAdornment>
-            ),
-          },
-        }}
-      />
-      <Menu anchorEl={openMainMenu} open={open} onClose={closeAll}>
-        {groupList.map(([groupName]) => (
-          <MenuItem key={groupName} onClick={(e) => openGroup(e, groupName)}>
-            <ListItemText>{groupName}</ListItemText>
-            <ArrowRightIcon fontSize="small" />
+      <FormControl size="small" sx={{ minWidth: 160 }}>
+        <InputLabel id="reference-label">
+          {doI18n("pages:core-contenthandler_bcv:reference", i18nRef.current)}
+        </InputLabel>
+
+        <Select
+          labelId="reference-label"
+          label={doI18n(
+            "pages:core-contenthandler_bcv:reference",
+            i18nRef.current,
+          )}
+          value={currentReference}
+          open={openMainMenu}
+          onOpen={() => setOpenMainMenu(true)}
+          onClose={(event) => {
+            if (event?.target?.closest?.(".MuiMenuItem-root")) return;
+            closeAll();
+          }}
+          renderValue={(value) => value}
+        >
+          {groupList.map(([groupName]) => {
+            const selectedChapter =
+              Boolean(openSubMenu) && groupName === currentGroup;
+            return (
+              <MenuItem
+                key={groupName}
+                onClick={(e) => openGroup(e, groupName)}
+              >
+                <ListItemText>{groupName}</ListItemText>
+                <ArrowRightIcon fontSize="small" />
+              </MenuItem>
+            );
+          })}
+
+          <Divider />
+
+          <MenuItem onClick={handleAddReference}>
+            <AddIcon fontSize="small" sx={{ mr: 1 }} />
+            {doI18n(
+              "pages:core-contenthandler_bcv:add_reference",
+              i18nRef.current,
+            )}
+          </MenuItem>
+        </Select>
+      </FormControl>
+
+      <Menu
+        anchorEl={openSubMenu}
+        open={Boolean(openSubMenu)}
+        onClose={closeAll}
+        hideBackdrop
+        disableEnforceFocus
+        disableAutoFocus
+        disableRestoreFocus
+        disableScrollLock
+        sx={{ pointerEvents: "none" }}
+        slotProps={{ paper: { sx: { pointerEvents: "auto" } } }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
+      >
+        {currentReferences.map((reference) => (
+          <MenuItem
+            key={reference}
+            onClick={() => handleSelectReference(reference)}
+          >
+            {reference.split(":")[1]}
           </MenuItem>
         ))}
-
-        <Divider />
-
-        <MenuItem onClick={handleAddReference}>
-          <AddIcon fontSize="small" sx={{ mr: 1 }} /> Add
-        </MenuItem>
       </Menu>
+
       {addReferenceOpen && (
         <AddReference
           addReferenceOpen={addReferenceOpen}
           setAddReferenceOpen={setAddReferenceOpen}
           i18nRef={i18nRef}
+          ingredient={ingredient}
+          setIngredient={setIngredient}
+          setCurrentReference={setCurrentReference}
         />
       )}
-
-      <Menu
-        anchorEl={openSubMenu}
-        open={subOpen}
-        onClose={closeAll}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
-      >
-        {currentReferences.map((reference) => (
-          <MenuItem key={reference} onClick={() => select(reference)}>
-            {reference}
-          </MenuItem>
-        ))}
-      </Menu>
     </>
   );
 }

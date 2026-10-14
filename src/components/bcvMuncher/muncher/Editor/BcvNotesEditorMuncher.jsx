@@ -34,14 +34,11 @@ function BcvNotesEditorMuncher({
   currentProjectRef,
 }) {
   const [ingredient, setIngredient] = useState([]);
-  const [currentRowN, setCurrentRowN] = useState(1);
   const [md5Ingredient, setMd5Ingredient] = useState([]);
-  const [cellValueChanged, setCellValueChanged] = useState(false);
   const [currentChapter, setCurrentChapter] = useState("1");
-  const [refDisabled, setRefDisabled] = useState(false);
   const [resourceType, setResourceType] = useState("new_bcv_note");
   const [showAllFields, setShowAllFields] = useState(true);
-
+  const [currentReference, setCurrentReference] = useState("");
   const navigate = useNavigate();
 
   // Récupération des données du tsv
@@ -109,13 +106,22 @@ function BcvNotesEditorMuncher({
 
   return (
     <>
-      <NavigationRef ingredient={ingredient} i18nRef={i18nRef} />
+      <NavigationRef
+        ingredient={ingredient}
+        setIngredient={setIngredient}
+        i18nRef={i18nRef}
+        currentReference={currentReference}
+        setCurrentReference={setCurrentReference}
+      />
       <AccordionTsv
         ingredient={ingredient}
         setIngredient={setIngredient}
         metadata={metadata}
         md5Ingredient={md5Ingredient}
         setMd5Ingredient={setMd5Ingredient}
+        i18nRef={i18nRef}
+        debugRef={debugRef}
+        currentReference={currentReference}
       />
       <SaveTsvButton
         metadata={metadata}
