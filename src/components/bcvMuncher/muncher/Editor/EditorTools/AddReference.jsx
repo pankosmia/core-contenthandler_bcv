@@ -53,6 +53,12 @@ export default function AddReference({
           i18nRef.current,
         ),
         closeOnAction: false,
+        isDisabled: !(
+          chapter &&
+          RegexChapter.test(chapter) &&
+          verse &&
+          RegexVerse.test(verse)
+        ),
       })}
     >
       <Box
@@ -84,16 +90,18 @@ export default function AddReference({
           error={verse && !RegexVerse.test(verse)}
         />
       </Box>
-      <Typography
-        sx={{ paddingLeft: 1 }}
-        variant="caption"
-        color="textSecondary"
-      >
-        {doI18n(
-          `pages:core-contenthandler_bcv:helper_text_add_reference`,
-          i18nRef.current,
-        )}
-      </Typography>
+      <Box sx={{ marginLeft: "14px" }}>
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          sx={{ whiteSpace: "pre-line" }}
+        >
+          {doI18n(
+            `pages:core-contenthandler_bcv:helper_text_add_reference`,
+            i18nRef.current,
+          )}
+        </Typography>
+      </Box>
     </PanAdvancedDialog>
   );
 }

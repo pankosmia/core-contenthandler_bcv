@@ -39,6 +39,7 @@ function BcvNotesEditorMuncher({
   const [resourceType, setResourceType] = useState("new_bcv_note");
   const [showAllFields, setShowAllFields] = useState(true);
   const [currentReference, setCurrentReference] = useState("");
+  const [firstChapter, setFirstChapter] = useState("1");
   const navigate = useNavigate();
 
   // Récupération des données du tsv
@@ -106,6 +107,14 @@ function BcvNotesEditorMuncher({
 
   return (
     <>
+      <BookPicker
+        bcvRef={bcvRef}
+        i18nRef={i18nRef}
+        systemBcv={systemBcv}
+        currentProjectRef={currentProjectRef}
+        debugRef={debugRef}
+        setFirstChapter={setFirstChapter}
+      />
       <SaveTsvButton
         metadata={metadata}
         ingredient={ingredient}
@@ -121,6 +130,7 @@ function BcvNotesEditorMuncher({
         i18nRef={i18nRef}
         currentReference={currentReference}
         setCurrentReference={setCurrentReference}
+        bcvRef={bcvRef}
       />
       <AccordionTsv
         ingredient={ingredient}

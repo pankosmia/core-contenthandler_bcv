@@ -28,6 +28,7 @@ export default function NavigationRef({
   i18nRef,
   currentReference,
   setCurrentReference,
+  bcvRef,
 }) {
   const [openMainMenu, setOpenMainMenu] = useState(null);
   const [openSubMenu, setOpenSubMenu] = useState(null);
@@ -105,7 +106,7 @@ export default function NavigationRef({
             i18nRef.current,
           )}
           displayEmpty
-          value={currentReference}
+          value={currentReference ?? bcvRef.current.chapter}
           open={openMainMenu}
           onOpen={() => setOpenMainMenu(true)}
           onClose={(event) => {
