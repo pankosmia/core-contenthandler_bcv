@@ -115,7 +115,9 @@ export default function AccordionTsv({
                   whiteSpace: "pre-line",
                 }}
               >
-                {repoFlavor?.endsWith("questions") ? row[5] : row[6]}
+                {["x-bcvquestions", "x-questions"].includes(repoFlavor)
+                  ? row[5]
+                  : row[6]}
               </Typography>
             </AccordionSummary>
             <AccordionDetails
