@@ -28,13 +28,16 @@ function BcvNotesEditorMuncher({
   bcvRef,
   currentProjectRef,
 }) {
+  console.log("🚀 ~ BcvNotesEditorMuncher ~ bcvRef:", bcvRef);
   const [ingredient, setIngredient] = useState([]);
   const [md5Ingredient, setMd5Ingredient] = useState([]);
   const [md5CurrentIngredient, setMd5CurrentIngredient] = useState([]);
   const [currentChapter, setCurrentChapter] = useState("1");
   const [resourceType, setResourceType] = useState("new_bcv_note");
   const [showAllFields, setShowAllFields] = useState(true);
-  const [currentReference, setCurrentReference] = useState("");
+  const [currentReference, setCurrentReference] = useState(
+    `${bcvRef?.current.chapterNum}:${bcvRef?.current.verseNum}`,
+  );
   const [firstChapter, setFirstChapter] = useState("1");
   const navigate = useNavigate();
 
@@ -126,6 +129,7 @@ function BcvNotesEditorMuncher({
         currentReference={currentReference}
         setCurrentReference={setCurrentReference}
         bcvRef={bcvRef}
+        debugRef={debugRef}
       />
       <AccordionTsv
         ingredient={ingredient}

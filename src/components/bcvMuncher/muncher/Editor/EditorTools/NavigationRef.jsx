@@ -1,4 +1,5 @@
 import { useState, useMemo, useContext } from "react";
+import { postEmptyJson } from "pankosmia-lib/http";
 import {
   TextField,
   Menu,
@@ -28,7 +29,9 @@ export default function NavigationRef({
   currentReference,
   setCurrentReference,
   bcvRef,
+  debugRef,
 }) {
+  console.log("🚀 ~ NavigationRef ~ bcvRef:", bcvRef);
   const [openMainMenu, setOpenMainMenu] = useState(null);
   const [openSubMenu, setOpenSubMenu] = useState(null);
   const [currentGroup, setCurrentGroup] = useState(null);
@@ -83,6 +86,10 @@ export default function NavigationRef({
   };
 
   const handleSelectReference = (reference) => {
+    postEmptyJson(
+      `/api/navigation/bcv/${bcvRef.current.bookCode}/${reference.split(":")[0]}/${reference.split(":")[1]}`,
+      debugRef.current,
+    );
     setCurrentReference(reference);
     closeAll();
   };
