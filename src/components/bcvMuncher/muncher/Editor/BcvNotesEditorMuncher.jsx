@@ -8,19 +8,17 @@ import {
   FormControlLabel,
   Tooltip,
   IconButton,
+  Accordion,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { postEmptyJson, getText } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
-import SearchWithVerses from "./EditorTools/SearchWithVerses";
-import Editor from "./EditorTools/Editor";
-import AddFab from "./EditorTools/AddFab";
 import SaveTsvButton from "./EditorTools/SaveTsvButton";
 import md5 from "md5";
 import BookPicker from "./EditorTools/BookPicker";
-import NotesChapterPicker from "./EditorTools/NotesChapterPicker";
-import { getFirstChapterBCVNotes } from "../utils/findFirstChapter";
 import LayoutIcon from "../layouts/LayoutIcon";
+import AccordionTsv from "./EditorTools/AccordionTsv";
+import NavigationRef from "./EditorTools/NavigationRef";
 
 function BcvNotesEditorMuncher({
   metadata,
@@ -30,15 +28,17 @@ function BcvNotesEditorMuncher({
   bcvRef,
   currentProjectRef,
 }) {
+  console.log("🚀 ~ BcvNotesEditorMuncher ~ bcvRef:", bcvRef);
   const [ingredient, setIngredient] = useState([]);
-  const [currentRowN, setCurrentRowN] = useState(1);
   const [md5Ingredient, setMd5Ingredient] = useState([]);
-  const [cellValueChanged, setCellValueChanged] = useState(false);
+  const [md5CurrentIngredient, setMd5CurrentIngredient] = useState([]);
   const [currentChapter, setCurrentChapter] = useState("1");
-  const [refDisabled, setRefDisabled] = useState(false);
   const [resourceType, setResourceType] = useState("new_bcv_note");
   const [showAllFields, setShowAllFields] = useState(true);
-
+  const [currentReference, setCurrentReference] = useState(
+    `${bcvRef?.current.chapterNum}:${bcvRef?.current.verseNum}`,
+  );
+  const [firstChapter, setFirstChapter] = useState("1");
   const navigate = useNavigate();
 
   // Récupération des données du tsv
@@ -58,24 +58,6 @@ function BcvNotesEditorMuncher({
   useEffect(() => {
     getAllData().then();
   }, [systemBcv?.bookCode]);
-
-  useEffect(() => {
-    if (!ingredient || ingredient.length === 0 || currentRowN < 1) return;
-
-    const columnNames = ingredient[0] || [];
-    const quoteIndex = columnNames.findIndex((c) =>
-      c.toLowerCase().includes("quote"),
-    );
-    if (quoteIndex === -1) return;
-
-    const snippet = ingredient[currentRowN]?.[quoteIndex]?.trim();
-    if (snippet) {
-      postEmptyJson(
-        `/api/app-state/snippet/${encodeURIComponent(snippet)}`,
-        debugRef.current,
-      );
-    }
-  }, [currentRowN, ingredient]);
 
   const updateBcv = (rowN) => {
     const newCurrentRow = ingredient[rowN][0];
@@ -122,172 +104,43 @@ function BcvNotesEditorMuncher({
     ? ingredient.filter((l) => l[0].startsWith(`${currentChapter}:`))
     : [];
 
-  /* useEffect that detects which resource we're printing, checks if it's translationNotes, translationQuestions or Study questions, then we use the value of resourceType to print the fields inside of TsvLineForm */
-  useEffect(() => {
-    if (!ingredient || ingredient.length < 2) {
-      return;
-    }
-
-    const header = ingredient[0].join(" ").toLowerCase();
-    const firstRow = ingredient[1].join(" ").toLowerCase();
-
-    if (header.includes("note")) {
-      setResourceType("new_bcv_note");
-      return;
-    }
-
-    if (firstRow.includes("front:intro")) {
-      if (firstRow.includes("study")) {
-        setResourceType("new_bcv_study_question");
-      } else {
-        setResourceType("new_bcv_question");
-      }
-      return;
-    }
-
-    if (header.includes("response")) {
-      setResourceType("new_bcv_question");
-    } else if (header.includes("question")) {
-      setResourceType("new_bcv_study_question");
-    } else {
-      setResourceType("new_bcv_note");
-    }
-  }, [ingredient]);
-
   return (
-    <Stack
-      sx={{
-        padding: 2,
-      }}
-    >
-      {/* <SearchNavBar getAllData={getAllData} /> */}
-      <Box
-        sx={{
-          position: "fixed",
-          top: "48px",
-          left: 0,
-          right: 0,
-          display: "flex",
-          padding: 2,
-        }}
-      >
-        <Grid
-          container
-          sx={{
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Grid sx={{ display: "flex" }} gap={1}>
-            <SaveTsvButton
-              metadata={metadata}
-              ingredient={ingredient}
-              setIngredient={setIngredient}
-              md5Ingredient={md5Ingredient}
-              setMd5Ingredient={setMd5Ingredient}
-              i18nRef={i18nRef}
-              systemBcv={systemBcv}
-            />
-          </Grid>
-          <Grid sx={{ display: "flex" }} gap={1}>
-            <BookPicker
-              bcvRef={bcvRef}
-              debugRef={debugRef}
-              i18nRef={i18nRef}
-              currentProjectRef={currentProjectRef}
-              setFirstChapter={getFirstChapterBCVNotes}
-            />
-            <NotesChapterPicker
-              ingredient={ingredient}
-              currentChapter={currentChapter}
-              setCurrentChapter={setCurrentChapter}
-            />
-          </Grid>
-          <Grid sx={{ display: "flex" }} gap={1}>
-            <Tooltip
-              title={doI18n(
-                "pages:core-contenthandler_bcv:button_edit_layout",
-                i18nRef.current,
-                debugRef.current,
-              )}
-            >
-              <IconButton
-                disabled={md5(JSON.stringify(ingredient)) !== md5Ingredient}
-                onClick={() =>
-                  navigate({
-                    pathname: "/",
-                    search: "return-page=workspace",
-                  })
-                }
-              >
-                <LayoutIcon />
-              </IconButton>
-            </Tooltip>
-          </Grid>
-        </Grid>
-      </Box>
-      {notesExist.length > 0 ? (
-        <Box sx={{ display: "flex", gap: 2, flexGrow: 1, padding: 2 }}>
-          <SearchWithVerses
-            ingredient={ingredient}
-            setIngredient={setIngredient}
-            currentRowN={currentRowN}
-            setCurrentRowN={setCurrentRowN}
-            cellValueChanged={cellValueChanged}
-            setCellValueChanged={setCellValueChanged}
-            updateBcv={updateBcv}
-            currentChapter={currentChapter}
-            refDisabled={refDisabled}
-            setRefDisabled={setRefDisabled}
-            resourceType={resourceType}
-            i18nRef={i18nRef}
-            showAllFields={showAllFields}
-            setShowAllFields={setShowAllFields}
-          />
-          <Editor
-            currentRowN={currentRowN}
-            setCurrentRowN={setCurrentRowN}
-            ingredient={ingredient}
-            setIngredient={setIngredient}
-            updateBcv={updateBcv}
-            cellValueChanged={cellValueChanged}
-            setCellValueChanged={setCellValueChanged}
-            refDisabled={refDisabled}
-            setRefDisabled={setRefDisabled}
-            resourceType={resourceType}
-            showAllFields={showAllFields}
-            setShowAllFields={setShowAllFields}
-            i18nRef={i18nRef}
-          />
-        </Box>
-      ) : (
-        <Box sx={{ display: "flex", gap: 2, flexGrow: 1, padding: 2 }}>
-          <Stack spacing={2}>
-            <AddFab
-              currentRowN={currentRowN}
-              setCurrentRowN={setCurrentRowN}
-              ingredient={ingredient}
-              setIngredient={setIngredient}
-              cellValueChanged={cellValueChanged}
-              setCellValueChanged={setCellValueChanged}
-              refDisabled={refDisabled}
-              setRefDisabled={setRefDisabled}
-              resourceType={resourceType}
-              i18nRef={i18nRef}
-              showAllFields={showAllFields}
-              setShowAllFields={setShowAllFields}
-            />
-            <Typography>
-              {doI18n(
-                "pages:core-contenthandler_bcv:no_notes",
-                i18nRef.current,
-              )}
-            </Typography>
-          </Stack>
-        </Box>
-      )}
-    </Stack>
+    <>
+      <BookPicker
+        bcvRef={bcvRef}
+        i18nRef={i18nRef}
+        systemBcv={systemBcv}
+        currentProjectRef={currentProjectRef}
+        debugRef={debugRef}
+      />
+      <SaveTsvButton
+        metadata={metadata}
+        ingredient={ingredient}
+        setIngredient={setIngredient}
+        md5Ingredient={md5Ingredient}
+        setMd5Ingredient={setMd5Ingredient}
+        i18nRef={i18nRef}
+        systemBcv={systemBcv}
+      />
+      <NavigationRef
+        ingredient={ingredient}
+        setIngredient={setIngredient}
+        i18nRef={i18nRef}
+        currentReference={currentReference}
+        setCurrentReference={setCurrentReference}
+        bcvRef={bcvRef}
+        debugRef={debugRef}
+      />
+      <AccordionTsv
+        ingredient={ingredient}
+        setIngredient={setIngredient}
+        metadata={metadata}
+        i18nRef={i18nRef}
+        debugRef={debugRef}
+        currentReference={currentReference}
+        setCurrentReference={setCurrentReference}
+      />
+    </>
   );
 }
 
