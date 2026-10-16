@@ -135,7 +135,7 @@ export default function AccordionTsv({
                 ) : isOccurrenceColumn(cellIndex) ? (
                   <NumberField
                     size="small"
-                    defaultValue={Number(cell)}
+                    value={cell === "" || cell == null ? null : Number(cell)}
                     label={header[cellIndex]}
                     min={0}
                     onValueChange={(newValue) => {
