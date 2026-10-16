@@ -137,11 +137,12 @@ export default function AccordionTsv({
                 ) : isOccurrenceColumn(cellIndex) ? (
                   <NumberField
                     size="small"
-                    defaultValue={cell}
+                    defaultValue={Number(cell)}
                     label={header[cellIndex]}
+                    min={0}
                     onValueChange={(newValue) => {
                       setMd5Ingredient(md5(JSON.stringify(ingredient)));
-                      handleCellChange(index, cellIndex, newValue.target.value);
+                      handleCellChange(index, cellIndex, newValue);
                     }}
                   />
                 ) : (
