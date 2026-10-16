@@ -13,14 +13,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import { postEmptyJson, getText } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
-import SearchWithVerses from "./EditorTools/SearchWithVerses";
-import Editor from "./EditorTools/Editor";
-import AddFab from "./EditorTools/AddFab";
 import SaveTsvButton from "./EditorTools/SaveTsvButton";
 import md5 from "md5";
 import BookPicker from "./EditorTools/BookPicker";
-import NotesChapterPicker from "./EditorTools/NotesChapterPicker";
-import { getFirstChapterBCVNotes } from "../utils/findFirstChapter";
 import LayoutIcon from "../layouts/LayoutIcon";
 import AccordionTsv from "./EditorTools/AccordionTsv";
 import NavigationRef from "./EditorTools/NavigationRef";
@@ -113,7 +108,6 @@ function BcvNotesEditorMuncher({
         systemBcv={systemBcv}
         currentProjectRef={currentProjectRef}
         debugRef={debugRef}
-        setFirstChapter={setFirstChapter}
       />
       <SaveTsvButton
         metadata={metadata}
