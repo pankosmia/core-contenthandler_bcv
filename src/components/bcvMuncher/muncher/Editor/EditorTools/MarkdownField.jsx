@@ -12,7 +12,7 @@ import {
 import { i18nContext as I18nContext } from "pankosmia-rcl";
 import { doI18n } from "pankosmia-lib/i18n";
 
-function MarkdownField({ value, label, key, onChange }) {
+function MarkdownField({ value, label, key, onBlur }) {
   const [displayMode, setdisplayMode] = useState("write");
 
   return (
@@ -47,7 +47,7 @@ function MarkdownField({ value, label, key, onChange }) {
             multiline
             size="small"
             variant="outlined"
-            onChange={(event) => onChange(event.target.value)}
+            onBlur={(event) => onBlur(event.target.value)}
           />
         </FormControl>
       ) : (

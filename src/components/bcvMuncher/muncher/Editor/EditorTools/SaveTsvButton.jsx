@@ -15,12 +15,15 @@ function SaveTsvButton({
   systemBcv,
   debugRef,
 }) {
+  console.log("🚀 ~ SaveTsvButton ~ md5Ingredient:", md5Ingredient);
   const [contentChanged, _setContentChanged] = useState(false);
 
   // Met à jour le fichier TSV
   const uploadTsvIngredient = async (tsvData, debugBool) => {
     const tsvString = tsvData
-      .map((r) => r.map((c) => c.replace(/\n/g, "\\n")))
+      .map((r) =>
+        r.map((c) => (typeof c === "string" ? c.replace(/\n/g, "\\n") : c)),
+      )
       .map((r) => r.join("\t"))
       .filter((r) => r.trim().length > 0)
       .join("\n");

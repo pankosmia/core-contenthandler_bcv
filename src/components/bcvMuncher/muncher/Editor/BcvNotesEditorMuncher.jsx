@@ -30,6 +30,7 @@ function BcvNotesEditorMuncher({
 }) {
   const [ingredient, setIngredient] = useState([]);
   const [md5Ingredient, setMd5Ingredient] = useState([]);
+  const [md5CurrentIngredient, setMd5CurrentIngredient] = useState([]);
   const [currentChapter, setCurrentChapter] = useState("1");
   const [resourceType, setResourceType] = useState("new_bcv_note");
   const [showAllFields, setShowAllFields] = useState(true);
@@ -130,11 +131,10 @@ function BcvNotesEditorMuncher({
         ingredient={ingredient}
         setIngredient={setIngredient}
         metadata={metadata}
-        md5Ingredient={md5Ingredient}
-        setMd5Ingredient={setMd5Ingredient}
         i18nRef={i18nRef}
         debugRef={debugRef}
         currentReference={currentReference}
+        setCurrentReference={setCurrentReference}
       />
     </>
   );

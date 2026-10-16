@@ -28,6 +28,7 @@ export default function AccordionTsv({
   i18nRef,
   debugRef,
   currentReference,
+  setCurrentReference,
 }) {
   const [expanded, setExpanded] = useState(false);
   const [repoFlavor, setRepoFlavor] = useState("");
@@ -64,13 +65,12 @@ export default function AccordionTsv({
   };
 
   const handleCellChange = (rowIndex, cellIndex, newValue) => {
-    setIngredient((prev) =>
-      prev.map((row, r) =>
-        r === rowIndex
-          ? row.map((cell, c) => (c === cellIndex ? newValue : cell))
-          : row,
-      ),
+    const next = ingredient.map((row, r) =>
+      r === rowIndex
+        ? row.map((cell, c) => (c === cellIndex ? newValue : cell))
+        : row,
     );
+    setIngredient(next);
   };
 
   const handleDeleteRow = (rowN) => {
@@ -78,6 +78,8 @@ export default function AccordionTsv({
     newIngredient.splice(rowN, 1);
     setIngredient(newIngredient);
   };
+
+  console.log("🚀 ~ AccordionTsv ~ md5:", md5(JSON.stringify(ingredient)));
 
   return (
     <Box>
@@ -129,19 +131,21 @@ export default function AccordionTsv({
                     key={cellIndex}
                     value={cell}
                     label={header[cellIndex]}
-                    onChange={(newValue) => {
-                      setMd5Ingredient(md5(JSON.stringify(ingredient)));
+                    onBlur={(newValue) => {
                       handleCellChange(index, cellIndex, newValue);
+                      if (row[0]) {
+                        setCurrentReference(row[0]);
+                      }
                     }}
                   />
                 ) : isOccurrenceColumn(cellIndex) ? (
                   <NumberField
+                    key={cellIndex}
                     size="small"
                     value={cell === "" || cell == null ? null : Number(cell)}
                     label={header[cellIndex]}
                     min={0}
                     onValueChange={(newValue) => {
-                      setMd5Ingredient(md5(JSON.stringify(ingredient)));
                       handleCellChange(index, cellIndex, newValue);
                     }}
                   />
@@ -149,15 +153,17 @@ export default function AccordionTsv({
                   <TextField
                     size="small"
                     key={cellIndex}
-                    value={cell}
+                    defaultValue={cell}
                     disabled={cellIndex === 1}
                     label={header[cellIndex]}
                     variant="outlined"
                     fullWidth
                     multiline
-                    onChange={(newValue) => {
-                      setMd5Ingredient(md5(JSON.stringify(ingredient)));
+                    onBlur={(newValue) => {
                       handleCellChange(index, cellIndex, newValue.target.value);
+                      if (row[0]) {
+                        setCurrentReference(newValue.target.value);
+                      }
                     }}
                   />
                 ),
