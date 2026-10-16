@@ -17,7 +17,6 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import { NestedMenuItem } from "mui-nested-menu";
 import { PanDialog } from "pankosmia-rcl";
 import { doI18n } from "pankosmia-lib/i18n";
 import AddReference from "./AddReference";

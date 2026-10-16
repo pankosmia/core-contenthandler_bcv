@@ -95,7 +95,6 @@ export default function MuncherTest() {
               i18nRef={i18nRef}
               bcvRef={bcvRef}
               currentProjectRef={currentProjectRef}
-              debugRef={debugRef}
             />
           </Box>
         )}
