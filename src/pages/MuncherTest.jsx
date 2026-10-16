@@ -62,10 +62,12 @@ export default function MuncherTest() {
         height: "98vh",
       }}
     >
-      <WrapperNav flavor={["x-bcvnotes", "x-bcvquestions", "x-questions"]} />
+      <WrapperNav
+        flavor={["x-bcvnotes", "x-notes", "x-bcvquestions", "x-questions"]}
+      />
 
       <Box sx={{ display: "flex", width: "100%", overflowY: "scroll" }}>
-        {metadata && flavor === "x-bcvnotes" && (
+        {metadata && (flavor === "x-bcvnotes" || flavor === "x-notes") && (
           <Box sx={{ flex: 1, margin: 5 }}>
             <BcvNotesViewerMuncher
               metadata={metadata}
