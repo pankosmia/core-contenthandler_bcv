@@ -78,9 +78,8 @@ export default function AccordionTsv({
     newIngredient.splice(rowN, 1);
     setIngredient(newIngredient);
   };
-
-  console.log("🚀 ~ AccordionTsv ~ md5:", md5(JSON.stringify(ingredient)));
-
+  const RegexChapter = /^(front|intro|back|[0-9]+)$/;
+  const RegexVerse = /^(front|intro|back|[0-9]+|[0-9]+\s*-\s*[0-9]+)$/;
   return (
     <Box>
       {ingredient?.map((row, index) => {
@@ -133,9 +132,6 @@ export default function AccordionTsv({
                     label={header[cellIndex]}
                     onBlur={(newValue) => {
                       handleCellChange(index, cellIndex, newValue);
-                      if (row[0]) {
-                        setCurrentReference(row[0]);
-                      }
                     }}
                   />
                 ) : isOccurrenceColumn(cellIndex) ? (
@@ -160,9 +156,19 @@ export default function AccordionTsv({
                     fullWidth
                     multiline
                     onBlur={(newValue) => {
-                      handleCellChange(index, cellIndex, newValue.target.value);
                       if (row[0]) {
                         setCurrentReference(newValue.target.value);
+                        handleCellChange(
+                          index,
+                          cellIndex,
+                          newValue.target.value,
+                        );
+                      } else {
+                        handleCellChange(
+                          index,
+                          cellIndex,
+                          newValue.target.value,
+                        );
                       }
                     }}
                   />

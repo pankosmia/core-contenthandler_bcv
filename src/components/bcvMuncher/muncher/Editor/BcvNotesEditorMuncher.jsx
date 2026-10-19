@@ -28,7 +28,6 @@ function BcvNotesEditorMuncher({
   bcvRef,
   currentProjectRef,
 }) {
-  console.log("🚀 ~ BcvNotesEditorMuncher ~ bcvRef:", bcvRef);
   const [ingredient, setIngredient] = useState([]);
   const [md5Ingredient, setMd5Ingredient] = useState([]);
   const [md5CurrentIngredient, setMd5CurrentIngredient] = useState([]);

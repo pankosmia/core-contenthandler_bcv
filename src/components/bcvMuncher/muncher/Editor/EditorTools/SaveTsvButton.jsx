@@ -15,7 +15,6 @@ function SaveTsvButton({
   systemBcv,
   debugRef,
 }) {
-  console.log("🚀 ~ SaveTsvButton ~ md5Ingredient:", md5Ingredient);
   const [contentChanged, _setContentChanged] = useState(false);
 
   // Met à jour le fichier TSV

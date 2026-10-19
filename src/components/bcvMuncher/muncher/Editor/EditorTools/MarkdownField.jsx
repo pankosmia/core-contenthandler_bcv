@@ -39,7 +39,7 @@ function MarkdownField({ value, label, key, onBlur }) {
         <FormControl fullWidth margin="normal">
           <TextField
             label={label}
-            value={value}
+            defaultValue={value}
             key={key}
             minRows={5}
             maxRows={5}

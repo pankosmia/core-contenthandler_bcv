@@ -31,7 +31,6 @@ export default function NavigationRef({
   bcvRef,
   debugRef,
 }) {
-  console.log("🚀 ~ NavigationRef ~ bcvRef:", bcvRef);
   const [openMainMenu, setOpenMainMenu] = useState(null);
   const [openSubMenu, setOpenSubMenu] = useState(null);
   const [currentGroup, setCurrentGroup] = useState(null);

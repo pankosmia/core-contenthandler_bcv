@@ -45,7 +45,9 @@ function TsvExport() {
       const bookCode = data.book_codes;
       setBookNames(bookCode);
     } else {
-      console.error(" Erreur lors de la récupération des données.");
+      console.error(
+        `${doI18n("pages:core-contenthandler_bcv:fetch_error", i18nRef.current)}`,
+      );
     }
   };
   useEffect(() => {
