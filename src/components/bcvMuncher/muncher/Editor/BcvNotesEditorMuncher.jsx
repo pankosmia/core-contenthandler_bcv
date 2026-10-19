@@ -104,32 +104,34 @@ function BcvNotesEditorMuncher({
     : [];
 
   return (
-    <>
-      <BookPicker
-        bcvRef={bcvRef}
-        i18nRef={i18nRef}
-        systemBcv={systemBcv}
-        currentProjectRef={currentProjectRef}
-        debugRef={debugRef}
-      />
-      <SaveTsvButton
-        metadata={metadata}
-        ingredient={ingredient}
-        setIngredient={setIngredient}
-        md5Ingredient={md5Ingredient}
-        setMd5Ingredient={setMd5Ingredient}
-        i18nRef={i18nRef}
-        systemBcv={systemBcv}
-      />
-      <NavigationRef
-        ingredient={ingredient}
-        setIngredient={setIngredient}
-        i18nRef={i18nRef}
-        currentReference={currentReference}
-        setCurrentReference={setCurrentReference}
-        bcvRef={bcvRef}
-        debugRef={debugRef}
-      />
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+        <SaveTsvButton
+          metadata={metadata}
+          ingredient={ingredient}
+          setIngredient={setIngredient}
+          md5Ingredient={md5Ingredient}
+          setMd5Ingredient={setMd5Ingredient}
+          i18nRef={i18nRef}
+          systemBcv={systemBcv}
+        />
+        <BookPicker
+          bcvRef={bcvRef}
+          i18nRef={i18nRef}
+          systemBcv={systemBcv}
+          currentProjectRef={currentProjectRef}
+          debugRef={debugRef}
+        />
+        <NavigationRef
+          ingredient={ingredient}
+          setIngredient={setIngredient}
+          i18nRef={i18nRef}
+          currentReference={currentReference}
+          setCurrentReference={setCurrentReference}
+          bcvRef={bcvRef}
+          debugRef={debugRef}
+        />
+      </Box>
       <AccordionTsv
         ingredient={ingredient}
         setIngredient={setIngredient}
@@ -139,7 +141,7 @@ function BcvNotesEditorMuncher({
         currentReference={currentReference}
         setCurrentReference={setCurrentReference}
       />
-    </>
+    </Box>
   );
 }
 
