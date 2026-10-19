@@ -18,6 +18,7 @@ import { doI18n } from "pankosmia-lib/i18n";
 import MarkdownField from "./MarkdownField";
 import md5 from "md5";
 import NumberField from "./NumberField";
+import ReferenceField from "./ReferenceField";
 
 export default function AccordionTsv({
   ingredient,
@@ -51,14 +52,17 @@ export default function AccordionTsv({
     getProjectSummaries();
   }, []);
 
-  const header = ingredient?.[0];
+  const HEADER = ingredient?.[0];
+  const REFERENCE_COLUMN = 0;
 
-  const markdownColumns = ["note", "question", "response"];
-  const isMarkdownColumn = (cellIndex) =>
-    markdownColumns.includes(header[cellIndex]?.trim().toLowerCase());
+  const QUESTION_FLAVORS = ["x-bcvquestions", "x-questions"];
+  const isQuestionFlavor = QUESTION_FLAVORS.includes(repoFlavor);
 
+  const markdownColumns = isQuestionFlavor ? [5, 6] : [6];
+  const occurrenceColumn = isQuestionFlavor ? [4] : [5];
+  const isMarkdownColumn = (cellIndex) => markdownColumns.includes(cellIndex);
   const isOccurrenceColumn = (cellIndex) =>
-    header[cellIndex]?.trim().toLowerCase() === "occurrence";
+    occurrenceColumn.includes(cellIndex);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -78,8 +82,7 @@ export default function AccordionTsv({
     newIngredient.splice(rowN, 1);
     setIngredient(newIngredient);
   };
-  const RegexChapter = /^(front|intro|back|[0-9]+)$/;
-  const RegexVerse = /^(front|intro|back|[0-9]+|[0-9]+\s*-\s*[0-9]+)$/;
+
   return (
     <Box>
       {ingredient?.map((row, index) => {
@@ -125,11 +128,22 @@ export default function AccordionTsv({
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
               {row.map((cell, cellIndex) =>
-                isMarkdownColumn(cellIndex) ? (
+                cellIndex === REFERENCE_COLUMN ? (
+                  <ReferenceField
+                    key={cellIndex}
+                    i18nRef={i18nRef}
+                    value={cell}
+                    label={HEADER[cellIndex]}
+                    onBlur={(newValue) => {
+                      handleCellChange(index, cellIndex, newValue);
+                      setCurrentReference(newValue);
+                    }}
+                  />
+                ) : isMarkdownColumn(cellIndex) ? (
                   <MarkdownField
                     key={cellIndex}
                     value={cell}
-                    label={header[cellIndex]}
+                    label={HEADER[cellIndex]}
                     onBlur={(newValue) => {
                       handleCellChange(index, cellIndex, newValue);
                     }}
@@ -139,7 +153,7 @@ export default function AccordionTsv({
                     key={cellIndex}
                     size="small"
                     value={cell === "" || cell == null ? null : Number(cell)}
-                    label={header[cellIndex]}
+                    label={HEADER[cellIndex]}
                     min={0}
                     onValueChange={(newValue) => {
                       handleCellChange(index, cellIndex, newValue);
@@ -151,25 +165,12 @@ export default function AccordionTsv({
                     key={cellIndex}
                     defaultValue={cell}
                     disabled={cellIndex === 1}
-                    label={header[cellIndex]}
+                    label={HEADER[cellIndex]}
                     variant="outlined"
                     fullWidth
                     multiline
                     onBlur={(newValue) => {
-                      if (row[0]) {
-                        setCurrentReference(newValue.target.value);
-                        handleCellChange(
-                          index,
-                          cellIndex,
-                          newValue.target.value,
-                        );
-                      } else {
-                        handleCellChange(
-                          index,
-                          cellIndex,
-                          newValue.target.value,
-                        );
-                      }
+                      handleCellChange(index, cellIndex, newValue.target.value);
                     }}
                   />
                 ),
