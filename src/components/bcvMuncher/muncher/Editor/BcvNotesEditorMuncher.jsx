@@ -10,6 +10,7 @@ import {
   IconButton,
   Accordion,
   Button,
+  Icon,
 } from "@mui/material";
 import { postEmptyJson, getText } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
@@ -20,6 +21,7 @@ import LayoutIcon from "../layouts/LayoutIcon";
 import AccordionTsv from "./EditorTools/AccordionTsv";
 import NavigationRef from "./EditorTools/NavigationRef";
 import MenuFields from "./EditorTools/MenuFields";
+import IconSetting from "./EditorTools/IconSetting";
 
 function BcvNotesEditorMuncher({
   metadata,
@@ -138,8 +140,9 @@ function BcvNotesEditorMuncher({
           bcvRef={bcvRef}
           debugRef={debugRef}
         />
-        <Button onClick={handleOpen}>Open Menu</Button>
-
+        <IconButton onClick={handleOpen}>
+          <IconSetting />
+        </IconButton>
         <MenuFields
           ingredient={ingredient}
           setHiddenFields={setHiddenFields}

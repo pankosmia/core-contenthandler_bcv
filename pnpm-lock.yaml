@@ -34,6 +34,9 @@ importers:
       font-detect-rhl:
         specifier: ^1.1.10
         version: 1.1.10(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      material-symbols:
+        specifier: ^0.48.0
+        version: 0.48.0
       md5:
         specifier: ^2.3.0
         version: 2.3.0
@@ -4061,6 +4064,12 @@ packages:
     resolution:
       {
         integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==,
+      }
+
+  material-symbols@0.48.0:
+    resolution:
+      {
+        integrity: sha512-onKVWr4wcIWRbm+u+vkICQkw68KLqR2NRNhI0eafWvkE1FnHXHsQ8yUuSpkmVeARhbgVB0G/5ItfMSresLsBFw==,
       }
 
   math-intrinsics@1.1.0:
@@ -8153,6 +8162,8 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
+
+  material-symbols@0.48.0: {}
 
   math-intrinsics@1.1.0: {}
 

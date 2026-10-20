@@ -11,6 +11,7 @@ import { MaterialDesignContent, SnackbarProvider } from "notistack";
 import { styled } from "@mui/material";
 import MuncherTest from "./pages/MuncherTest";
 import TsvImport from "./pages/Import/TsvImport";
+import "material-symbols/outlined.css";
 
 const router = createHashRouter([
   {

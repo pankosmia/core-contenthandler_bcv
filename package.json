@@ -18,6 +18,7 @@
     "color": "^5.0.3",
     "file-saver": "^2.0.5",
     "font-detect-rhl": "^1.1.10",
+    "material-symbols": "^0.48.0",
     "md5": "^2.3.0",
     "pankosmia-lib": "^0.0.3",
     "prop-types": "^15.8.1",

@@ -25,7 +25,7 @@ function ReferenceField({ value, label, onBlur, i18nRef, hidden }) {
       helperText={
         error &&
         `${doI18n(
-          `pages:core-contenthandler_bcv:helper_text_add_reference`,
+          `pages:core-contenthandler_bcv:regex_reference`,
           i18nRef.current,
         )}`
       }

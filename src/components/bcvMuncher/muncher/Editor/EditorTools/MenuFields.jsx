@@ -1,4 +1,5 @@
-import { ListItemIcon, MenuItem, Checkbox, ListItemText } from "@mui/material";
+import { ListItemIcon, MenuItem, ListItemText } from "@mui/material";
+import Check from "@mui/icons-material/Check";
 import { PanMenuWrapper } from "pankosmia-rcl";
 import { useState } from "react";
 
@@ -21,9 +22,13 @@ export default function MenuFields({
     <PanMenuWrapper anchorEl={anchorEl} setIsOpen={setIsOpen} isOpen={isOpen}>
       {HEADER?.map((row) => {
         return (
-          <MenuItem key={row} onClick={() => handleToggle(row)}>
+          <MenuItem
+            key={row}
+            onClick={() => handleToggle(row)}
+            selected={Boolean(!hiddenFields.includes(row))}
+          >
             <ListItemIcon>
-              <Checkbox checked={!hiddenFields.includes(row)} />
+              {!hiddenFields.includes(row) ? <Check fontSize="small" /> : null}
             </ListItemIcon>
             <ListItemText> {row} </ListItemText>
           </MenuItem>
