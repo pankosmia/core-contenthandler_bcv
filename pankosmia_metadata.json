@@ -511,16 +511,12 @@
       "en": "Book deleted",
       "fr": "Livre supprimé"
     },
-    "helper_text_add_reference": {
-      "en": "Both fields accept a number or specific text (“intro”, “front” or “back”). \nVerse also accept a verse range (eg, 1-4).",
-      "fr": "Les deux champs acceptent un nombre ou un texte précis (“intro“, “front“ ou “back”). \nVerset accepte aussi une étendue de versets (ex, 1-4)."
-    },
     "add_reference": {
       "en": "Add reference",
       "fr": "Ajouter une référence"
     },
     "regex_reference": {
-      "en": "The reference format is “chapter:verse”. Both chapter and verse may be a number or one of “intro”, “front” or “back”.Verse may also be a range (eg 1-4).",
+      "en": "The reference format is “chapter:verse”. Both chapter and verse may be a number or one of “intro”, “front” or “back”. Verse may also be a range (eg 1-4).",
       "fr": "La référence est au format “chapitre:verset”. Le chapitre et le verset peuvent être un nombre ou le mot “intro“, “front“ ou “back“. Verset peut aussi être une étendue (ex. 1-4)."
     }
   }

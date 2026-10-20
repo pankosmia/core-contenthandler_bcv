@@ -1,8 +1,9 @@
-import { PanAdvancedDialog, PanDialogActionsArray } from "pankosmia-rcl";
+import { PanBasicDialog, PanDialogActionsArray } from "pankosmia-rcl";
 import { TextField, DialogContent, Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { doI18n } from "pankosmia-lib/i18n";
 import { v4 as uuidv4 } from "uuid";
+import { validateReference } from "../../helpers/validateReference";
 export default function AddReference({
   addReferenceOpen,
   setAddReferenceOpen,
@@ -11,8 +12,9 @@ export default function AddReference({
   setIngredient,
   setCurrentReference,
 }) {
-  const [chapter, setChapter] = useState("");
-  const [verse, setVerse] = useState("");
+  const [reference, setReference] = useState("");
+  const [error, setError] = useState(false);
+  const isValid = validateReference(reference);
 
   const handleSaveNewTsvRow = (rowN, reference) => {
     const existingIds = ingredient.map((l) => l[1]);
@@ -27,12 +29,11 @@ export default function AddReference({
     newIngredient.splice(rowN, 0, fullRow);
     setIngredient(newIngredient);
     setAddReferenceOpen(false);
-    setCurrentReference(`${chapter}:${verse}`);
+    setCurrentReference(reference);
   };
-  const RegexChapter = /^(front|intro|back|[0-9]+)$/;
-  const RegexVerse = /^(front|intro|back|[0-9]+|[0-9]+\s*-\s*[0-9]+)$/;
+
   return (
-    <PanAdvancedDialog
+    <PanBasicDialog
       titleLabel={doI18n(
         `pages:core-contenthandler_bcv:add_reference`,
         i18nRef.current,
@@ -45,63 +46,45 @@ export default function AddReference({
           "pages:core-contenthandler_bcv:create",
           i18nRef.current,
         ),
-        actionFn: () =>
-          handleSaveNewTsvRow(ingredient.length, `${chapter}:${verse}`),
+        actionFn: () => {
+          if (isValid) {
+            (handleSaveNewTsvRow(ingredient.length, reference),
+              setError(false));
+          } else {
+            setError(true);
+          }
+        },
         closeFn: () => setAddReferenceOpen(false),
         closeLabel: doI18n(
-          "pages:core-contenthandler_bcv:close",
+          "pages:core-contenthandler_bcv:cancel",
           i18nRef.current,
         ),
         closeOnAction: false,
-        isDisabled: !(
-          chapter &&
-          RegexChapter.test(chapter) &&
-          verse &&
-          RegexVerse.test(verse)
-        ),
       })}
     >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          width: "100%",
-          marginTop: 1,
+      <TextField
+        required
+        label={doI18n(
+          `pages:core-contenthandler_bcv:reference`,
+          i18nRef.current,
+        )}
+        value={reference}
+        onChange={(e) => {
+          setReference(e.target.value);
         }}
-      >
-        <TextField
-          required
-          label="Chapitre"
-          value={chapter}
-          onChange={(e) => setChapter(e.target.value)}
-          sx={{ flex: 1 }}
-          error={chapter && !RegexChapter.test(chapter)}
-        />
-
-        <Typography variant="h6">:</Typography>
-
-        <TextField
-          required
-          label="Verset"
-          value={verse}
-          onChange={(e) => setVerse(e.target.value)}
-          sx={{ flex: 1 }}
-          error={verse && !RegexVerse.test(verse)}
-        />
-      </Box>
-      <Box sx={{ marginLeft: "14px" }}>
-        <Typography
-          variant="caption"
-          color="textSecondary"
-          sx={{ whiteSpace: "pre-line" }}
-        >
-          {doI18n(
-            `pages:core-contenthandler_bcv:helper_text_add_reference`,
-            i18nRef.current,
-          )}
-        </Typography>
-      </Box>
-    </PanAdvancedDialog>
+        error={error}
+        helperText={
+          error
+            ? `${doI18n(
+                `pages:core-contenthandler_bcv:regex_reference`,
+                i18nRef.current,
+              )}`
+            : `${doI18n(
+                `pages:core-contenthandler_bcv:regex_reference`,
+                i18nRef.current,
+              )}`
+        }
+      />
+    </PanBasicDialog>
   );
 }

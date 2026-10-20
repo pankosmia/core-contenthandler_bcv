@@ -58,16 +58,9 @@ export default function AccordionTsv({
     return hiddenFields.includes(HEADER[cellIndex]);
   };
 
-  const REFERENCE_COLUMN = 0;
-
-  const QUESTION_FLAVORS = ["x-bcvquestions", "x-questions"];
-  const isQuestionFlavor = QUESTION_FLAVORS.includes(repoFlavor);
-
-  const markdownColumns = isQuestionFlavor ? [5, 6] : [6];
-  const occurrenceColumn = isQuestionFlavor ? [4] : [5];
-  const isMarkdownColumn = (cellIndex) => markdownColumns.includes(cellIndex);
-  const isOccurrenceColumn = (cellIndex) =>
-    occurrenceColumn.includes(cellIndex);
+  const REFERENCE_COLUMN = ["reference", "ref"];
+  const MARKDOWN_COLUMNS = ["note", "question", "href", "answer", "response"];
+  const OCCURRENCE_COLUMNS = ["occurrence", "ocurrence", "occurence"];
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -133,7 +126,7 @@ export default function AccordionTsv({
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
               {row.map((cell, cellIndex) =>
-                cellIndex === REFERENCE_COLUMN ? (
+                REFERENCE_COLUMN.includes(HEADER[cellIndex]?.toLowerCase()) ? (
                   <ReferenceField
                     key={cellIndex}
                     i18nRef={i18nRef}
@@ -145,7 +138,9 @@ export default function AccordionTsv({
                     }}
                     hidden={hidden(cellIndex)}
                   />
-                ) : isMarkdownColumn(cellIndex) ? (
+                ) : MARKDOWN_COLUMNS.includes(
+                    HEADER[cellIndex]?.toLowerCase(),
+                  ) ? (
                   <MarkdownField
                     key={cellIndex}
                     value={cell}
@@ -155,7 +150,9 @@ export default function AccordionTsv({
                     }}
                     hidden={hidden(cellIndex)}
                   />
-                ) : isOccurrenceColumn(cellIndex) ? (
+                ) : OCCURRENCE_COLUMNS.includes(
+                    HEADER[cellIndex]?.toLowerCase(),
+                  ) ? (
                   <NumberField
                     key={cellIndex}
                     size="small"

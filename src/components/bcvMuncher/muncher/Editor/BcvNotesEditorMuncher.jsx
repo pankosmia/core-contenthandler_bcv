@@ -42,7 +42,12 @@ function BcvNotesEditorMuncher({
   );
   const [firstChapter, setFirstChapter] = useState("1");
   const [hiddenFields, setHiddenFields] = useState([]);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleOpen = (event) => {
+    setIsOpen(true);
+    setAnchorEl(event.currentTarget);
+  };
   // Récupération des données du tsv
   const getAllData = async () => {
     const ingredientLink = `/api/burrito/ingredient/raw/${metadata.local_path}?ipath=${systemBcv.bookCode}.tsv`;
@@ -105,12 +110,6 @@ function BcvNotesEditorMuncher({
   const notesExist = currentChapter
     ? ingredient.filter((l) => l[0].startsWith(`${currentChapter}:`))
     : [];
-  const [isOpen, setIsOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleOpen = (event) => {
-    setIsOpen(true);
-    setAnchorEl(event.currentTarget);
-  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -123,6 +122,17 @@ function BcvNotesEditorMuncher({
           setMd5Ingredient={setMd5Ingredient}
           i18nRef={i18nRef}
           systemBcv={systemBcv}
+        />
+        <IconButton onClick={handleOpen}>
+          <IconSetting />
+        </IconButton>
+        <MenuFields
+          ingredient={ingredient}
+          setHiddenFields={setHiddenFields}
+          hiddenFields={hiddenFields}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          anchorEl={anchorEl}
         />
         <BookPicker
           bcvRef={bcvRef}
@@ -139,17 +149,6 @@ function BcvNotesEditorMuncher({
           setCurrentReference={setCurrentReference}
           bcvRef={bcvRef}
           debugRef={debugRef}
-        />
-        <IconButton onClick={handleOpen}>
-          <IconSetting />
-        </IconButton>
-        <MenuFields
-          ingredient={ingredient}
-          setHiddenFields={setHiddenFields}
-          hiddenFields={hiddenFields}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          anchorEl={anchorEl}
         />
       </Box>
       <AccordionTsv
