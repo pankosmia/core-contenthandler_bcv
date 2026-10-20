@@ -32,6 +32,8 @@ export default defineConfig(({ mode }) => {
               "react-router-dom",
               "pankosmia-rcl",
               "notistack",
+              /^@mui\//,
+              /^@emotion\//,
             ],
             output: {
               name: "bcvMuncherRcl",
