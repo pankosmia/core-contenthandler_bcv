@@ -33,7 +33,7 @@
   },
   "peerDependencies": {
     "notistack": "^3.0.2",
-    "pankosmia-rcl": "^0.8.0",
+    "pankosmia-rcl": "^0.8.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^6.27.0"

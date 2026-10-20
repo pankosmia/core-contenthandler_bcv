@@ -9,8 +9,8 @@ import {
   Tooltip,
   IconButton,
   Accordion,
+  Button,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import { postEmptyJson, getText } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import SaveTsvButton from "./EditorTools/SaveTsvButton";
@@ -19,6 +19,7 @@ import BookPicker from "./EditorTools/BookPicker";
 import LayoutIcon from "../layouts/LayoutIcon";
 import AccordionTsv from "./EditorTools/AccordionTsv";
 import NavigationRef from "./EditorTools/NavigationRef";
+import MenuFields from "./EditorTools/MenuFields";
 
 function BcvNotesEditorMuncher({
   metadata,
@@ -38,7 +39,7 @@ function BcvNotesEditorMuncher({
     `${bcvRef?.current.chapterNum}:${bcvRef?.current.verseNum}`,
   );
   const [firstChapter, setFirstChapter] = useState("1");
-  const navigate = useNavigate();
+  const [hiddenFields, setHiddenFields] = useState([]);
 
   // Récupération des données du tsv
   const getAllData = async () => {
@@ -102,6 +103,12 @@ function BcvNotesEditorMuncher({
   const notesExist = currentChapter
     ? ingredient.filter((l) => l[0].startsWith(`${currentChapter}:`))
     : [];
+  const [isOpen, setIsOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleOpen = (event) => {
+    setIsOpen(true);
+    setAnchorEl(event.currentTarget);
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -131,6 +138,16 @@ function BcvNotesEditorMuncher({
           bcvRef={bcvRef}
           debugRef={debugRef}
         />
+        <Button onClick={handleOpen}>Open Menu</Button>
+
+        <MenuFields
+          ingredient={ingredient}
+          setHiddenFields={setHiddenFields}
+          hiddenFields={hiddenFields}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          anchorEl={anchorEl}
+        />
       </Box>
       <AccordionTsv
         ingredient={ingredient}
@@ -140,6 +157,7 @@ function BcvNotesEditorMuncher({
         debugRef={debugRef}
         currentReference={currentReference}
         setCurrentReference={setCurrentReference}
+        hiddenFields={hiddenFields}
       />
     </Box>
   );

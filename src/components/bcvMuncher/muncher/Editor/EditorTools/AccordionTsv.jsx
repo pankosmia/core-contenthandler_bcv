@@ -30,6 +30,7 @@ export default function AccordionTsv({
   debugRef,
   currentReference,
   setCurrentReference,
+  hiddenFields,
 }) {
   const [expanded, setExpanded] = useState(false);
   const [repoFlavor, setRepoFlavor] = useState("");
@@ -53,6 +54,10 @@ export default function AccordionTsv({
   }, []);
 
   const HEADER = ingredient?.[0];
+  const hidden = (cellIndex) => {
+    return hiddenFields.includes(HEADER[cellIndex]);
+  };
+
   const REFERENCE_COLUMN = 0;
 
   const QUESTION_FLAVORS = ["x-bcvquestions", "x-questions"];
@@ -138,6 +143,7 @@ export default function AccordionTsv({
                       handleCellChange(index, cellIndex, newValue);
                       setCurrentReference(newValue);
                     }}
+                    hidden={hidden(cellIndex)}
                   />
                 ) : isMarkdownColumn(cellIndex) ? (
                   <MarkdownField
@@ -147,6 +153,7 @@ export default function AccordionTsv({
                     onBlur={(newValue) => {
                       handleCellChange(index, cellIndex, newValue);
                     }}
+                    hidden={hidden(cellIndex)}
                   />
                 ) : isOccurrenceColumn(cellIndex) ? (
                   <NumberField
@@ -158,6 +165,7 @@ export default function AccordionTsv({
                     onValueChange={(newValue) => {
                       handleCellChange(index, cellIndex, newValue);
                     }}
+                    hidden={hidden(cellIndex)}
                   />
                 ) : (
                   <TextField
@@ -172,6 +180,7 @@ export default function AccordionTsv({
                     onBlur={(newValue) => {
                       handleCellChange(index, cellIndex, newValue.target.value);
                     }}
+                    sx={{ display: hidden(cellIndex) ? "none" : undefined }}
                   />
                 ),
               )}

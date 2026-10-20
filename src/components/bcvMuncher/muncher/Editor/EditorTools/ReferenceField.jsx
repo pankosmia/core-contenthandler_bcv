@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import validateReference from "../../helpers/validateReference";
 import { doI18n } from "pankosmia-lib/i18n";
 
-function ReferenceField({ value, label, onBlur, i18nRef }) {
+function ReferenceField({ value, label, onBlur, i18nRef, hidden }) {
   const [localValue, setLocalValue] = useState(value);
   const [error, setError] = useState(false);
 
@@ -14,6 +14,7 @@ function ReferenceField({ value, label, onBlur, i18nRef }) {
 
   return (
     <TextField
+      sx={{ display: hidden ? "none" : undefined }}
       size="small"
       label={label}
       value={localValue}

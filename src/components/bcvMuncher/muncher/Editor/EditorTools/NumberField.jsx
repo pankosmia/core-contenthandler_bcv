@@ -18,7 +18,14 @@ function SSRInitialFilled(_) {
 }
 SSRInitialFilled.muiName = "Input";
 
-function NumberField({ id: idProp, label, error, size = "medium", ...other }) {
+function NumberField({
+  id: idProp,
+  label,
+  error,
+  size = "medium",
+  hidden,
+  ...other
+}) {
   let id = React.useId();
   if (idProp) {
     id = idProp;
@@ -34,6 +41,7 @@ function NumberField({ id: idProp, label, error, size = "medium", ...other }) {
           required={state.required}
           error={error}
           variant="outlined"
+          sx={{ display: hidden ? "none" : undefined }}
         >
           {props.children}
         </FormControl>

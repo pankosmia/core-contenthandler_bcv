@@ -12,7 +12,7 @@ import {
 import { i18nContext as I18nContext } from "pankosmia-rcl";
 import { doI18n } from "pankosmia-lib/i18n";
 
-function MarkdownField({ value, label, key, onBlur }) {
+function MarkdownField({ value, label, key, onBlur, hidden }) {
   const [displayMode, setdisplayMode] = useState("write");
 
   return (
@@ -26,6 +26,7 @@ function MarkdownField({ value, label, key, onBlur }) {
             setdisplayMode(newDisplayMode);
           }
         }}
+        sx={{ display: hidden ? "none" : undefined }}
       >
         <ToggleButton value="write">
           <CreateIcon />
@@ -48,6 +49,7 @@ function MarkdownField({ value, label, key, onBlur }) {
             size="small"
             variant="outlined"
             onBlur={(event) => onBlur(event.target.value)}
+            sx={{ display: hidden ? "none" : undefined }}
           />
         </FormControl>
       ) : (
