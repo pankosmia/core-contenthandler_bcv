@@ -2,15 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Box, MenuItem, TextField } from "@mui/material";
 import { getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
-
-function BookPicker({
-  bcvRef,
-  debugRef,
-  i18nRef,
-  currentProjectRef,
-  setFirstChapter,
-  disable = false,
-}) {
+import { getFirstChapterBCVNotes } from "../../utils/findFirstChapter";
+function BookPicker({ bcvRef, debugRef, i18nRef, currentProjectRef }) {
   const [contentBooks, setContentBooks] = useState([]);
   const [currentBook, setCurrentBook] = useState(bcvRef.current.bookCode);
 
@@ -32,37 +25,37 @@ function BookPicker({
 
   useEffect(() => {
     if (currentBook && bcvRef.current.bookCode !== currentBook) {
-      setFirstChapter(currentProjectRef.current, debugRef.current, currentBook);
+      getFirstChapterBCVNotes(
+        currentProjectRef.current,
+        debugRef.current,
+        currentBook,
+      );
     }
   }, [currentBook]);
 
   return (
-    <Box sx={{ justifyContent: "space-between" }}>
-      <div>
-        <TextField
-          disabled={disable}
-          label={`${doI18n("pages:core-contenthandler_bcv:book", i18nRef.current)}`}
-          fullWidth
-          id="book-button"
-          size="small"
-          select
-          value={bcvRef.current.bookCode}
-        >
-          {contentBooks.map((b, n) => (
-            <MenuItem
-              sx={{ maxHeight: "3rem", height: "2rem" }}
-              value={b}
-              key={n}
-              onClick={() => {
-                setCurrentBook(b);
-              }}
-            >
-              {doI18n(`scripture:books:${b}`, i18nRef.current)}
-            </MenuItem>
-          ))}
-        </TextField>
-      </div>
-    </Box>
+    <>
+      <TextField
+        label={`${doI18n("pages:core-contenthandler_bcv:book", i18nRef.current)}`}
+        id="book-button"
+        size="small"
+        select
+        value={bcvRef.current.bookCode}
+      >
+        {contentBooks.map((b, n) => (
+          <MenuItem
+            sx={{ maxHeight: "3rem", height: "2rem" }}
+            value={b}
+            key={n}
+            onClick={() => {
+              setCurrentBook(b);
+            }}
+          >
+            {doI18n(`scripture:books:${b}`, i18nRef.current)}
+          </MenuItem>
+        ))}
+      </TextField>
+    </>
   );
 }
 

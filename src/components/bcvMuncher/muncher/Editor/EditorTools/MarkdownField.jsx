@@ -12,15 +12,7 @@ import {
 import { i18nContext as I18nContext } from "pankosmia-rcl";
 import { doI18n } from "pankosmia-lib/i18n";
 
-function MarkdownField({
-  onChangeNote,
-  value,
-  ingredient,
-  currentRowN,
-  mode,
-  label,
-  i18nRef,
-}) {
+function MarkdownField({ value, label, key, onBlur, hidden }) {
   const [displayMode, setdisplayMode] = useState("write");
 
   return (
@@ -34,6 +26,7 @@ function MarkdownField({
             setdisplayMode(newDisplayMode);
           }
         }}
+        sx={{ display: hidden ? "none" : undefined }}
       >
         <ToggleButton value="write">
           <CreateIcon />
@@ -46,33 +39,21 @@ function MarkdownField({
       {displayMode === "write" ? (
         <FormControl fullWidth margin="normal">
           <TextField
-            label={
-              doI18n(
-                `pages:core-contenthandler_bcv:${label.toLowerCase()}`,
-                i18nRef.current,
-              ) ||
-              doI18n(
-                `pages:core-contenthandler_bcv:text_paragraph`,
-                i18nRef.current,
-              )
-            }
-            value={value}
-            onChange={onChangeNote}
+            label={label}
+            defaultValue={value}
+            key={key}
             minRows={5}
             maxRows={5}
             fullWidth
             multiline
             size="small"
             variant="outlined"
-            disabled={
-              mode === "edit" &&
-              ingredient[currentRowN] &&
-              ingredient[currentRowN].length === 1
-            }
+            onBlur={(event) => onBlur(event.target.value)}
+            sx={{ display: hidden ? "none" : undefined }}
           />
         </FormControl>
       ) : (
-        <Box sx={{ border: "1px solid", marginTop: 2 }}>
+        <Box sx={{ border: "1px solid", marginTop: 1, padding: 1 }}>
           <Markdown fullWidth>{value}</Markdown>
         </Box>
       )}
