@@ -13,7 +13,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState, useEffect } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Markdown from "react-markdown";
-import { getJson } from "pankosmia-lib/http";
+import { getJson, postEmptyJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import MarkdownField from "./MarkdownField";
 import md5 from "md5";
@@ -80,7 +80,25 @@ export default function AccordionTsv({
     newIngredient.splice(rowN, 1);
     setIngredient(newIngredient);
   };
+  useEffect(() => {
+    if (!ingredient || ingredient.length === 0) return;
 
+    const columnNames = ingredient[0] || [];
+    const quoteIndex = columnNames.findIndex((c) =>
+      c.toLowerCase().includes("quote"),
+    );
+    if (quoteIndex === -1) return;
+
+    const snippet = ingredient
+      ?.map((row) => row?.[quoteIndex]?.trim())
+      .join("\n");
+    if (snippet) {
+      postEmptyJson(
+        `/api/app-state/snippet/${encodeURIComponent(snippet)}`,
+        debugRef.current,
+      );
+    }
+  }, [ingredient]);
   return (
     <Box>
       {ingredient?.map((row, index) => {
