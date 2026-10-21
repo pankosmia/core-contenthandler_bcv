@@ -112,7 +112,7 @@ export default function NavigationRef({
           )}
           displayEmpty
           value={currentReference ?? bcvRef.current.chapter}
-          open={openMainMenu}
+          open={Boolean(openMainMenu)}
           onOpen={() => setOpenMainMenu(true)}
           onClose={(event) => {
             if (event?.target?.closest?.(".MuiMenuItem-root")) return;
@@ -120,23 +120,20 @@ export default function NavigationRef({
           }}
           renderValue={(value) => value || currentReference[0]}
         >
-          {groupList.map(([groupName]) => {
-            const selectedChapter =
-              Boolean(openSubMenu) && groupName === currentGroup;
-            return (
-              <MenuItem
-                key={groupName}
-                onClick={(e) => openGroup(e, groupName)}
-                onMouseEnter={(e) => openGroup(e, groupName)}
-              >
-                <ListItemText>{groupName}</ListItemText>
-                <ArrowRightIcon fontSize="small" />
-              </MenuItem>
-            );
-          })}
-
-          <Divider />
-
+          <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
+            {groupList.map(([groupName]) => {
+              return (
+                <MenuItem
+                  key={groupName}
+                  onClick={(e) => openGroup(e, groupName)}
+                  onMouseEnter={(e) => openGroup(e, groupName)}
+                >
+                  <ListItemText>{groupName}</ListItemText>
+                  <ArrowRightIcon fontSize="small" />
+                </MenuItem>
+              );
+            })}
+          </div>
           <MenuItem onClick={handleAddReference}>
             <AddIcon fontSize="small" sx={{ mr: 1 }} />
             {doI18n("pages:core-contenthandler_bcv:add", i18nRef.current)}
@@ -146,14 +143,11 @@ export default function NavigationRef({
 
       <Popper
         open={Boolean(openSubMenu)}
-        onMouseLeave={() => {
-          (setOpenMainMenu(false), setOpenSubMenu(false));
-        }}
         anchorEl={openSubMenu}
         placement="right-start"
         sx={{ zIndex: (theme) => theme.zIndex.modal + 1 }}
       >
-        <Paper sx={{ maxHeight: "60vh", overflowY: "auto" }}>
+        <Paper sx={{ maxHeight: "50vh", overflowY: "auto" }}>
           <MenuList>
             {currentReferences.map((reference) => (
               <MenuItem
