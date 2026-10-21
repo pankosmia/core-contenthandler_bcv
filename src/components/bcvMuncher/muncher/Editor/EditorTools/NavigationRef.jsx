@@ -1,4 +1,4 @@
-import { useState, useMemo, useContext } from "react";
+import { useState, useMemo, useContext, useRef } from "react";
 import { postEmptyJson } from "pankosmia-lib/http";
 import {
   TextField,
@@ -37,6 +37,7 @@ export default function NavigationRef({
   const [addReferenceOpen, setAddReferenceOpen] = useState(false);
   const open = Boolean(openMainMenu);
   const subOpen = Boolean(openSubMenu);
+  const closeTimer = useRef(null);
 
   const rows = ingredient?.slice(1);
 
@@ -73,12 +74,28 @@ export default function NavigationRef({
   const currentReferences =
     groupList.find(([groupName]) => groupName === currentGroup)?.[1] ?? [];
 
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const scheduleCloseSubMenu = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => {
+      setOpenSubMenu(null);
+      setCurrentGroup(null);
+    }, 150);
+  };
   const openGroup = (event, groupName) => {
+    cancelClose();
     setOpenSubMenu(event.currentTarget);
     setCurrentGroup(groupName);
   };
 
   const closeAll = () => {
+    cancelClose();
     setOpenMainMenu(null);
     setOpenSubMenu(null);
     setCurrentGroup(null);
@@ -127,6 +144,7 @@ export default function NavigationRef({
                   key={groupName}
                   onClick={(e) => openGroup(e, groupName)}
                   onMouseEnter={(e) => openGroup(e, groupName)}
+                  onMouseLeave={scheduleCloseSubMenu}
                 >
                   <ListItemText>{groupName}</ListItemText>
                   <ArrowRightIcon fontSize="small" />
@@ -134,7 +152,10 @@ export default function NavigationRef({
               );
             })}
           </div>
-          <MenuItem onClick={handleAddReference}>
+          <MenuItem
+            onClick={handleAddReference}
+            onMouseEnter={(e) => openGroup(e, null)}
+          >
             <AddIcon fontSize="small" sx={{ mr: 1 }} />
             {doI18n("pages:core-contenthandler_bcv:add", i18nRef.current)}
           </MenuItem>
@@ -147,7 +168,11 @@ export default function NavigationRef({
         placement="right-start"
         sx={{ zIndex: (theme) => theme.zIndex.modal + 1 }}
       >
-        <Paper sx={{ maxHeight: "50vh", overflowY: "auto" }}>
+        <Paper
+          sx={{ maxHeight: "50vh", overflowY: "auto" }}
+          onMouseEnter={cancelClose}
+          onMouseLeave={scheduleCloseSubMenu}
+        >
           <MenuList>
             {currentReferences.map((reference) => (
               <MenuItem
