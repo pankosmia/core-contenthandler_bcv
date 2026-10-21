@@ -13,7 +13,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState, useEffect } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Markdown from "react-markdown";
-import { getJson } from "pankosmia-lib/http";
+import { getJson, postEmptyJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import MarkdownField from "./MarkdownField";
 import md5 from "md5";
@@ -58,16 +58,9 @@ export default function AccordionTsv({
     return hiddenFields.includes(HEADER[cellIndex]);
   };
 
-  const REFERENCE_COLUMN = 0;
-
-  const QUESTION_FLAVORS = ["x-bcvquestions", "x-questions"];
-  const isQuestionFlavor = QUESTION_FLAVORS.includes(repoFlavor);
-
-  const markdownColumns = isQuestionFlavor ? [5, 6] : [6];
-  const occurrenceColumn = isQuestionFlavor ? [4] : [5];
-  const isMarkdownColumn = (cellIndex) => markdownColumns.includes(cellIndex);
-  const isOccurrenceColumn = (cellIndex) =>
-    occurrenceColumn.includes(cellIndex);
+  const REFERENCE_COLUMN = ["reference", "ref"];
+  const MARKDOWN_COLUMNS = ["note", "question", "href", "answer", "response"];
+  const OCCURRENCE_COLUMNS = ["occurrence", "ocurrence", "occurence"];
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -87,7 +80,25 @@ export default function AccordionTsv({
     newIngredient.splice(rowN, 1);
     setIngredient(newIngredient);
   };
+  useEffect(() => {
+    if (!ingredient || ingredient.length === 0) return;
 
+    const columnNames = ingredient[0] || [];
+    const quoteIndex = columnNames.findIndex((c) =>
+      c.toLowerCase().includes("quote"),
+    );
+    if (quoteIndex === -1) return;
+
+    const snippet = ingredient
+      ?.map((row) => row?.[quoteIndex]?.trim())
+      .join("\n");
+    if (snippet) {
+      postEmptyJson(
+        `/api/app-state/snippet/${encodeURIComponent(snippet)}`,
+        debugRef.current,
+      );
+    }
+  }, [ingredient]);
   return (
     <Box>
       {ingredient?.map((row, index) => {
@@ -108,7 +119,7 @@ export default function AccordionTsv({
                 component="span"
                 color="textSecondary"
                 sx={{
-                  width: "33%",
+                  width: "12ch",
                   flexShrink: 0,
                 }}
               >
@@ -133,7 +144,7 @@ export default function AccordionTsv({
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
               {row.map((cell, cellIndex) =>
-                cellIndex === REFERENCE_COLUMN ? (
+                REFERENCE_COLUMN.includes(HEADER[cellIndex]?.toLowerCase()) ? (
                   <ReferenceField
                     key={cellIndex}
                     i18nRef={i18nRef}
@@ -145,7 +156,9 @@ export default function AccordionTsv({
                     }}
                     hidden={hidden(cellIndex)}
                   />
-                ) : isMarkdownColumn(cellIndex) ? (
+                ) : MARKDOWN_COLUMNS.includes(
+                    HEADER[cellIndex]?.toLowerCase(),
+                  ) ? (
                   <MarkdownField
                     key={cellIndex}
                     value={cell}
@@ -155,7 +168,9 @@ export default function AccordionTsv({
                     }}
                     hidden={hidden(cellIndex)}
                   />
-                ) : isOccurrenceColumn(cellIndex) ? (
+                ) : OCCURRENCE_COLUMNS.includes(
+                    HEADER[cellIndex]?.toLowerCase(),
+                  ) ? (
                   <NumberField
                     key={cellIndex}
                     size="small"

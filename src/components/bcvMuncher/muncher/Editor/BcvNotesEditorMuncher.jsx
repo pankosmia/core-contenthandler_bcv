@@ -21,8 +21,7 @@ import LayoutIcon from "../layouts/LayoutIcon";
 import AccordionTsv from "./EditorTools/AccordionTsv";
 import NavigationRef from "./EditorTools/NavigationRef";
 import MenuFields from "./EditorTools/MenuFields";
-import IconSetting from "./EditorTools/IconSetting";
-
+import { IconSettingSmall } from "./EditorTools/IconSetting";
 function BcvNotesEditorMuncher({
   metadata,
   debugRef,
@@ -42,7 +41,12 @@ function BcvNotesEditorMuncher({
   );
   const [firstChapter, setFirstChapter] = useState("1");
   const [hiddenFields, setHiddenFields] = useState([]);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleOpen = (event) => {
+    setIsOpen(true);
+    setAnchorEl(event.currentTarget);
+  };
   // Récupération des données du tsv
   const getAllData = async () => {
     const ingredientLink = `/api/burrito/ingredient/raw/${metadata.local_path}?ipath=${systemBcv.bookCode}.tsv`;
@@ -105,12 +109,6 @@ function BcvNotesEditorMuncher({
   const notesExist = currentChapter
     ? ingredient.filter((l) => l[0].startsWith(`${currentChapter}:`))
     : [];
-  const [isOpen, setIsOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleOpen = (event) => {
-    setIsOpen(true);
-    setAnchorEl(event.currentTarget);
-  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -123,6 +121,16 @@ function BcvNotesEditorMuncher({
           setMd5Ingredient={setMd5Ingredient}
           i18nRef={i18nRef}
           systemBcv={systemBcv}
+        />
+
+        <MenuFields
+          ingredient={ingredient}
+          setHiddenFields={setHiddenFields}
+          hiddenFields={hiddenFields}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          anchorEl={anchorEl}
+          handleOpen={handleOpen}
         />
         <BookPicker
           bcvRef={bcvRef}
@@ -140,18 +148,29 @@ function BcvNotesEditorMuncher({
           bcvRef={bcvRef}
           debugRef={debugRef}
         />
-        <IconButton onClick={handleOpen}>
-          <IconSetting />
-        </IconButton>
-        <MenuFields
-          ingredient={ingredient}
-          setHiddenFields={setHiddenFields}
-          hiddenFields={hiddenFields}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          anchorEl={anchorEl}
-        />
       </Box>
+      {hiddenFields.length > 0 && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 1,
+            color: "text.secondary",
+            paddingLeft: 2,
+          }}
+        >
+          <IconSettingSmall />
+          <Typography variant="caption">
+            {" "}
+            {hiddenFields.length}{" "}
+            {doI18n(
+              `pages:core-contenthandler_bcv:hidden_fields`,
+              i18nRef.current,
+            )}
+          </Typography>
+        </Box>
+      )}
       <AccordionTsv
         ingredient={ingredient}
         setIngredient={setIngredient}
