@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Stack,
@@ -30,6 +31,8 @@ function BcvNotesEditorMuncher({
   bcvRef,
   currentProjectRef,
 }) {
+  const navigate = useNavigate();
+
   const [ingredient, setIngredient] = useState([]);
   const [md5Ingredient, setMd5Ingredient] = useState([]);
   const [md5CurrentIngredient, setMd5CurrentIngredient] = useState([]);
