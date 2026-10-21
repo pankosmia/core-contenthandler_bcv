@@ -1,4 +1,4 @@
-import { PanBasicDialog, PanDialogActionsArray } from "pankosmia-rcl";
+import { PanAdvancedDialog, PanDialogActionsArray } from "pankosmia-rcl";
 import { TextField, DialogContent, Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { doI18n } from "pankosmia-lib/i18n";
@@ -33,7 +33,7 @@ export default function AddReference({
   };
 
   return (
-    <PanBasicDialog
+    <PanAdvancedDialog
       titleLabel={doI18n(
         `pages:core-contenthandler_bcv:add_reference`,
         i18nRef.current,
@@ -63,6 +63,7 @@ export default function AddReference({
       })}
     >
       <TextField
+        fullWidth
         required
         label={doI18n(
           `pages:core-contenthandler_bcv:reference`,
@@ -85,6 +86,6 @@ export default function AddReference({
               )}`
         }
       />
-    </PanBasicDialog>
+    </PanAdvancedDialog>
   );
 }

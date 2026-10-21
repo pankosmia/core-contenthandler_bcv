@@ -111,8 +111,19 @@ function BcvNotesEditorMuncher({
     : [];
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Box
+        sx={{
+          position: "fixed",
+          top: "48px",
+          left: 0,
+          right: 0,
+          display: "flex",
+          padding: 2,
+          flexDirection: "row",
+          gap: 1,
+        }}
+      >
         <SaveTsvButton
           metadata={metadata}
           ingredient={ingredient}
@@ -122,7 +133,25 @@ function BcvNotesEditorMuncher({
           i18nRef={i18nRef}
           systemBcv={systemBcv}
         />
-
+        <Tooltip
+          title={doI18n(
+            "pages:core-contenthandler_bcv:button_edit_layout",
+            i18nRef.current,
+            debugRef.current,
+          )}
+        >
+          <IconButton
+            disabled={md5(JSON.stringify(ingredient)) !== md5Ingredient}
+            onClick={() =>
+              navigate({
+                pathname: "/",
+                search: "return-page=workspace",
+              })
+            }
+          >
+            <LayoutIcon />
+          </IconButton>
+        </Tooltip>
         <MenuFields
           ingredient={ingredient}
           setHiddenFields={setHiddenFields}
