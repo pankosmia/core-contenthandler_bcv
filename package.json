@@ -1,6 +1,6 @@
 {
   "name": "core-contenthandler_bcv",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "private": true,
   "homepage": "/clients/core-contenthandler_bcv",
   "packageManager": "pnpm@11.20.0",
@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "notistack": "^3.0.2",
-    "pankosmia-rcl": "^0.8.2",
+    "pankosmia-rcl": "^0.8.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^6.27.0",
