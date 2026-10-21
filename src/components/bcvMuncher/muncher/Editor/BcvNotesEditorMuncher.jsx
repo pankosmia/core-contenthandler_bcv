@@ -21,8 +21,7 @@ import LayoutIcon from "../layouts/LayoutIcon";
 import AccordionTsv from "./EditorTools/AccordionTsv";
 import NavigationRef from "./EditorTools/NavigationRef";
 import MenuFields from "./EditorTools/MenuFields";
-import IconSetting from "./EditorTools/IconSetting";
-
+import { IconSettingSmall } from "./EditorTools/IconSetting";
 function BcvNotesEditorMuncher({
   metadata,
   debugRef,
@@ -123,9 +122,7 @@ function BcvNotesEditorMuncher({
           i18nRef={i18nRef}
           systemBcv={systemBcv}
         />
-        <IconButton onClick={handleOpen}>
-          <IconSetting />
-        </IconButton>
+
         <MenuFields
           ingredient={ingredient}
           setHiddenFields={setHiddenFields}
@@ -133,6 +130,7 @@ function BcvNotesEditorMuncher({
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           anchorEl={anchorEl}
+          handleOpen={handleOpen}
         />
         <BookPicker
           bcvRef={bcvRef}
@@ -151,6 +149,28 @@ function BcvNotesEditorMuncher({
           debugRef={debugRef}
         />
       </Box>
+      {hiddenFields.length > 0 && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 1,
+            color: "text.secondary",
+            paddingLeft: 2,
+          }}
+        >
+          <IconSettingSmall />
+          <Typography variant="caption">
+            {" "}
+            {hiddenFields.length}{" "}
+            {doI18n(
+              `pages:core-contenthandler_bcv:hidden_fields`,
+              i18nRef.current,
+            )}
+          </Typography>
+        </Box>
+      )}
       <AccordionTsv
         ingredient={ingredient}
         setIngredient={setIngredient}

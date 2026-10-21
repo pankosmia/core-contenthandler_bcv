@@ -101,7 +101,7 @@ export default function AccordionTsv({
                 component="span"
                 color="textSecondary"
                 sx={{
-                  width: "33%",
+                  width: "12ch",
                   flexShrink: 0,
                 }}
               >
