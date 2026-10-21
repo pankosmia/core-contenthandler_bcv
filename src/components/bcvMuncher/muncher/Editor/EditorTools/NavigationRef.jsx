@@ -127,6 +127,7 @@ export default function NavigationRef({
               <MenuItem
                 key={groupName}
                 onClick={(e) => openGroup(e, groupName)}
+                onMouseEnter={(e) => openGroup(e, groupName)}
               >
                 <ListItemText>{groupName}</ListItemText>
                 <ArrowRightIcon fontSize="small" />
@@ -145,6 +146,9 @@ export default function NavigationRef({
 
       <Popper
         open={Boolean(openSubMenu)}
+        onMouseLeave={() => {
+          (setOpenMainMenu(false), setOpenSubMenu(false));
+        }}
         anchorEl={openSubMenu}
         placement="right-start"
         sx={{ zIndex: (theme) => theme.zIndex.modal + 1 }}
