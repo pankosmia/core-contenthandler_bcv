@@ -5,27 +5,23 @@ import {
   Typography,
   TextField,
   AccordionActions,
-  Button,
   IconButton,
   Box,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState, useEffect } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import Markdown from "react-markdown";
 import { getJson, postEmptyJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import MarkdownField from "./MarkdownField";
-import md5 from "md5";
 import NumberField from "./NumberField";
 import ReferenceField from "./ReferenceField";
-
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 export default function AccordionTsv({
   ingredient,
   metadata,
   setIngredient,
-  md5Ingredient,
-  setMd5Ingredient,
   i18nRef,
   debugRef,
   currentReference,
@@ -34,6 +30,7 @@ export default function AccordionTsv({
 }) {
   const [expanded, setExpanded] = useState(false);
   const [repoFlavor, setRepoFlavor] = useState("");
+  const [dragVersion, setDragVersion] = useState(0);
 
   useEffect(() => {
     const getProjectSummaries = async () => {
@@ -99,115 +96,190 @@ export default function AccordionTsv({
       );
     }
   }, [ingredient]);
+
+  const visibleIndexes = (ingredient ?? [])
+    .map((_, i) => i)
+    .filter((i) => i !== 0 && ingredient[i][0] === currentReference);
+
+  const handleDragEnd = ({ source, destination }) => {
+    if (!destination) return;
+    const from = visibleIndexes[source.index];
+    const to = visibleIndexes[destination.index];
+
+    const newIngredient = [...ingredient];
+    const [moved] = newIngredient.splice(from, 1);
+    newIngredient.splice(to, 0, moved);
+    setIngredient(newIngredient);
+  };
   return (
     <Box>
-      {ingredient?.map((row, index) => {
-        if (index === 0) return null;
-        if (row[0] !== currentReference) return null;
-        return (
-          <Accordion
-            key={index}
-            expanded={expanded === `panel${index}`}
-            onChange={handleChange(`panel${index}`)}
-          >
-            <AccordionSummary
-              aria-controls={`panel${index}d-content`}
-              id={`panel${index}d-header`}
-              expandIcon={<ExpandMoreIcon />}
-            >
-              <Typography
-                component="span"
-                color="textSecondary"
-                sx={{
-                  width: "12ch",
-                  flexShrink: 0,
-                }}
-              >
-                {row[1]}
-              </Typography>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {ingredient?.map((row, index) => {
+                if (index === 0) return null;
+                if (row[0] !== currentReference) return null;
+                return (
+                  <Draggable
+                    key={`${dragVersion}-${index}`}
+                    draggableId={`draggable-${index}`}
+                    index={visibleIndexes.indexOf(index)}
+                  >
+                    {(provided) => (
+                      <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <Accordion
+                          key={index}
+                          expanded={expanded === `panel${index}`}
+                          onChange={handleChange(`panel${index}`)}
+                          sx={{ mb: 1 }}
+                        >
+                          <AccordionSummary
+                            aria-controls={`panel${index}d-content`}
+                            id={`panel${index}d-header`}
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Box
+                              {...provided.dragHandleProps}
+                              onClick={(e) => e.stopPropagation()}
+                              sx={{ pr: 1, cursor: "grab" }}
+                            >
+                              <DragIndicatorIcon color="action" />
+                            </Box>
 
-              <Typography
-                sx={{
-                  display: "-webkit-box",
-                  WebkitLineClamp: 1,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                  whiteSpace: "pre-line",
-                }}
-              >
-                {["x-bcvquestions", "x-questions"].includes(repoFlavor)
-                  ? row[5]
-                  : row[6]}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails
-              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-            >
-              {row.map((cell, cellIndex) =>
-                REFERENCE_COLUMN.includes(HEADER[cellIndex]?.toLowerCase()) ? (
-                  <ReferenceField
-                    key={cellIndex}
-                    i18nRef={i18nRef}
-                    value={cell}
-                    label={HEADER[cellIndex]}
-                    onBlur={(newValue) => {
-                      handleCellChange(index, cellIndex, newValue);
-                      setCurrentReference(newValue);
-                    }}
-                    hidden={hidden(cellIndex)}
-                  />
-                ) : MARKDOWN_COLUMNS.includes(
-                    HEADER[cellIndex]?.toLowerCase(),
-                  ) ? (
-                  <MarkdownField
-                    key={cellIndex}
-                    value={cell}
-                    label={HEADER[cellIndex]}
-                    onBlur={(newValue) => {
-                      handleCellChange(index, cellIndex, newValue);
-                    }}
-                    hidden={hidden(cellIndex)}
-                  />
-                ) : OCCURRENCE_COLUMNS.includes(
-                    HEADER[cellIndex]?.toLowerCase(),
-                  ) ? (
-                  <NumberField
-                    key={cellIndex}
-                    size="small"
-                    value={cell === "" || cell == null ? null : Number(cell)}
-                    label={HEADER[cellIndex]}
-                    min={0}
-                    onValueChange={(newValue) => {
-                      handleCellChange(index, cellIndex, newValue);
-                    }}
-                    hidden={hidden(cellIndex)}
-                  />
-                ) : (
-                  <TextField
-                    size="small"
-                    key={cellIndex}
-                    defaultValue={cell}
-                    disabled={cellIndex === 1}
-                    label={HEADER[cellIndex]}
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    onBlur={(newValue) => {
-                      handleCellChange(index, cellIndex, newValue.target.value);
-                    }}
-                    sx={{ display: hidden(cellIndex) ? "none" : undefined }}
-                  />
-                ),
-              )}
-            </AccordionDetails>
-            <AccordionActions>
-              <IconButton onClick={() => handleDeleteRow(index)}>
-                <DeleteOutlinedIcon />
-              </IconButton>
-            </AccordionActions>
-          </Accordion>
-        );
-      })}
+                            <Typography
+                              component="span"
+                              color="textSecondary"
+                              sx={{
+                                width: "12ch",
+                                flexShrink: 0,
+                              }}
+                            >
+                              {row[1]}
+                            </Typography>
+
+                            <Typography
+                              sx={{
+                                display: "-webkit-box",
+                                WebkitLineClamp: 1,
+                                WebkitBoxOrient: "vertical",
+                                overflow: "hidden",
+                                whiteSpace: "pre-line",
+                              }}
+                            >
+                              {["x-bcvquestions", "x-questions"].includes(
+                                repoFlavor,
+                              )
+                                ? row[5]
+                                : row[6]}
+                            </Typography>
+                          </AccordionSummary>
+                          <AccordionDetails
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 2,
+                            }}
+                          >
+                            {row.map((cell, cellIndex) =>
+                              REFERENCE_COLUMN.includes(
+                                HEADER[cellIndex]?.toLowerCase(),
+                              ) ? (
+                                <ReferenceField
+                                  key={cellIndex}
+                                  i18nRef={i18nRef}
+                                  value={cell}
+                                  label={HEADER[cellIndex]}
+                                  onBlur={(newValue) => {
+                                    handleCellChange(
+                                      index,
+                                      cellIndex,
+                                      newValue,
+                                    );
+                                    setCurrentReference(newValue);
+                                  }}
+                                  hidden={hidden(cellIndex)}
+                                />
+                              ) : MARKDOWN_COLUMNS.includes(
+                                  HEADER[cellIndex]?.toLowerCase(),
+                                ) ? (
+                                <MarkdownField
+                                  key={cellIndex}
+                                  value={cell}
+                                  label={HEADER[cellIndex]}
+                                  onBlur={(newValue) => {
+                                    handleCellChange(
+                                      index,
+                                      cellIndex,
+                                      newValue,
+                                    );
+                                  }}
+                                  hidden={hidden(cellIndex)}
+                                />
+                              ) : OCCURRENCE_COLUMNS.includes(
+                                  HEADER[cellIndex]?.toLowerCase(),
+                                ) ? (
+                                <NumberField
+                                  key={cellIndex}
+                                  size="small"
+                                  value={
+                                    cell === "" || cell == null
+                                      ? null
+                                      : Number(cell)
+                                  }
+                                  label={HEADER[cellIndex]}
+                                  min={0}
+                                  onValueChange={(newValue) => {
+                                    handleCellChange(
+                                      index,
+                                      cellIndex,
+                                      newValue,
+                                    );
+                                  }}
+                                  hidden={hidden(cellIndex)}
+                                />
+                              ) : (
+                                <TextField
+                                  size="small"
+                                  key={cellIndex} // DND : remis comme à l'origine
+                                  defaultValue={cell}
+                                  disabled={cellIndex === 1}
+                                  label={HEADER[cellIndex]}
+                                  variant="outlined"
+                                  fullWidth
+                                  multiline
+                                  onBlur={(newValue) => {
+                                    handleCellChange(
+                                      index,
+                                      cellIndex,
+                                      newValue.target.value,
+                                    );
+                                  }}
+                                  sx={{
+                                    display: hidden(cellIndex)
+                                      ? "none"
+                                      : undefined,
+                                  }}
+                                />
+                              ),
+                            )}
+                          </AccordionDetails>
+                          <AccordionActions>
+                            <IconButton onClick={() => handleDeleteRow(index)}>
+                              <DeleteOutlinedIcon />
+                            </IconButton>
+                          </AccordionActions>
+                        </Accordion>
+                      </div>
+                    )}
+                  </Draggable>
+                );
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </Box>
   );
 }
