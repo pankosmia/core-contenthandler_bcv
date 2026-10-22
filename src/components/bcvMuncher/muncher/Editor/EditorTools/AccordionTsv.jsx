@@ -9,7 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getJson, postEmptyJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
@@ -77,25 +77,19 @@ export default function AccordionTsv({
     newIngredient.splice(rowN, 1);
     setIngredient(newIngredient);
   };
-  useEffect(() => {
-    if (!ingredient || ingredient.length === 0) return;
 
-    const columnNames = ingredient[0] || [];
-    const quoteIndex = columnNames.findIndex((c) =>
-      c.toLowerCase().includes("quote"),
+  const quoteIndex = useMemo(
+    () => (HEADER ?? []).findIndex((c) => c?.toLowerCase().includes("quote")),
+    [HEADER],
+  );
+  const postSnippet = useCallback((snippet) => {
+    const trimmed = snippet?.trim();
+    if (!trimmed) return;
+    postEmptyJson(
+      `/api/app-state/snippet/${encodeURIComponent(trimmed)}`,
+      debugRef.current,
     );
-    if (quoteIndex === -1) return;
-
-    const snippet = ingredient
-      ?.map((row) => row?.[quoteIndex]?.trim())
-      .join("\n");
-    if (snippet) {
-      postEmptyJson(
-        `/api/app-state/snippet/${encodeURIComponent(snippet)}`,
-        debugRef.current,
-      );
-    }
-  }, [ingredient]);
+  }, []);
 
   const visibleIndexes = (ingredient ?? [])
     .map((_, i) => i)
@@ -111,6 +105,7 @@ export default function AccordionTsv({
     newIngredient.splice(to, 0, moved);
     setIngredient(newIngredient);
   };
+
   return (
     <Box>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -245,13 +240,18 @@ export default function AccordionTsv({
                               ) : (
                                 <TextField
                                   size="small"
-                                  key={cellIndex} // DND : remis comme à l'origine
+                                  key={cellIndex}
                                   defaultValue={cell}
                                   disabled={cellIndex === 1}
                                   label={HEADER[cellIndex]}
                                   variant="outlined"
                                   fullWidth
                                   multiline
+                                  onFocus={(e) => {
+                                    if (cellIndex === quoteIndex) {
+                                      postSnippet(e.target.value);
+                                    }
+                                  }}
                                   onBlur={(newValue) => {
                                     handleCellChange(
                                       index,
