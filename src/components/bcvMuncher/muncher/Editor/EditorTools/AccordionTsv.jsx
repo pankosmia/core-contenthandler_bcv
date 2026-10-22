@@ -143,7 +143,7 @@ export default function AccordionTsv({
                               {...provided.dragHandleProps}
                               onClick={(e) => e.stopPropagation()}
                               sx={{
-                                pr: 1,
+                                padding: "0px 8px",
                                 cursor: "grab",
                                 color: "text.secondary",
                               }}
