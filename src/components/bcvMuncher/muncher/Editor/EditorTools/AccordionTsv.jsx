@@ -17,7 +17,7 @@ import MarkdownField from "./MarkdownField";
 import NumberField from "./NumberField";
 import ReferenceField from "./ReferenceField";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { DragIndicator } from "@mui/icons-material";
 export default function AccordionTsv({
   ingredient,
   metadata,
@@ -132,7 +132,7 @@ export default function AccordionTsv({
                           key={index}
                           expanded={expanded === `panel${index}`}
                           onChange={handleChange(`panel${index}`)}
-                          sx={{ mb: 1 }}
+                          sx={{ mb: "1px" }}
                         >
                           <AccordionSummary
                             aria-controls={`panel${index}d-content`}
@@ -142,9 +142,13 @@ export default function AccordionTsv({
                             <Box
                               {...provided.dragHandleProps}
                               onClick={(e) => e.stopPropagation()}
-                              sx={{ pr: 1, cursor: "grab" }}
+                              sx={{
+                                pr: 1,
+                                cursor: "grab",
+                                color: "text.secondary",
+                              }}
                             >
-                              <DragIndicatorIcon color="action" />
+                              <DragIndicator />
                             </Box>
 
                             <Typography
