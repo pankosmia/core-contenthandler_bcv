@@ -10,7 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Markdown from "react-markdown";
 import { getJson, postEmptyJson } from "pankosmia-lib/http";
@@ -80,25 +80,20 @@ export default function AccordionTsv({
     newIngredient.splice(rowN, 1);
     setIngredient(newIngredient);
   };
-  useEffect(() => {
-    if (!ingredient || ingredient.length === 0) return;
 
-    const columnNames = ingredient[0] || [];
-    const quoteIndex = columnNames.findIndex((c) =>
-      c.toLowerCase().includes("quote"),
+  const quoteIndex = useMemo(
+    () => (HEADER ?? []).findIndex((c) => c?.toLowerCase().includes("quote")),
+    [HEADER],
+  );
+  const postSnippet = useCallback((snippet) => {
+    const trimmed = snippet?.trim();
+    if (!trimmed) return;
+    postEmptyJson(
+      `/api/app-state/snippet/${encodeURIComponent(trimmed)}`,
+      debugRef.current,
     );
-    if (quoteIndex === -1) return;
+  }, []);
 
-    const snippet = ingredient
-      ?.map((row) => row?.[quoteIndex]?.trim())
-      .join("\n");
-    if (snippet) {
-      postEmptyJson(
-        `/api/app-state/snippet/${encodeURIComponent(snippet)}`,
-        debugRef.current,
-      );
-    }
-  }, [ingredient]);
   return (
     <Box>
       {ingredient?.map((row, index) => {
@@ -192,8 +187,14 @@ export default function AccordionTsv({
                     variant="outlined"
                     fullWidth
                     multiline
-                    onBlur={(newValue) => {
-                      handleCellChange(index, cellIndex, newValue.target.value);
+                    onFocus={(e) => {
+                      if (cellIndex === quoteIndex) {
+                        postSnippet(e.target.value);
+                      }
+                    }}
+                    onBlur={(e) => {
+                      const newValue = e.target.value;
+                      handleCellChange(index, cellIndex, newValue);
                     }}
                     sx={{ display: hidden(cellIndex) ? "none" : undefined }}
                   />
