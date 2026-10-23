@@ -14,6 +14,7 @@ import {
   Popper,
   MenuList,
 } from "@mui/material";
+import { compareRefs } from "../../helpers/sortIngredient";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import AddIcon from "@mui/icons-material/Add";
@@ -41,34 +42,25 @@ export default function NavigationRef({
 
   const rows = ingredient?.slice(1);
 
-  const groupedRows = [];
+  const references = [];
   rows.forEach((row) => {
-    const group = groupedRows.find((g) => g[0][0] === row[0]);
-    if (group) {
-      group.push(row);
-    } else {
-      groupedRows.push([row]);
+    const ref = row[0];
+    if (!references.includes(ref)) {
+      references.push(ref);
     }
   });
-  const parseRef = (ref) => ref.split(":").map((n) => parseInt(n, 10) || 0);
 
-  groupedRows.sort((a, b) => {
-    const [chA, vA] = parseRef(a[0][0]);
-    const [chB, vB] = parseRef(b[0][0]);
-    return chA - chB || vA - vB;
-  });
-  const allGroupNames = groupedRows.map((group) => group[0][0].split(":")[0]);
+  references.sort(compareRefs);
 
-  const groupNames = allGroupNames.filter(
-    (name, index) => allGroupNames.indexOf(name) === index,
-  );
-
-  const groupList = groupNames.map((groupName) => {
-    const references = groupedRows
-      .filter((group) => group[0][0].split(":")[0] === groupName)
-      .map((group) => group[0][0]);
-
-    return [groupName, references];
+  const groupList = [];
+  references.forEach((ref) => {
+    const groupName = ref.split(":")[0];
+    const group = groupList.find(([name]) => name === groupName);
+    if (group) {
+      group[1].push(ref);
+    } else {
+      groupList.push([groupName, [ref]]);
+    }
   });
 
   const currentReferences =
