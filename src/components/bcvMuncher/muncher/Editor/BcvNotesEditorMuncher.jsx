@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import sortIngredient from "../helpers/sortIngredient";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -50,14 +51,17 @@ function BcvNotesEditorMuncher({
     setIsOpen(true);
     setAnchorEl(event.currentTarget);
   };
+
   // Récupération des données du tsv
   const getAllData = async () => {
     const ingredientLink = `/api/burrito/ingredient/raw/${metadata.local_path}?ipath=${systemBcv.bookCode}.tsv`;
     let response = await getText(ingredientLink, debugRef.current);
     if (response.ok) {
-      const newIngredient = response.text
+      const allRows = response.text
         .split("\n")
         .map((l) => l.split("\t").map((f) => f.replace(/(\\n){2,}/g, "\n\n")));
+
+      const newIngredient = sortIngredient(allRows);
       setIngredient(newIngredient);
       const hash = md5(JSON.stringify(newIngredient));
       setMd5Ingredient(hash);
