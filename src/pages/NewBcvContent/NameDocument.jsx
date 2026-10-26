@@ -1,7 +1,7 @@
 import { Grid, TextField, Tooltip } from "@mui/material";
 import { doI18n } from "pankosmia-lib/i18n";
 import { useContext } from "react";
-import { i18nContext } from "pankosmia-rcl";
+import { i18nContext, PanCopyright } from "pankosmia-rcl";
 
 export default function NameDocument({
   repoExists,
@@ -15,6 +15,10 @@ export default function NameDocument({
   setContentType,
   errorAbbreviation,
   setErrorAbbreviation,
+  copyright,
+  setCopyright,
+  optionCopyright,
+  setOptionCopyright,
 }) {
   const { i18nRef } = useContext(i18nContext);
   const regexAbbreviation = /^[A-Za-z0-9][A-Za-z0-9_]{0,6}[A-Za-z0-9]$/;
@@ -72,7 +76,14 @@ export default function NameDocument({
             }}
           />
         </Tooltip>
+        <PanCopyright
+          optionCopyright={optionCopyright}
+          setOptionCopyright={setOptionCopyright}
+          copyright={copyright}
+          setCopyright={setCopyright}
+        />
       </Grid>
+
       <TextField
         id="type"
         required

@@ -1,6 +1,6 @@
 {
   "name": "core-contenthandler_bcv",
-  "version": "0.2.13",
+  "version": "0.2.17",
   "private": true,
   "homepage": "/clients/core-contenthandler_bcv",
   "packageManager": "pnpm@11.20.0",
@@ -9,10 +9,6 @@
     "pnpm": "11.20.0"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^9.4.0",
-    "@mui/material": "^9.3.1",
     "color": "^5.0.3",
     "file-saver": "^2.0.5",
     "font-detect-rhl": "^1.1.10",
@@ -31,10 +27,16 @@
   },
   "peerDependencies": {
     "notistack": "^3.0.2",
-    "pankosmia-rcl": "^0.7.1",
+    "pankosmia-rcl": "^0.8.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@hello-pangea/dnd": "^18.0.1",
+    "@mui/icons-material": "^9.4.0",
+    "@mui/material": "^9.3.1",
+    "@base-ui/react": "^1.9.0"
   },
   "scripts": {
     "publish": "pnpm run build:package  && cd ./src/components/bcvMuncher && npm publish",

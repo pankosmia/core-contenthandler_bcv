@@ -43,7 +43,28 @@ export default function NewBcvContent() {
   });
   const [languageIsValid, setLanguageIsValid] = useState(true);
   const [errorAbbreviation, setErrorAbbreviation] = useState(false);
+  const [copyright, setCopyright] = useState({
+    author_name: "",
+    year: "",
+  });
+  const [optionCopyright, setOptionCopyright] = useState("unspecified");
 
+  function fullCopyright(optionCopyright) {
+    switch (optionCopyright) {
+      case "public-domain":
+        return doI18n(
+          "pages:core-contenthandler_bcv:public_domain",
+          i18nRef.current,
+        );
+      case "all_rights_reserved":
+        return `${copyright.author_name} ${copyright.year}`;
+      default:
+        return doI18n(
+          "pages:core-contenthandler_bcv:unspecified_copyright",
+          i18nRef.current,
+        );
+    }
+  }
   const steps = [
     `${doI18n("pages:core-contenthandler_bcv:name_section", i18nRef.current)}`,
     `${doI18n("pages:core-contenthandler_bcv:language", i18nRef.current)}`,
@@ -88,6 +109,10 @@ export default function NewBcvContent() {
             errorAbbreviation={errorAbbreviation}
             setErrorAbbreviation={setErrorAbbreviation}
             localRepos={localRepos}
+            copyright={copyright}
+            setCopyright={setCopyright}
+            optionCopyright={optionCopyright}
+            setOptionCopyright={setOptionCopyright}
           />
         );
       case 1:
@@ -189,6 +214,7 @@ export default function NewBcvContent() {
       book_code: showBookFields ? bookCode : null,
       book_title: showBookFields ? bookTitle : null,
       book_abbr: showBookFields ? bookAbbr : null,
+      copyright: fullCopyright(optionCopyright),
     };
     const response = await postJson(
       "/api/git/new-bcv-resource",
