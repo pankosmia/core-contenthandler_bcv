@@ -11,7 +11,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { getJson, postEmptyJson } from "pankosmia-lib/http";
+import { getJson, postEmpty } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import MarkdownField from "./MarkdownField";
 import NumberField from "./NumberField";
@@ -85,7 +85,7 @@ export default function AccordionTsv({
   const postSnippet = useCallback((snippet) => {
     const trimmed = snippet?.trim();
     if (!trimmed) return;
-    postEmptyJson(
+    postEmpty(
       `/api/app-state/snippet/${encodeURIComponent(trimmed)}`,
       debugRef.current,
     );

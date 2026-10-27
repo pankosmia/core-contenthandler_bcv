@@ -13,7 +13,7 @@
     "file-saver": "^2.0.5",
     "font-detect-rhl": "^1.1.10",
     "md5": "^2.3.0",
-    "pankosmia-lib": "^0.0.3",
+    "pankosmia-lib": "^0.0.5",
     "prop-types": "^15.8.1",
     "react-markdown": "^10.1.0",
     "use-file-picker": "^2.1.4",
@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "notistack": "^3.0.2",
-    "pankosmia-rcl": "^0.8.3",
+    "pankosmia-rcl": "^0.8.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^6.27.0",

@@ -1,5 +1,5 @@
 import { useState, useMemo, useContext, useRef } from "react";
-import { postEmptyJson } from "pankosmia-lib/http";
+import { postEmpty } from "pankosmia-lib/http";
 import {
   TextField,
   Menu,
@@ -94,7 +94,7 @@ export default function NavigationRef({
   };
 
   const handleSelectReference = (reference) => {
-    postEmptyJson(
+    postEmpty(
       `/api/navigation/bcv/${bcvRef.current.bookCode}/${reference.split(":")[0]}/${reference.split(":")[1]}`,
       debugRef.current,
     );

@@ -1,6 +1,6 @@
 import { bcvContext, debugContext } from "pankosmia-rcl";
 import { useContext } from "react";
-import { postEmptyJson } from "pankosmia-lib/http";
+import { postEmpty } from "pankosmia-lib/http";
 import { Button, Typography } from "@mui/material";
 
 export default function ButtonBcv({ bookCode, chapter, verseStart, verseEnd }) {
@@ -13,7 +13,7 @@ export default function ButtonBcv({ bookCode, chapter, verseStart, verseEnd }) {
         sx={{ height: 40 }}
         variant="contained"
         onClick={() =>
-          postEmptyJson(
+          postEmpty(
             `/api/navigation/bcv/${bookCode}/${chapter}/${verseStart}/${verseEnd}`,
             debugRef.current,
           )

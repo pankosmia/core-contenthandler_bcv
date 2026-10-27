@@ -6,12 +6,13 @@ import {
   debugContext,
   i18nContext,
   typographyContext,
+  Header
 } from "pankosmia-rcl";
 import { Box, Button } from "@mui/material";
-import BcvNotesEditorMuncher from "../components/bcvMuncher/muncher/Editor/BcvNotesEditorMuncher";
-import BcvNotesViewerMuncher from "../components/bcvMuncher/muncher/Viewer/BcvNotesViewerMuncher";
-import BcvQuestionsViewerMuncher from "../components/bcvMuncher/muncher/Viewer/BcvQuestionsViewerMuncher";
-import WrapperNav from "../components/bcvMuncher/wrapperMuncher/WrapperNav";
+import BcvNotesEditorMuncher from "../../components/bcvMuncher/muncher/Editor/BcvNotesEditorMuncher";
+import BcvNotesViewerMuncher from "../../components/bcvMuncher/muncher/Viewer/BcvNotesViewerMuncher";
+import BcvQuestionsViewerMuncher from "../../components/bcvMuncher/muncher/Viewer/BcvQuestionsViewerMuncher";
+import WrapperNav from "../../components/bcvMuncher/wrapperMuncher/WrapperNav";
 export default function MuncherTest() {
   const { bcvRef } = useContext(bcvContext);
   const { systemBcv } = useContext(bcvContext);
@@ -58,17 +59,27 @@ export default function MuncherTest() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        margin: 3,
-        height: "98vh",
+        height: "100%",
+        overflow: "hidden",
       }}
     >
-      <WrapperNav
-        flavor={["x-bcvnotes", "x-notes", "x-bcvquestions", "x-questions"]}
-      />
+      <Box>
+        <Header
+          titleKey={"pages:core-contenthandler-bcv:titleMuncherTest"}
+          currentId="content"
+          requireNet={false}
+        />
+      </Box>
+      <Box sx={{ paddingLeft: 2, paddingTop: 10, flexShrink: 0 }}>
+        <WrapperNav
+          flavor={["x-bcvnotes", "x-notes", "x-bcvquestions", "x-questions"]}
+        />
+      </Box>
 
-      <Box sx={{ display: "flex", width: "100%", overflowY: "scroll" }}>
+      <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", flexDirection:"row",display:"flex"
+       }}>
         {metadata && (flavor === "x-bcvnotes" || flavor === "x-notes") && (
-          <Box sx={{ flex: 1, margin: 5 }}>
+          <Box sx={{ flex: 1, margin: 2 }}>
             <BcvNotesViewerMuncher
               metadata={metadata}
               debugRef={debugRef}
