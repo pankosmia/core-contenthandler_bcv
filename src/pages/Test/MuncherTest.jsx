@@ -6,7 +6,7 @@ import {
   debugContext,
   i18nContext,
   typographyContext,
-  Header
+  Header,
 } from "pankosmia-rcl";
 import { Box, Button } from "@mui/material";
 import BcvNotesEditorMuncher from "../../components/bcvMuncher/muncher/Editor/BcvNotesEditorMuncher";
@@ -65,7 +65,7 @@ export default function MuncherTest() {
     >
       <Box>
         <Header
-          titleKey={"pages:core-contenthandler-bcv:titleMuncherTest"}
+          titleKey={"pages:core-contenthandler_bcv:titleMuncherTest"}
           currentId="content"
           requireNet={false}
         />
@@ -76,8 +76,15 @@ export default function MuncherTest() {
         />
       </Box>
 
-      <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", flexDirection:"row",display:"flex"
-       }}>
+      <Box
+        sx={{
+          flex: 1,
+          minHeight: 0,
+          overflowY: "auto",
+          flexDirection: "row",
+          display: "flex",
+        }}
+      >
         {metadata && (flavor === "x-bcvnotes" || flavor === "x-notes") && (
           <Box sx={{ flex: 1, margin: 2 }}>
             <BcvNotesViewerMuncher

@@ -3,7 +3,7 @@
   "minServerVersion": "0.20.3",
   "require": {
     "net": false,
-    "debug": false
+    "debug": true
   },
   "endpoints": {
     "x-bcvnotes": {
