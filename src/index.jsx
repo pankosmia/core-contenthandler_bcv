@@ -3,13 +3,12 @@ import { getAndSetJson } from "pankosmia-lib/http";
 import { SpaContainer } from "pankosmia-rcl";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import NewBcvContent from "./pages/NewBcvContent";
-import NewBcvBook from "./pages/NewBcvBook";
+import NewBcvContent from "./pages/New/NewBcvContent";
+import NewBcvBook from "./pages/New/NewBcvBook";
 import TsvExport from "./pages/Export/TsvExport";
-import App from "./App";
 import { MaterialDesignContent, SnackbarProvider } from "notistack";
 import { styled } from "@mui/material";
-import MuncherTest from "./pages/MuncherTest";
+import MuncherTest from "./pages/Test/MuncherTest";
 import TsvImport from "./pages/Import/TsvImport";
 
 const router = createHashRouter([
@@ -22,7 +21,7 @@ const router = createHashRouter([
     element: <NewBcvContent />,
   },
   {
-    path: "newBook",
+    path: "/newBook",
     element: <NewBcvBook />,
   },
   {
@@ -30,11 +29,7 @@ const router = createHashRouter([
     element: <TsvExport />,
   },
   {
-    path: "/MuncherTest",
-    element: <MuncherTest />,
-  },
-  {
-    path: "importBook",
+    path: "/importBook",
     element: <TsvImport />,
   },
 ]);

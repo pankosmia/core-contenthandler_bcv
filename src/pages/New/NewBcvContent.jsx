@@ -7,10 +7,10 @@ import { doI18n } from "pankosmia-lib/i18n";
 import { i18nContext, debugContext, Header } from "pankosmia-rcl";
 
 import { PanDialog, PanStepperPicker } from "pankosmia-rcl";
-import ErrorDialog from "./NewBcvContent/ErrorDialog";
-import NameDocument from "./NewBcvContent/NameDocument";
-import LanguagePicker from "./NewBcvContent/LanguagePicker";
-import ContentDocument from "./NewBcvContent/ContentDocument";
+import ErrorDialog from "../NewBcvContent/ErrorDialog";
+import NameDocument from "../NewBcvContent/NameDocument";
+import LanguagePicker from "../NewBcvContent/LanguagePicker";
+import ContentDocument from "../NewBcvContent/ContentDocument";
 
 export default function NewBcvContent() {
   const { i18nRef } = useContext(i18nContext);

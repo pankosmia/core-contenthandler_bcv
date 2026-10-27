@@ -14,7 +14,7 @@ import {
   Button,
   Icon,
 } from "@mui/material";
-import { postEmptyJson, getText } from "pankosmia-lib/http";
+import { postEmpty, getText } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import SaveTsvButton from "./EditorTools/SaveTsvButton";
 import md5 from "md5";
@@ -85,7 +85,7 @@ function BcvNotesEditorMuncher({
     //const alignment = rowData[6] || "";
     if (newCurrentRow[0]) {
       if (newCurrentRowCV.length === 2) {
-        postEmptyJson(
+        postEmpty(
           `/api/navigation/bcv/${systemBcv["bookCode"]}/${chapter}/${startVerse}/${endVerseNum}`,
           debugRef.current /* ,
           alignment ? { alignment } : undefined */,
