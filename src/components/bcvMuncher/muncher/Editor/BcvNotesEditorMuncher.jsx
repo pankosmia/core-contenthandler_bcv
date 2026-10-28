@@ -36,14 +36,10 @@ function BcvNotesEditorMuncher({
 
   const [ingredient, setIngredient] = useState([]);
   const [md5Ingredient, setMd5Ingredient] = useState([]);
-  const [md5CurrentIngredient, setMd5CurrentIngredient] = useState([]);
   const [currentChapter, setCurrentChapter] = useState("1");
-  const [resourceType, setResourceType] = useState("new_bcv_note");
-  const [showAllFields, setShowAllFields] = useState(true);
   const [currentReference, setCurrentReference] = useState(
     `${bcvRef?.current.chapterNum}:${bcvRef?.current.verseNum}`,
   );
-  const [firstChapter, setFirstChapter] = useState("1");
   const [hiddenFields, setHiddenFields] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -58,7 +54,7 @@ function BcvNotesEditorMuncher({
     let response = await getText(ingredientLink, debugRef.current);
     if (response.ok) {
       const allRows = response.text
-        .split("\n")
+        .split(/\r?\n+/g)
         .map((l) => l.split("\t").map((f) => f.replace(/(\\n){2,}/g, "\n\n")));
 
       const newIngredient = sortIngredient(allRows);
