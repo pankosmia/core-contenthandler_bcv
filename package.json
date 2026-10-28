@@ -22,21 +22,22 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
     "husky": "^9.1.7",
+    "pankosmia-rcl": "^0.8.5",
     "prettier": "3.8.1",
     "vite": "^6.0.7"
   },
   "peerDependencies": {
-    "notistack": "^3.0.2",
-    "pankosmia-rcl": "^0.8.4",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "react-router-dom": "^6.27.0",
+    "@base-ui/react": "^1.9.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@hello-pangea/dnd": "^18.0.1",
     "@mui/icons-material": "^9.4.0",
     "@mui/material": "^9.3.1",
-    "@base-ui/react": "^1.9.0"
+    "notistack": "^3.0.2",
+    "pankosmia-rcl": "^0.8.5",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^6.27.0"
   },
   "scripts": {
     "publish": "pnpm run build:package  && cd ./src/components/bcvMuncher && npm publish",
