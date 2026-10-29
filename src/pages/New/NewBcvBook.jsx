@@ -10,7 +10,7 @@ import {
   PanVersificationPicker,
   PanBookPicker,
 } from "pankosmia-rcl";
-import ErrorDialog from "./NewBcvContent/ErrorDialog";
+import ErrorDialog from "../NewBcvContent/ErrorDialog";
 
 export default function NewBcvBook() {
   const [bookCode, setBookCode] = useState("");

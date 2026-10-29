@@ -1,11 +1,9 @@
 {
   "id": "core-contenthandler_bcv",
-  "exclude_from_menu": true,
-  "minServerVersion": "0.16.1",
-  "exclude_from_dashboard": true,
+  "minServerVersion": "0.20.3",
   "require": {
     "net": false,
-    "debug": false
+    "debug": true
   },
   "endpoints": {
     "x-bcvnotes": {
@@ -126,6 +124,9 @@
     },
     "stub_content": {
       "en": "Content goes here"
+    },
+    "titleMuncherTest": {
+      "en": "Flavor x-bcvnotes/x-bcvquestions"
     },
     "create_content_tn": {
       "en": "Translation Notes",

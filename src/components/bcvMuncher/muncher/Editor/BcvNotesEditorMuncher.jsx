@@ -14,7 +14,7 @@ import {
   Button,
   Icon,
 } from "@mui/material";
-import { postEmptyJson, getText } from "pankosmia-lib/http";
+import { postEmpty, getText } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import SaveTsvButton from "./EditorTools/SaveTsvButton";
 import md5 from "md5";
@@ -36,14 +36,10 @@ function BcvNotesEditorMuncher({
 
   const [ingredient, setIngredient] = useState([]);
   const [md5Ingredient, setMd5Ingredient] = useState([]);
-  const [md5CurrentIngredient, setMd5CurrentIngredient] = useState([]);
   const [currentChapter, setCurrentChapter] = useState("1");
-  const [resourceType, setResourceType] = useState("new_bcv_note");
-  const [showAllFields, setShowAllFields] = useState(true);
   const [currentReference, setCurrentReference] = useState(
     `${bcvRef?.current.chapterNum}:${bcvRef?.current.verseNum}`,
   );
-  const [firstChapter, setFirstChapter] = useState("1");
   const [hiddenFields, setHiddenFields] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -58,7 +54,7 @@ function BcvNotesEditorMuncher({
     let response = await getText(ingredientLink, debugRef.current);
     if (response.ok) {
       const allRows = response.text
-        .split("\n")
+        .split(/\r?\n+/g)
         .map((l) => l.split("\t").map((f) => f.replace(/(\\n){2,}/g, "\n\n")));
 
       const newIngredient = sortIngredient(allRows);
@@ -85,7 +81,7 @@ function BcvNotesEditorMuncher({
     //const alignment = rowData[6] || "";
     if (newCurrentRow[0]) {
       if (newCurrentRowCV.length === 2) {
-        postEmptyJson(
+        postEmpty(
           `/api/navigation/bcv/${systemBcv["bookCode"]}/${chapter}/${startVerse}/${endVerseNum}`,
           debugRef.current /* ,
           alignment ? { alignment } : undefined */,
