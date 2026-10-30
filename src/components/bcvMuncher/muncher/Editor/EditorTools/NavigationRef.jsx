@@ -31,6 +31,7 @@ export default function NavigationRef({
   setCurrentReference,
   bcvRef,
   debugRef,
+  pendingRef,
 }) {
   const [openMainMenu, setOpenMainMenu] = useState(null);
   const [openSubMenu, setOpenSubMenu] = useState(null);
@@ -186,6 +187,7 @@ export default function NavigationRef({
           ingredient={ingredient}
           setIngredient={setIngredient}
           setCurrentReference={setCurrentReference}
+          pendingRef={pendingRef}
         />
       )}
     </>

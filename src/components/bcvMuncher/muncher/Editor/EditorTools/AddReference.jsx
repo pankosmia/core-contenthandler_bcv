@@ -12,12 +12,14 @@ export default function AddReference({
   ingredient,
   setIngredient,
   setCurrentReference,
+  pendingRef,
 }) {
   const [reference, setReference] = useState("");
   const [error, setError] = useState(false);
   const isValid = validateReference(reference);
 
   const handleSaveNewTsvRow = (rowN, reference) => {
+    pendingRef.current = reference;
     const existingIds = ingredient.map((l) => l[1]);
     let newId = "";
     let found = false;
