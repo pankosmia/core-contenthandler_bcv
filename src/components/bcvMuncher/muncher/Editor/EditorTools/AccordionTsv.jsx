@@ -24,6 +24,7 @@ export default function AccordionTsv({
   setIngredient,
   i18nRef,
   debugRef,
+  pendingRef,
   currentReference,
   setCurrentReference,
   hiddenFields,
@@ -49,6 +50,20 @@ export default function AccordionTsv({
     };
     getProjectSummaries();
   }, []);
+
+  useEffect(() => {
+    if (pendingRef.current == null || !ingredient) return;
+
+    let foundIndex = -1;
+    ingredient.forEach((row, i) => {
+      if (i > 0 && row[0] === pendingRef.current) foundIndex = i;
+    });
+
+    if (foundIndex !== -1) {
+      setExpanded(`panel${foundIndex}`);
+      pendingRef.current = null;
+    }
+  }, [ingredient]);
 
   const HEADER = ingredient?.[0];
   const hidden = (cellIndex) => {
@@ -127,7 +142,12 @@ export default function AccordionTsv({
                           key={index}
                           expanded={expanded === `panel${index}`}
                           onChange={handleChange(`panel${index}`)}
-                          sx={{ mb: "1px" }}
+                          sx={{
+                            marginBottom: "1px",
+                            "&.Mui-expanded": {
+                              marginBottom: "8px !important",
+                            },
+                          }}
                         >
                           <AccordionSummary
                             aria-controls={`panel${index}d-content`}

@@ -1,19 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import sortIngredient from "../helpers/sortIngredient";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Stack,
-  Grid,
-  Typography,
-  Switch,
-  FormControlLabel,
-  Tooltip,
-  IconButton,
-  Accordion,
-  Button,
-  Icon,
-} from "@mui/material";
+import { Box, Typography, Tooltip, IconButton } from "@mui/material";
 import { postEmpty, getText } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import SaveTsvButton from "./EditorTools/SaveTsvButton";
@@ -24,6 +12,7 @@ import AccordionTsv from "./EditorTools/AccordionTsv";
 import NavigationRef from "./EditorTools/NavigationRef";
 import MenuFields from "./EditorTools/MenuFields";
 import { IconSettingSmall } from "./EditorTools/IconSetting";
+
 function BcvNotesEditorMuncher({
   metadata,
   debugRef,
@@ -47,6 +36,7 @@ function BcvNotesEditorMuncher({
     setIsOpen(true);
     setAnchorEl(event.currentTarget);
   };
+  const pendingRef = useRef(null);
 
   // Récupération des données du tsv
   const getAllData = async () => {
@@ -179,6 +169,7 @@ function BcvNotesEditorMuncher({
           setCurrentReference={setCurrentReference}
           bcvRef={bcvRef}
           debugRef={debugRef}
+          pendingRef={pendingRef}
         />
       </Box>
       {hiddenFields.length > 0 && (
@@ -212,6 +203,7 @@ function BcvNotesEditorMuncher({
         currentReference={currentReference}
         setCurrentReference={setCurrentReference}
         hiddenFields={hiddenFields}
+        pendingRef={pendingRef}
       />
     </Box>
   );
