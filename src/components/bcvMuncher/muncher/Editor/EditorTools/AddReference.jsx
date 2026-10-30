@@ -43,7 +43,7 @@ export default function AddReference({
       closeFn={() => setAddReferenceOpen(false)}
       actionsButtonArray={PanDialogActionsArray({
         actionLabel: doI18n(
-          "pages:core-contenthandler_bcv:create",
+          "pages:core-contenthandler_bcv:add",
           i18nRef.current,
         ),
         actionFn: () => {

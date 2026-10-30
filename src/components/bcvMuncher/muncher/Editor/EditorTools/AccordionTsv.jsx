@@ -127,7 +127,12 @@ export default function AccordionTsv({
                           key={index}
                           expanded={expanded === `panel${index}`}
                           onChange={handleChange(`panel${index}`)}
-                          sx={{ mb: "1px" }}
+                          sx={{
+                            marginBottom: "1px",
+                            "&.Mui-expanded": {
+                              marginBottom: "8px !important",
+                            },
+                          }}
                         >
                           <AccordionSummary
                             aria-controls={`panel${index}d-content`}
