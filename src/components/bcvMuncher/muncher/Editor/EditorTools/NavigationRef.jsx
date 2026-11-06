@@ -37,8 +37,6 @@ export default function NavigationRef({
   const [openSubMenu, setOpenSubMenu] = useState(null);
   const [currentGroup, setCurrentGroup] = useState(null);
   const [addReferenceOpen, setAddReferenceOpen] = useState(false);
-  const open = Boolean(openMainMenu);
-  const subOpen = Boolean(openSubMenu);
   const closeTimer = useRef(null);
 
   const rows = ingredient?.slice(1);

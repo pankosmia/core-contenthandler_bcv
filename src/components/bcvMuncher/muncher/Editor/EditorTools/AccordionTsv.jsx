@@ -65,17 +65,20 @@ export default function AccordionTsv({
     }
   }, [ingredient]);
 
-  const HEADER = ingredient?.[0];
+  const header = ingredient?.[0];
   const hidden = (cellIndex) => {
-    return hiddenFields.includes(HEADER[cellIndex]);
+    return hiddenFields.includes(header[cellIndex]);
   };
 
-  const REFERENCE_COLUMN = ["reference", "ref"];
-  const MARKDOWN_COLUMNS = ["note", "question", "href", "answer", "response"];
-  const OCCURRENCE_COLUMNS = ["occurrence", "ocurrence", "occurence"];
+  const reference_column = ["reference", "ref"];
+  const markdown_columns = ["note", "question", "href", "answer", "response"];
+  const occurence_column = ["occurrence", "ocurrence", "occurence"];
 
-  const handleChange = (panel) => (event, isExpanded) => {
+  const handleChange = (panel, row) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+    if (isExpanded) {
+      postSnippet(row[quoteIndex]);
+    }
   };
 
   const handleCellChange = (rowIndex, cellIndex, newValue) => {
@@ -94,8 +97,8 @@ export default function AccordionTsv({
   };
 
   const quoteIndex = useMemo(
-    () => (HEADER ?? []).findIndex((c) => c?.toLowerCase().includes("quote")),
-    [HEADER],
+    () => (header ?? []).findIndex((c) => c?.toLowerCase().includes("quote")),
+    [header],
   );
   const postSnippet = useCallback((snippet) => {
     const trimmed = snippet?.trim();
@@ -141,7 +144,7 @@ export default function AccordionTsv({
                         <Accordion
                           key={index}
                           expanded={expanded === `panel${index}`}
-                          onChange={handleChange(`panel${index}`)}
+                          onChange={handleChange(`panel${index}`, row)}
                           sx={{
                             marginBottom: "1px",
                             "&.Mui-expanded": {
@@ -200,15 +203,15 @@ export default function AccordionTsv({
                               gap: 2,
                             }}
                           >
-                            {row.map((cell, cellIndex) =>
-                              REFERENCE_COLUMN.includes(
-                                HEADER[cellIndex]?.toLowerCase(),
+                            {row.map((cell, cellIndex) => {
+                              return reference_column.includes(
+                                header[cellIndex]?.toLowerCase(),
                               ) ? (
                                 <ReferenceField
                                   key={cellIndex}
                                   i18nRef={i18nRef}
                                   value={cell}
-                                  label={HEADER[cellIndex]}
+                                  label={header[cellIndex]}
                                   onBlur={(newValue) => {
                                     handleCellChange(
                                       index,
@@ -219,13 +222,13 @@ export default function AccordionTsv({
                                   }}
                                   hidden={hidden(cellIndex)}
                                 />
-                              ) : MARKDOWN_COLUMNS.includes(
-                                  HEADER[cellIndex]?.toLowerCase(),
+                              ) : markdown_columns.includes(
+                                  header[cellIndex]?.toLowerCase(),
                                 ) ? (
                                 <MarkdownField
                                   key={cellIndex}
                                   value={cell}
-                                  label={HEADER[cellIndex]}
+                                  label={header[cellIndex]}
                                   onBlur={(newValue) => {
                                     handleCellChange(
                                       index,
@@ -235,8 +238,8 @@ export default function AccordionTsv({
                                   }}
                                   hidden={hidden(cellIndex)}
                                 />
-                              ) : OCCURRENCE_COLUMNS.includes(
-                                  HEADER[cellIndex]?.toLowerCase(),
+                              ) : occurence_column.includes(
+                                  header[cellIndex]?.toLowerCase(),
                                 ) ? (
                                 <NumberField
                                   key={cellIndex}
@@ -246,7 +249,7 @@ export default function AccordionTsv({
                                       ? null
                                       : Number(cell)
                                   }
-                                  label={HEADER[cellIndex]}
+                                  label={header[cellIndex]}
                                   min={0}
                                   onValueChange={(newValue) => {
                                     handleCellChange(
@@ -261,17 +264,12 @@ export default function AccordionTsv({
                                 <TextField
                                   size="small"
                                   key={cellIndex}
-                                  defaultValue={cell}
+                                  value={cell}
                                   disabled={cellIndex === 1}
-                                  label={HEADER[cellIndex]}
+                                  label={header[cellIndex]}
                                   variant="outlined"
                                   fullWidth
                                   multiline
-                                  onFocus={(e) => {
-                                    if (cellIndex === quoteIndex) {
-                                      postSnippet(e.target.value);
-                                    }
-                                  }}
                                   onBlur={(newValue) => {
                                     handleCellChange(
                                       index,
@@ -285,8 +283,8 @@ export default function AccordionTsv({
                                       : undefined,
                                   }}
                                 />
-                              ),
-                            )}
+                              );
+                            })}
                           </AccordionDetails>
                           <AccordionActions>
                             <IconButton onClick={() => handleDeleteRow(index)}>

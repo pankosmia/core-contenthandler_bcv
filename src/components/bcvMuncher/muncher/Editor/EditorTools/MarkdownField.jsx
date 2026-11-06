@@ -9,8 +9,6 @@ import {
   FormControl,
   TextField,
 } from "@mui/material";
-import { i18nContext as I18nContext } from "pankosmia-rcl";
-import { doI18n } from "pankosmia-lib/i18n";
 
 function MarkdownField({ value, label, key, onBlur, hidden }) {
   const [displayMode, setdisplayMode] = useState("write");
@@ -40,7 +38,7 @@ function MarkdownField({ value, label, key, onBlur, hidden }) {
         <FormControl fullWidth margin="normal">
           <TextField
             label={label}
-            defaultValue={value}
+            value={value}
             key={key}
             minRows={5}
             maxRows={5}
