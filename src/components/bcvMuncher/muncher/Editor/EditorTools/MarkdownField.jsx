@@ -10,7 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 
-function MarkdownField({ value, label, key, onBlur, hidden }) {
+function MarkdownField({ value, label, key, onChange, hidden }) {
   const [displayMode, setdisplayMode] = useState("write");
 
   return (
@@ -46,7 +46,7 @@ function MarkdownField({ value, label, key, onBlur, hidden }) {
             multiline
             size="small"
             variant="outlined"
-            onBlur={(event) => onBlur(event.target.value)}
+            onChange={(event) => onChange(event.target.value)}
             sx={{ display: hidden ? "none" : undefined }}
           />
         </FormControl>

@@ -229,7 +229,7 @@ export default function AccordionTsv({
                                   key={cellIndex}
                                   value={cell}
                                   label={header[cellIndex]}
-                                  onBlur={(newValue) => {
+                                  onChange={(newValue) => {
                                     handleCellChange(
                                       index,
                                       cellIndex,
@@ -270,11 +270,11 @@ export default function AccordionTsv({
                                   variant="outlined"
                                   fullWidth
                                   multiline
-                                  onBlur={(newValue) => {
+                                  onChange={(event) => {
                                     handleCellChange(
                                       index,
                                       cellIndex,
-                                      newValue.target.value,
+                                      event.target.value,
                                     );
                                   }}
                                   sx={{
