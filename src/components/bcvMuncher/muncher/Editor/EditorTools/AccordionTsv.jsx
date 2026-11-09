@@ -28,10 +28,12 @@ export default function AccordionTsv({
   currentReference,
   setCurrentReference,
   hiddenFields,
+  BookCurrent,
 }) {
   const [expanded, setExpanded] = useState(false);
   const [repoFlavor, setRepoFlavor] = useState("");
   const [dragVersion, setDragVersion] = useState(0);
+  const [snippetBook, setSnippetBook] = useState(BookCurrent);
 
   useEffect(() => {
     const getProjectSummaries = async () => {
@@ -112,6 +114,18 @@ export default function AccordionTsv({
   const visibleIndexes = (ingredient ?? [])
     .map((_, i) => i)
     .filter((i) => i !== 0 && ingredient[i][0] === currentReference);
+
+  useEffect(() => {
+    if (snippetBook === BookCurrent) return;
+    setSnippetBook(BookCurrent);
+    if (!expanded) return;
+    const row = ingredient?.[Number(expanded.replace("panel", ""))];
+    if (row?.[0] === currentReference) {
+      postSnippet(row[quoteIndex]);
+    } else {
+      setExpanded(false);
+    }
+  }, [ingredient]);
 
   const handleDragEnd = ({ source, destination }) => {
     if (!destination) return;

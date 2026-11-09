@@ -204,6 +204,7 @@ function BcvNotesEditorMuncher({
         setCurrentReference={setCurrentReference}
         hiddenFields={hiddenFields}
         pendingRef={pendingRef}
+        BookCurrent={bcvRef.current.bookCode}
       />
     </Box>
   );
