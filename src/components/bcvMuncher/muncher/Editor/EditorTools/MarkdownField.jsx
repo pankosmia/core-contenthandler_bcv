@@ -9,10 +9,8 @@ import {
   FormControl,
   TextField,
 } from "@mui/material";
-import { i18nContext as I18nContext } from "pankosmia-rcl";
-import { doI18n } from "pankosmia-lib/i18n";
 
-function MarkdownField({ value, label, key, onBlur, hidden }) {
+function MarkdownField({ value, label, key, onChange, hidden }) {
   const [displayMode, setdisplayMode] = useState("write");
 
   return (
@@ -40,7 +38,7 @@ function MarkdownField({ value, label, key, onBlur, hidden }) {
         <FormControl fullWidth margin="normal">
           <TextField
             label={label}
-            defaultValue={value}
+            value={value}
             key={key}
             minRows={5}
             maxRows={5}
@@ -48,7 +46,7 @@ function MarkdownField({ value, label, key, onBlur, hidden }) {
             multiline
             size="small"
             variant="outlined"
-            onBlur={(event) => onBlur(event.target.value)}
+            onChange={(event) => onChange(event.target.value)}
             sx={{ display: hidden ? "none" : undefined }}
           />
         </FormControl>

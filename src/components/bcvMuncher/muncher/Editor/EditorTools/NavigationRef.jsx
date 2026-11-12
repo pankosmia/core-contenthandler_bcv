@@ -31,13 +31,12 @@ export default function NavigationRef({
   setCurrentReference,
   bcvRef,
   debugRef,
+  pendingRef,
 }) {
   const [openMainMenu, setOpenMainMenu] = useState(null);
   const [openSubMenu, setOpenSubMenu] = useState(null);
   const [currentGroup, setCurrentGroup] = useState(null);
   const [addReferenceOpen, setAddReferenceOpen] = useState(false);
-  const open = Boolean(openMainMenu);
-  const subOpen = Boolean(openSubMenu);
   const closeTimer = useRef(null);
 
   const rows = ingredient?.slice(1);
@@ -186,6 +185,7 @@ export default function NavigationRef({
           ingredient={ingredient}
           setIngredient={setIngredient}
           setCurrentReference={setCurrentReference}
+          pendingRef={pendingRef}
         />
       )}
     </>
