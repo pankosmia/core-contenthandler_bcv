@@ -14,7 +14,7 @@ import {
   Popper,
   MenuList,
 } from "@mui/material";
-import { compareRefs } from "../../helpers/sortIngredient";
+import { compareRefs } from "../helpers/sortIngredient";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import AddIcon from "@mui/icons-material/Add";

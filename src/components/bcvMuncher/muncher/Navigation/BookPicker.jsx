@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, MenuItem, TextField } from "@mui/material";
 import { getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
-import { getFirstChapterBCVNotes } from "../../utils/findFirstChapter";
+import { getFirstChapterBCVNotes } from "../utils/findFirstChapter";
 function BookPicker({ bcvRef, debugRef, i18nRef, currentProjectRef }) {
   const [contentBooks, setContentBooks] = useState([]);
   const [currentBook, setCurrentBook] = useState(bcvRef.current.bookCode);
