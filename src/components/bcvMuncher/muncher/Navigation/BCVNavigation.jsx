@@ -2,13 +2,15 @@ import { useState } from "react";
 import MenuFields from "./MenuFields";
 import BookPicker from "./BookPicker";
 import NavigationRef from "./NavigationRef";
-import {
-  BCVNavigationProvider,
-  useBCVNavigation,
-} from "./BCVNavigationContext";
 import { Box } from "@mui/material";
 
-function Navigation({ bcvRef, i18nRef, currentProjectRef, debugRef }) {
+export default function BCVNavigation({
+  navigation,
+  bcvRef,
+  i18nRef,
+  currentProjectRef,
+  debugRef,
+}) {
   const {
     ingredient,
     setIngredient,
@@ -17,7 +19,7 @@ function Navigation({ bcvRef, i18nRef, currentProjectRef, debugRef }) {
     currentReference,
     setCurrentReference,
     pendingRef,
-  } = useBCVNavigation();
+  } = navigation;
   const [isOpen, setIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const handleOpen = (event) => {
@@ -53,15 +55,5 @@ function Navigation({ bcvRef, i18nRef, currentProjectRef, debugRef }) {
         pendingRef={pendingRef}
       />
     </Box>
-  );
-}
-
-export default function BCVNavigation(props) {
-  const navigation = useBCVNavigation();
-  if (navigation) return <Navigation {...props} />;
-  return (
-    <BCVNavigationProvider {...props}>
-      <Navigation {...props} />
-    </BCVNavigationProvider>
   );
 }

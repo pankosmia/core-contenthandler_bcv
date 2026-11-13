@@ -10,6 +10,7 @@ import { MaterialDesignContent, SnackbarProvider } from "notistack";
 import { styled } from "@mui/material";
 import MuncherTest from "./pages/Test/MuncherTest";
 import TsvImport from "./pages/Import/TsvImport";
+import { BCVNavigationProvider } from "./components/bcvMuncher/muncher/Navigation/BCVNavigationContext";
 
 const router = createHashRouter([
   {
@@ -65,7 +66,9 @@ function AppLayout() {
       maxSnack={6}
     >
       <SpaContainer>
-        <RouterProvider router={router} />
+        <BCVNavigationProvider>
+          <RouterProvider router={router} />
+        </BCVNavigationProvider>
       </SpaContainer>
     </SnackbarProvider>
   );

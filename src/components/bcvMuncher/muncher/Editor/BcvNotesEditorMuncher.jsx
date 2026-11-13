@@ -1,26 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, Tooltip, IconButton } from "@mui/material";
-import { postEmpty } from "pankosmia-lib/http";
+import { postEmpty, getText } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import SaveTsvButton from "./EditorTools/SaveTsvButton";
 import md5 from "md5";
 import BCVNavigation from "../Navigation/BCVNavigation";
-import {
-  BCVNavigationProvider,
-  useBCVNavigation,
-} from "../Navigation/BCVNavigationContext";
+import sortIngredient from "../helpers/sortIngredient";
 import LayoutIcon from "../layouts/LayoutIcon";
 import AccordionTsv from "./EditorTools/AccordionTsv";
 import { IconSettingSmall } from "../Navigation/IconSetting";
 
-function BcvNotesEditor({
+function BcvNotesEditorMuncher({
   metadata,
   debugRef,
   systemBcv,
   i18nRef,
   bcvRef,
   currentProjectRef,
+  navigation,
   showNavigation = true,
 }) {
   const navigate = useNavigate();
@@ -35,8 +33,31 @@ function BcvNotesEditor({
     hiddenFields,
     setHiddenFields,
     pendingRef,
-  } = useBCVNavigation();
+  } = navigation;
   const [currentChapter, setCurrentChapter] = useState("1");
+
+  useEffect(() => {
+    if (!metadata?.local_path || !systemBcv?.bookCode) return;
+    let active = true;
+    const getAllData = async () => {
+      const ingredientLink = `/api/burrito/ingredient/raw/${metadata.local_path}?ipath=${systemBcv.bookCode}.tsv`;
+      const response = await getText(ingredientLink, debugRef.current);
+      if (active && response.ok) {
+        const allRows = response.text
+          .split(/\r?\n+/g)
+          .map((row) =>
+            row.split("\t").map((field) => field.replace(/(\\n){2,}/g, "\n\n")),
+          );
+        const newIngredient = sortIngredient(allRows);
+        setIngredient(newIngredient);
+        setMd5Ingredient(md5(JSON.stringify(newIngredient)));
+      }
+    };
+    getAllData();
+    return () => {
+      active = false;
+    };
+  }, [metadata?.local_path, systemBcv?.bookCode, debugRef]);
 
   const updateBcv = (rowN) => {
     const newCurrentRow = ingredient[rowN][0];
@@ -127,8 +148,7 @@ function BcvNotesEditor({
             </IconButton>
           </Tooltip>
           <BCVNavigation
-            metadata={metadata}
-            systemBcv={systemBcv}
+            navigation={navigation}
             bcvRef={bcvRef}
             i18nRef={i18nRef}
             currentProjectRef={currentProjectRef}
@@ -171,16 +191,6 @@ function BcvNotesEditor({
         BookCurrent={bcvRef.current.bookCode}
       />
     </Box>
-  );
-}
-
-function BcvNotesEditorMuncher(props) {
-  const navigation = useBCVNavigation();
-  if (navigation) return <BcvNotesEditor {...props} />;
-  return (
-    <BCVNavigationProvider {...props}>
-      <BcvNotesEditor {...props} />
-    </BCVNavigationProvider>
   );
 }
 
