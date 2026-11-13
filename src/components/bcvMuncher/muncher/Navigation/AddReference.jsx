@@ -1,10 +1,10 @@
 import { PanAdvancedDialog, PanDialogActionsArray } from "pankosmia-rcl";
 import { TextField, DialogContent, Box, Typography } from "@mui/material";
-import { sortIngredient } from "../../helpers/sortIngredient";
+import { sortIngredient } from "../helpers/sortIngredient";
 import { useState } from "react";
 import { doI18n } from "pankosmia-lib/i18n";
 import { v4 as uuidv4 } from "uuid";
-import { validateReference } from "../../helpers/validateReference";
+import { validateReference } from "../helpers/validateReference";
 export default function AddReference({
   addReferenceOpen,
   setAddReferenceOpen,

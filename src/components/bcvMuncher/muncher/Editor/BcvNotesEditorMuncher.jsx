@@ -1,17 +1,15 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
-import sortIngredient from "../helpers/sortIngredient";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, Tooltip, IconButton } from "@mui/material";
 import { postEmpty, getText } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import SaveTsvButton from "./EditorTools/SaveTsvButton";
 import md5 from "md5";
-import BookPicker from "./EditorTools/BookPicker";
+import BCVNavigation from "../Navigation/BCVNavigation";
+import sortIngredient from "../helpers/sortIngredient";
 import LayoutIcon from "../layouts/LayoutIcon";
 import AccordionTsv from "./EditorTools/AccordionTsv";
-import NavigationRef from "./EditorTools/NavigationRef";
-import MenuFields from "./EditorTools/MenuFields";
-import { IconSettingSmall } from "./EditorTools/IconSetting";
+import { IconSettingSmall } from "../Navigation/IconSetting";
 
 function BcvNotesEditorMuncher({
   metadata,
@@ -20,43 +18,46 @@ function BcvNotesEditorMuncher({
   i18nRef,
   bcvRef,
   currentProjectRef,
+  navigation,
+  showNavigation = true,
 }) {
   const navigate = useNavigate();
 
-  const [ingredient, setIngredient] = useState([]);
-  const [md5Ingredient, setMd5Ingredient] = useState([]);
+  const {
+    ingredient,
+    setIngredient,
+    md5Ingredient,
+    setMd5Ingredient,
+    currentReference,
+    setCurrentReference,
+    hiddenFields,
+    setHiddenFields,
+    pendingRef,
+  } = navigation;
   const [currentChapter, setCurrentChapter] = useState("1");
-  const [currentReference, setCurrentReference] = useState(
-    `${bcvRef?.current.chapterNum}:${bcvRef?.current.verseNum}`,
-  );
-  const [hiddenFields, setHiddenFields] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleOpen = (event) => {
-    setIsOpen(true);
-    setAnchorEl(event.currentTarget);
-  };
-  const pendingRef = useRef(null);
 
-  // Récupération des données du tsv
-  const getAllData = async () => {
-    const ingredientLink = `/api/burrito/ingredient/raw/${metadata.local_path}?ipath=${systemBcv.bookCode}.tsv`;
-    let response = await getText(ingredientLink, debugRef.current);
-    if (response.ok) {
-      const allRows = response.text
-        .split(/\r?\n+/g)
-        .map((l) => l.split("\t").map((f) => f.replace(/(\\n){2,}/g, "\n\n")));
-
-      const newIngredient = sortIngredient(allRows);
-      setIngredient(newIngredient);
-      const hash = md5(JSON.stringify(newIngredient));
-      setMd5Ingredient(hash);
-    }
-  };
-  // utilisation de la fonction getAllData
   useEffect(() => {
-    getAllData().then();
-  }, [systemBcv?.bookCode]);
+    if (!metadata?.local_path || !systemBcv?.bookCode) return;
+    let active = true;
+    const getAllData = async () => {
+      const ingredientLink = `/api/burrito/ingredient/raw/${metadata.local_path}?ipath=${systemBcv.bookCode}.tsv`;
+      const response = await getText(ingredientLink, debugRef.current);
+      if (active && response.ok) {
+        const allRows = response.text
+          .split(/\r?\n+/g)
+          .map((row) =>
+            row.split("\t").map((field) => field.replace(/(\\n){2,}/g, "\n\n")),
+          );
+        const newIngredient = sortIngredient(allRows);
+        setIngredient(newIngredient);
+        setMd5Ingredient(md5(JSON.stringify(newIngredient)));
+      }
+    };
+    getAllData();
+    return () => {
+      active = false;
+    };
+  }, [metadata?.local_path, systemBcv?.bookCode, debugRef]);
 
   const updateBcv = (rowN) => {
     const newCurrentRow = ingredient[rowN][0];
@@ -105,73 +106,56 @@ function BcvNotesEditorMuncher({
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <Box
-        sx={{
-          position: "fixed",
-          top: "48px",
-          left: 0,
-          right: 0,
-          display: "flex",
-          padding: 2,
-          flexDirection: "row",
-          gap: 1,
-        }}
-      >
-        <SaveTsvButton
-          metadata={metadata}
-          ingredient={ingredient}
-          setIngredient={setIngredient}
-          md5Ingredient={md5Ingredient}
-          setMd5Ingredient={setMd5Ingredient}
-          i18nRef={i18nRef}
-          systemBcv={systemBcv}
-        />
-        <Tooltip
-          title={doI18n(
-            "pages:core-contenthandler_bcv:button_edit_layout",
-            i18nRef.current,
-            debugRef.current,
-          )}
+      {showNavigation && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: "48px",
+            left: 0,
+            right: 0,
+            display: "flex",
+            padding: 2,
+            flexDirection: "row",
+            gap: 1,
+          }}
         >
-          <IconButton
-            disabled={md5(JSON.stringify(ingredient)) !== md5Ingredient}
-            onClick={() =>
-              navigate({
-                pathname: "/",
-                search: "return-page=workspace",
-              })
-            }
+          <SaveTsvButton
+            metadata={metadata}
+            ingredient={ingredient}
+            setIngredient={setIngredient}
+            md5Ingredient={md5Ingredient}
+            setMd5Ingredient={setMd5Ingredient}
+            i18nRef={i18nRef}
+            systemBcv={systemBcv}
+          />
+          <Tooltip
+            title={doI18n(
+              "pages:core-contenthandler_bcv:button_edit_layout",
+              i18nRef.current,
+              debugRef.current,
+            )}
           >
-            <LayoutIcon />
-          </IconButton>
-        </Tooltip>
-        <MenuFields
-          ingredient={ingredient}
-          setHiddenFields={setHiddenFields}
-          hiddenFields={hiddenFields}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          anchorEl={anchorEl}
-          handleOpen={handleOpen}
-        />
-        <BookPicker
-          bcvRef={bcvRef}
-          i18nRef={i18nRef}
-          systemBcv={systemBcv}
-          currentProjectRef={currentProjectRef}
-          debugRef={debugRef}
-        />
-        <NavigationRef
-          ingredient={ingredient}
-          setIngredient={setIngredient}
-          i18nRef={i18nRef}
-          currentReference={currentReference}
-          setCurrentReference={setCurrentReference}
-          bcvRef={bcvRef}
-          debugRef={debugRef}
-          pendingRef={pendingRef}
-        />
-      </Box>
+            <IconButton
+              disabled={md5(JSON.stringify(ingredient)) !== md5Ingredient}
+              onClick={() =>
+                navigate({
+                  pathname: "/",
+                  search: "return-page=workspace",
+                })
+              }
+            >
+              <LayoutIcon />
+            </IconButton>
+          </Tooltip>
+          <BCVNavigation
+            navigation={navigation}
+            bcvRef={bcvRef}
+            i18nRef={i18nRef}
+            currentProjectRef={currentProjectRef}
+            debugRef={debugRef}
+          />
+        </Box>
+      )}
       {hiddenFields.length > 0 && (
         <Box
           sx={{

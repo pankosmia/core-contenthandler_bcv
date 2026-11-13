@@ -7,13 +7,17 @@ import {
   i18nContext,
   typographyContext,
   Header,
+  AdvancedAppBar,
 } from "pankosmia-rcl";
 import { Box, Button } from "@mui/material";
 import BcvNotesEditorMuncher from "../../components/bcvMuncher/muncher/Editor/BcvNotesEditorMuncher";
 import BcvNotesViewerMuncher from "../../components/bcvMuncher/muncher/Viewer/BcvNotesViewerMuncher";
 import BcvQuestionsViewerMuncher from "../../components/bcvMuncher/muncher/Viewer/BcvQuestionsViewerMuncher";
 import WrapperNav from "../../components/bcvMuncher/wrapperMuncher/WrapperNav";
+import BCVNavigation from "../../components/bcvMuncher/muncher/Navigation/BCVNavigation";
+import { useBCVNavigation } from "../../components/bcvMuncher/muncher/Navigation/BCVNavigationContext";
 export default function MuncherTest() {
+  const navigation = useBCVNavigation();
   const { bcvRef } = useContext(bcvContext);
   const { systemBcv } = useContext(bcvContext);
   const { debugRef } = useContext(debugContext);
@@ -70,6 +74,19 @@ export default function MuncherTest() {
           requireNet={false}
         />
       </Box>
+      <AdvancedAppBar
+        navigation={
+          metadata && (
+            <BCVNavigation
+              navigation={navigation}
+              bcvRef={bcvRef}
+              i18nRef={i18nRef}
+              currentProjectRef={currentProjectRef}
+              debugRef={debugRef}
+            />
+          )
+        }
+      />
       <Box sx={{ paddingLeft: 2, paddingTop: 10, flexShrink: 0 }}>
         <WrapperNav
           flavor={["x-bcvnotes", "x-notes", "x-bcvquestions", "x-questions"]}
@@ -115,6 +132,8 @@ export default function MuncherTest() {
               i18nRef={i18nRef}
               bcvRef={bcvRef}
               currentProjectRef={currentProjectRef}
+              navigation={navigation}
+              showNavigation={false}
             />
           </Box>
         )}
