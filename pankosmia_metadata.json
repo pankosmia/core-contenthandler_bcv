@@ -294,10 +294,8 @@
       "id": "@Tidak dapat ambil"
     },
     "export_as_tsv": {
-      "en": "Save as TSV",
-      "es": "Guardar como TSV",
-      "fr": "Sauvegarder au format TSV",
-      "id": "Simpan konten sebagai TSV"
+      "en": "Export as TSV",
+      "fr": "Exporter au format TSV"
     },
     "pick_one_or_more_books_export": {
       "en": "Choose one or more books to save",
@@ -523,6 +521,16 @@
     "hidden_fields": {
       "en": "hidden fields",
       "fr": "champs cachés"
+    },
+    "select_books_to_export": {
+      "en": "Select one or more books to export from {document_name} *",
+      "fr": "Sélectionnez un ou plusieurs livres à exporter à partir de {document_name} *"
+    },
+    "export_tsv_button": {
+      "en": "Export",
+      "fr": "Exporter",
+      "es": "Exportar",
+      "id": "Ekspor"
     }
   }
 }
