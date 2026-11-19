@@ -1,32 +1,36 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import {
   Box,
-  DialogContent,
-  DialogContentText,
-  List,
-  ListItem,
-  ListItemText,
+  FormControl,
+  FormControlLabel,
   Typography,
-  useTheme,
+  Checkbox,
 } from "@mui/material";
 import { getText, getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
-import { debugContext, i18nContext, Header } from "pankosmia-rcl";
+import {
+  debugContext,
+  i18nContext,
+  Header,
+  PanBasicDialog,
+  PanDialogActionsArray,
+} from "pankosmia-rcl";
 
 import { enqueueSnackbar } from "notistack";
 import { saveAs } from "file-saver";
-import { PanDialog, PanDialogActions } from "pankosmia-rcl";
-import Color from "color";
 
 function TsvExport() {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
   const [selectedBooks, setSelectedBooks] = useState([]);
+  const [noBooksSelected, setNoBooksSelected] = useState(false);
   const [bookCodes, setBookCodes] = useState([]);
   const [bookNames, setBookNames] = useState([]);
   const [repoPath, setRepoPath] = useState([]);
   const [open, setOpen] = useState(true);
   const [returnTypePage, setReturnTypePage] = useState(null);
+  const [documentName, setDocumentName] = useState("");
+  const confirmationRef = useRef(null);
 
   const getProjectSummaries = async () => {
     const hash = window.location.hash;
@@ -42,8 +46,8 @@ function TsvExport() {
     );
     if (summariesResponse.ok) {
       const data = summariesResponse.json;
-      const bookCode = data.book_codes;
-      setBookNames(bookCode);
+      setBookNames(data.book_codes);
+      setDocumentName(data.name);
     } else {
       console.error(
         `${doI18n("pages:core-contenthandler_bcv:fetch_error", i18nRef.current)}`,
@@ -75,13 +79,6 @@ function TsvExport() {
     return true;
   };
 
-  // Lighten secondary.main color
-  const theme = useTheme();
-  const lightenedColor = Color(theme.palette.secondary.main).lighten(0.8).hex();
-  const lightenedColorHover = Color(theme.palette.secondary.main)
-    .lighten(0.999)
-    .hex();
-
   const handleToggle = (item) => {
     setSelectedBooks((prev) =>
       prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item],
@@ -90,18 +87,24 @@ function TsvExport() {
 
   const handleClose = () => {
     setOpen(false);
+    setSelectedBooks([]);
     if (returnTypePage === "dashboard") {
       return (window.location.href = "/clients/main");
     }
     return (window.location.href = "/clients/content");
   };
-
-  const handleCloseCreate = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    if (returnTypePage === "dashboard") {
-      window.location.href = "/clients/main";
-    } else {
-      window.location.href = "/clients/content";
+  const handleExport = async () => {
+    if (selectedBooks.length === 0) {
+      setNoBooksSelected(true);
+      confirmationRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+      return;
+    }
+    setNoBooksSelected(false);
+    for (const bookCode of selectedBooks) {
+      await tsvExportOneBook(bookCode);
     }
   };
 
@@ -142,92 +145,60 @@ function TsvExport() {
         requireNet={false}
       />
 
-      <PanDialog
+      <PanBasicDialog
         titleLabel={doI18n(
           "pages:core-contenthandler_bcv:export_as_tsv",
           i18nRef.current,
         )}
         closeFn={() => handleClose()}
         isOpen={open}
-        fullWidth={false}
-      >
-        <DialogContent sx={{ mt: 1 }} style={{ overflow: "hidden" }}>
-          <Box sx={{ maxHeight: "269px" }}>
-            <DialogContentText>
-              <Typography>
-                {doI18n(
-                  "pages:core-contenthandler_bcv:pick_one_or_more_books_export",
-                  i18nRef.current,
-                )}
-              </Typography>
-              {selectedBooks.length > 0 && (
-                <Typography sx={{ ml: 2 }}>
-                  <em>
-                    {`${selectedBooks.length}/${bookNames.length} ${doI18n("pages:content:books_selected", i18nRef.current)}`}
-                  </em>
-                </Typography>
-              )}
-            </DialogContentText>
-            <List dense style={{ maxHeight: 300, overflowY: "auto" }}>
-              {bookCodes
-                .filter((item) => bookNames.includes(item))
-                .map((bookName) => (
-                  <ListItem
-                    key={bookName}
-                    button
-                    onClick={() => handleToggle(bookName)}
-                    sx={{
-                      backgroundColor: selectedBooks.includes(bookName)
-                        ? lightenedColor
-                        : "transparent",
-                      "&:hover": {
-                        backgroundColor: selectedBooks.includes(bookName)
-                          ? lightenedColorHover
-                          : "action.hover",
-                      },
-                    }}
-                  >
-                    <ListItemText
-                      primary={
-                        `${bookName} - ` +
-                        doI18n(`scripture:books:${bookName}`, i18nRef.current)
-                      }
-                    />
-                  </ListItem>
-                ))}
-            </List>
-          </Box>
-        </DialogContent>
-        <PanDialogActions
-          closeOnAction={false}
-          closeFn={() => {
-            setSelectedBooks([]);
-            handleClose();
-          }}
-          closeLabel={doI18n("pages:content:cancel", i18nRef.current)}
-          actionFn={async () => {
-            if (!selectedBooks || selectedBooks.length === 0) {
-              enqueueSnackbar(
-                doI18n(
-                  "pages:core-contenthandler_bcv:no_books_selected",
-                  i18nRef.current,
-                ),
-                { variant: "warning" },
-              );
-            } else {
-              for (let b of selectedBooks) {
-                await tsvExportOneBook(b);
-              }
-            }
-            handleCloseCreate();
-          }}
-          actionLabel={doI18n(
-            "pages:core-contenthandler_bcv:export_label",
+        actionsButtonArray={PanDialogActionsArray({
+          actionLabel: doI18n(
+            "pages:core-contenthandler_bcv:export_tsv_button",
             i18nRef.current,
-          )}
-          isDisabled={selectedBooks.length === 0}
-        />
-      </PanDialog>
+          ),
+          closeFn: () => handleClose(),
+          closeLabel: doI18n(
+            "pages:core-contenthandler_bcv:cancel",
+            i18nRef.current,
+          ),
+          closeOnAction: false,
+          actionFn: handleExport,
+        })}
+        dividers={true}
+      >
+        <Typography
+          ref={confirmationRef}
+          color={noBooksSelected && "error"}
+          variant="body1"
+        >
+          {noBooksSelected
+            ? doI18n(
+                "pages:core-contenthandler_bcv:select_books_to_export",
+                i18nRef.current,
+              ).replace("{document_name}", documentName)
+            : doI18n(
+                "pages:core-contenthandler_bcv:select_books_to_export",
+                i18nRef.current,
+              ).replace("{document_name}", documentName)}
+        </Typography>
+        <FormControl>
+          {bookCodes
+            .filter((item) => bookNames.includes(item))
+            .map((bookName) => (
+              <FormControlLabel
+                key={bookName}
+                control={
+                  <Checkbox
+                    checked={selectedBooks.includes(bookName)}
+                    onChange={() => handleToggle(bookName)}
+                  />
+                }
+                label={doI18n(`scripture:books:${bookName}`, i18nRef.current)}
+              />
+            ))}
+        </FormControl>
+      </PanBasicDialog>
     </Box>
   );
 }

@@ -22,7 +22,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
     "husky": "^9.1.7",
-    "pankosmia-rcl": "^0.8.8",
+    "pankosmia-rcl": "^0.8.9",
     "prettier": "3.8.1",
     "vite": "^6.0.7"
   },
