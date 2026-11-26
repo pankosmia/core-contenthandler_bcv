@@ -72,8 +72,8 @@ importers:
         specifier: ^9.1.7
         version: 9.1.7
       pankosmia-rcl:
-        specifier: ^0.8.9
-        version: 0.8.9(c0129ba64881210a4c4d6e16db0bf34a)
+        specifier: ^0.8.18
+        version: 0.8.18(c0129ba64881210a4c4d6e16db0bf34a)
       prettier:
         specifier: 3.8.1
         version: 3.8.1
@@ -4430,10 +4430,10 @@ packages:
       }
     engines: { node: ">=24", pnpm: 11.20.0 }
 
-  pankosmia-rcl@0.8.9:
+  pankosmia-rcl@0.8.18:
     resolution:
       {
-        integrity: sha512-0wvUSpP1ABC+7SOqpJA/O/LVTJFmjjq2yvUtMfaHiuCN7zDIl09JeGGHss2ZDEAwz1CgdQPFn6onoCGPizeQMw==,
+        integrity: sha512-LY6h1vdPBqA/7zASNtP8ZEQ3riSB3lXWJsaTUUWe4le0KgF2tUDsybfqmMrqOry3MrMZStyA2ceaU8YXq15ZjQ==,
       }
     engines: { node: ">=24", pnpm: 11.20.0 }
     peerDependencies:
@@ -8533,7 +8533,7 @@ snapshots:
 
   pankosmia-lib@0.0.5: {}
 
-  pankosmia-rcl@0.8.9(c0129ba64881210a4c4d6e16db0bf34a):
+  pankosmia-rcl@0.8.18(c0129ba64881210a4c4d6e16db0bf34a):
     dependencies:
       "@emotion/cache": 11.14.0
       "@emotion/react": 11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@7.2.0)
